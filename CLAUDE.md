@@ -52,8 +52,10 @@ deploy/_headers       보안 헤더
 src/worker.js         www → 루트 301 하나뿐 (_redirects 는 호스트 규칙을 못 쓴다 — 실측)
 tools/{build,check,deploy-check}.mjs
 wrangler.jsonc        name soosoo-site · assets ./dist · custom_domain soosoo.kr / www
-doc/절대규칙.md        충돌 시 이기는 문서
-doc/디자인_프롬프트_홈.md  클로드 디자인에 붙여넣을 완성본
+doc/                  ⚠️ .gitignore 로 제외 — 공개 저장소에 안 올라간다(D:\ 로컬 전용). 인수인계 문서에 주소·전화가 있어서다
+  절대규칙.md          충돌 시 이기는 문서
+  디자인_방향.md        🧑 사장님 선택 5문항(톤·소재·푸터·글꼴·카드) → 답이 오면 디자인_프롬프트_홈.md 완성본
+  홈페이지_인수인계.md   채크 세션이 넘긴 시작 재료(§6 참고 링크 R-001~027 판정표는 여기가 정본)
 ```
 
 ## 5. 언제 무엇을 부르나
