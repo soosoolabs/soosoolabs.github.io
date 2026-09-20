@@ -8,6 +8,7 @@
     "check:selftest": "node tools/check.mjs --selftest",
     "preview": "npx --yes serve dist -l 4173",
     "deploy": "npm run build && npm run check && npx wrangler deploy",
-    "deploy:check": "node tools/deploy-check.mjs"
+    "deploy:check": "node tools/deploy-check.mjs",
+    "fonts": "node tools/fonts.mjs"
   }
 }

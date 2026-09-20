@@ -11,7 +11,7 @@
 | 정본 주소 | **https://soosoo.kr** ✅ 살아 있음(Cloudflare Workers 정적 에셋 · `www` → 301) |
 | 옛 주소 | `soosoolabs.github.io` = **껍데기**(`gh-pages` 브랜치 · 같은 경로로 soosoo.kr 에 넘긴다). 스토어·약관 문서에 박혀 있어 **죽이면 안 된다** |
 | 디자인 | ⬜ **아직 없다** — 🧑 사장님이 클로드 디자인에서 만드신다. 지금 화면은 2026-08-25 임시본 |
-| 🆕 **채크 앱 소개 페이지** | ★**지금 우선순위**(9/20 밤 사장님 *"채크 앱에 대한 웹 · 앱 소개 위주 · 강사·학부모가 볼 것 · 깐깐한 사람들"*). 구상 = `doc/채크_소개_구상.md`(사실표·결정 8문항·섹션 구조·표현 원칙). 자리 추천 `soosoo.kr/chaeck/`. 🧑 답 대기. 수수 홈 디자인(`doc/디자인_방향.md`)은 그 뒤 |
+| ★ **채크 앱 소개 페이지** | ✅ **https://soosoo.kr/chaeck/ 살아 있음**(9/20 밤 · 사장님 「추천대로」). 구조 = 「따지는 순서」(뭐 하는 앱 → 흐름 4단계 → 학부모: 내 아이 관리 → 정확성 3단계 → 안 되는 것 표 → 개인정보 → 선생님 → FAQ → 시작). 화면은 **채크 dev 데모 데이터 실제 캡처 8장**(`chaeck/img/`) · 채점펜 토큰 · 폰트 서브셋 자체 호스팅 · 스크립트 0. 🧑 눈으로 보고 「눈에 확」을 위한 다듬기는 클로드 디자인 차례(`doc/채크_소개_구상.md` §5) |
 | 사업자 표기 | 상호·영문·대표·등록번호·이메일 ✅ · 전화·주소·통신판매업 신고번호 = **자리만**(`data/site.json` 의 `null` + 사유) |
 
 ## 1. 🔴 되돌리면 안 되는 것 (다음 세션이 되돌리지 말 것)
@@ -38,15 +38,20 @@ npm run check          # dist/ 를 data/site.json 과 대조 (고정 경로·메
 npm run check:selftest # 검수기를 일부러 깨뜨려 빨간불이 뜨는지 (삭제·값 조작·위치 이동·주입·경로 삭제·예외 만료)
 npm run deploy         # build → check → wrangler deploy  (⛔ wrangler 를 맨손으로 부르지 않는다)
 npm run deploy:check   # 배포된 사이트에 박힌 해시 = HEAD 인가 · 옛 주소가 넘어오나 (상태 셋: ✅ ❌ ⬜)
+npm run fonts          # 페이지 글자만 담은 폰트 서브셋 생성(원본 = 채크 저장소 · OFL) — ⚠️문구를 고치면 다시 돌린다(check G 가 잡는다)
+node tools/shots.mjs   # 375/1280 전체 스크린샷 → doc/shots/ + 네트워크 탭 외부 호스트 0건 확인(표준골격 ⑥)
 ```
 - 배포 뒤 **반드시** `deploy:check` — 「업로드 성공」과 「최신 코드가 나간다」는 다르다.
+- 검수 축 A~H(`tools/check.mjs` 머리). **F 페이지 규칙**(`data/site.json` page_rules)= 채크 정체성 금지어(등수·비교·최고·혁신·학원으로 연결·영어 특화·즉시 삭제) + 있어야 할 문장(30일·만 14세·학생 5명·10문항·방침 링크). 채크 방침·금지어가 바뀌면 여기부터 고친다.
 - 검수는 **dist/(빌드 결과)** 에 대고 돈다. 루트 소스에 대고 돌리지 않는다(윈도우 디스크 함정 · 전역 refs).
 - 🔒 헤더는 `deploy/_headers`(CSP `script-src 'none'`). **디자인이 스크립트를 쓰면 이 줄을 같이 고친다** — 안 그러면 화면은 뜨는데 동작이 죽는다.
 
 ## 4. 파일
 
 ```
-index.html            홈 (임시본 · 디자인 오면 교체)
+index.html            수수 홈 (임시본 · 디자인 오면 교체 · 채크 카드 → /chaeck/)
+chaeck/index.html     ★채크 앱 소개(스크립트 0 · 채점펜 토큰) · chaeck/img/ 실제 캡처 8장(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
+assets/fonts/         Pretendard·Paperlogy 서브셋(OFL) + manifest.json(글자 해시)
 hantol/{privacy,terms,support}/index.html   하루한톨 법적 문서 — ⛔ 내용은 daily-verse 정본. 여기선 게시만
 data/site.json        ★ 사람이 고치는 값은 여기뿐 (사업자 정보 · 고정 경로 · 옛 주소 예외(기한) · 검사 URL)
 deploy/_headers       보안 헤더

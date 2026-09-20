@@ -10,9 +10,13 @@
 //   C. 사업자 표기 페이지: 상호·영문·대표·등록번호·이메일이 **보이는 본문**에 있다(주석·script 안은 안 친다)
 //   D. 외부 요청 0 — script/link/img/iframe/url()/@import 가 http(s):// 를 가리키지 않는다
 //   E. 옛 주소(github.io) 언급 — 예외 목록(기한 포함)에 없으면 위반 · 기한이 지난 예외도 위반
+//   F. 페이지 규칙(site.json page_rules) — 있어야 할 문장 · 금지어 (채크: 정체성 금지어·방침 문장)
+//   G. 폰트 서브셋(assets/fonts)이 지금 페이지 글자와 같은가(manifest 해시)
+//   H. 로컬 이미지·폰트 참조가 dist 에 실제로 있나
 import { readFileSync, readdirSync, statSync, existsSync, cpSync, rmSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join, dirname, relative } from "node:path";
 import { tmpdir } from "node:os";
+import { pageChars, charsHash } from "./fonts-lib.mjs";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -70,7 +74,7 @@ export function run(dist) {
   // D
   const ext = [
     [/<script[^>]+src=["']https?:\/\//gi, "script src"],
-    [/<link[^>]+href=["']https?:\/\//gi, "link href"],
+    [/<link[^>]*href=["']https?:\/\/[^>]*>/gi, "link href"],
     [/<img[^>]+src=["']https?:\/\//gi, "img src"],
     [/<iframe[^>]+src=["']https?:\/\//gi, "iframe"],
     [/url\(\s*["']?https?:\/\//gi, "css url()"],
@@ -80,7 +84,7 @@ export function run(dist) {
     targets++;
     const html = readFileSync(f, "utf8"), rel = relative(dist, f);
     for (const [re, label] of ext) {
-      const hits = html.match(re) || [];
+      const hits = (html.match(re) || []).filter((h) => !/rel=["']canonical["']/i.test(h)); // canonical 은 요청이 아니다
       if (hits.length) v.push(`D 외부 요청 ${label} ${hits.length}건: ${rel}`);
     }
   }
@@ -96,6 +100,36 @@ export function run(dist) {
       if (!ex) v.push(`E 옛 주소 ${host} ${n}건 · 예외 없음: ${rel}`);
       else if (ex.until < today) v.push(`E 옛 주소 ${host} ${n}건 · 예외 기한 지남(${ex.until}): ${rel} — ${ex.why}`);
     }
+  }
+  // F 페이지 규칙 — 반드시 있어야 할 문장(must) · 있으면 안 되는 말(forbid) · 보이는 본문 기준
+  for (const rule of site.page_rules || []) {
+    const f = join(dist, rule.path.replace(/\/$/, "/index.html").replace(/^\//, ""));
+    if (!existsSync(f)) continue;
+    const vis = visible(readFileSync(f, "utf8")); // 주석·script·style 제거(링크 href 는 남는다 — must 의 주소 항목용)
+    const text = vis.replace(/<[^>]+>/g, " ");   // 글자만 — 금지어는 여기서만 본다
+    for (const m of rule.must || []) { targets++; if (!(m.includes("/") ? vis : text).includes(m)) v.push(`F 있어야 할 문장 없음 「${m}」: ${rule.path}`); }
+    for (const x of rule.forbid || []) { targets++; if (text.includes(x)) v.push(`F 금지어 「${x}」: ${rule.path}`); }
+  }
+  // G 폰트 서브셋이 페이지 글자를 다 담고 있나(manifest 해시 = 지금 글자 집합 해시)
+  if (site.fonts) {
+    targets++;
+    const mf = join(ROOT, "assets/fonts/manifest.json");
+    if (!existsSync(mf)) v.push("G 폰트 서브셋 manifest 없음 — npm run fonts");
+    else {
+      const m = JSON.parse(readFileSync(mf, "utf8"));
+      const now = charsHash(pageChars());
+      if (m.hash !== now) v.push(`G 폰트 서브셋이 낡음(manifest ${m.hash} ≠ 지금 ${now}) — 문구가 바뀌었다. npm run fonts`);
+      for (const name of Object.keys(site.fonts.sources)) { targets++; if (!existsSync(join(dist, "assets/fonts", name))) v.push(`G dist 에 폰트 없음: assets/fonts/${name}`); }
+    }
+  }
+  // H 로컬 이미지·폰트 참조가 실제로 dist 에 있나(깨진 그림은 검사기가 아니면 아무도 못 본다)
+  for (const f of pages) {
+    const html = readFileSync(f, "utf8"), rel = relative(dist, f);
+    for (const m of html.matchAll(/(?:src|href)=["'](\/[^"'#?]+\.(?:jpg|jpeg|png|webp|svg|woff2))["']/gi)) {
+      targets++;
+      if (!existsSync(join(dist, m[1]))) v.push(`H 없는 파일 참조 ${m[1]}: ${rel}`);
+    }
+    for (const m of html.matchAll(/url\(['"]?(\/[^'")]+)['"]?\)/gi)) { targets++; if (!existsSync(join(dist, m[1]))) v.push(`H 없는 파일 참조 ${m[1]}: ${rel}`); }
   }
   return { targets, violations: v };
 }
@@ -126,6 +160,13 @@ function selftest() {
   { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace("</head>", `<script src="https://example.com/x.js"></script></head>`)); cases.push(["외부 script 주입", run(t).violations.some((x) => x.startsWith("D 외부 요청 script")), t]); }
   // 5 고정 경로 삭제
   { const t = fresh(); rmSync(join(t, "hantol/privacy"), { recursive: true, force: true }); cases.push(["고정 경로 삭제(/hantol/privacy/)", run(t).violations.some((x) => x.startsWith("A 고정 경로 없음: /hantol/privacy/")), t]); }
+  // 5-b 금지어 주입 / 5-c 필수 문장 삭제 (page_rules 가 있을 때)
+  { const rule = (site.page_rules || [])[0];
+    if (rule) { const rf = (t) => join(t, rule.path.replace(/\/$/, "/index.html").replace(/^\//, ""));
+      { const t = fresh(); writeFileSync(rf(t), readFileSync(rf(t), "utf8").replace("</main>", "<p>" + rule.forbid[0] + "</p></main>")); cases.push(["금지어 주입(" + rule.forbid[0] + ")", run(t).violations.some((x) => x.startsWith("F 금지어")), t]); }
+      { const t = fresh(); writeFileSync(rf(t), readFileSync(rf(t), "utf8").split(rule.must[0]).join("")); cases.push(["필수 문장 삭제(" + rule.must[0] + ")", run(t).violations.some((x) => x.startsWith("F 있어야 할 문장")), t]); }
+      { const t = fresh(); writeFileSync(rf(t), readFileSync(rf(t), "utf8").replace("</main>", "<!-- " + rule.forbid[0] + " --></main>")); cases.push(["금지어가 주석 안(통과해야 한다)", !run(t).violations.some((x) => x.startsWith("F 금지어")), t]); }
+    } }
   // 6 기한 지난 예외 → 위반이어야 한다
   { const t = fresh(); const saved = site.legacy_exceptions.map((e) => ({ ...e }));
     site.legacy_exceptions.forEach((e) => (e.until = "2000-01-01"));
