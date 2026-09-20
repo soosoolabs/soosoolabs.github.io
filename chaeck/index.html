@@ -65,16 +65,16 @@ header.top .right{text-align:right}
 .hero h1{font-size:clamp(3.8rem,11vw,8.6rem)}
 .hero h1 .g{color:var(--green-600)}
 .hero .l{font-size:clamp(1.15rem,2.2vw,1.5rem);color:var(--ink-700);margin-top:22px;max-width:20em;font-weight:500}
-.hero .note{margin-top:26px;font-size:1rem;color:var(--ink-700);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hero .note,.layer .note{margin-top:26px;font-size:1rem;color:var(--ink-700);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .stage{position:relative;height:720px;width:100%;max-width:560px;margin:0 auto}
-.stage .blob{position:absolute;inset:8% -6% 4% -6%;background:var(--green-600);border-radius:44px;transform:rotate(-4deg);box-shadow:inset 0 -80px 120px -80px rgba(0,0,0,.25)}
+.stage .blob{position:absolute;inset:8% -6% 4% -6%;background:var(--green-600);border-radius:44px;box-shadow:inset 0 -80px 120px -80px rgba(0,0,0,.25)}
 .stage .phone{position:absolute;width:250px;left:50%;top:4%;transform-origin:50% 100%}
-.stage .p1{transform:translateX(-96%) rotate(-13deg);z-index:1}
+.stage .p1{z-index:1}
 .stage .p2{transform:translateX(-50%) translateY(-6px);z-index:3}
-.stage .p3{transform:translateX(-4%) rotate(13deg);z-index:2}
+.stage .p3{z-index:2}
 .stage .tag{position:absolute;font-family:var(--ff-head);font-weight:800;font-size:.95rem;padding:7px 13px;border-radius:999px;background:var(--ink-900);color:#fff;z-index:5;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
 .stage .t1{left:0;top:66%;transform:rotate(-8deg)}.stage .t2{left:50%;top:-2px;transform:translateX(-50%);background:var(--butter);color:var(--ink-900)}.stage .t3{right:0;top:66%;transform:rotate(8deg);background:var(--coral-500)}
-@media(max-width:520px){.stage{height:560px}.stage .phone{width:196px}.stage .p1{transform:translateX(-102%) rotate(-13deg)}.stage .p3{transform:translateX(2%) rotate(13deg)}.hero{padding-top:44px}}
+@media(max-width:520px){.stage{height:560px}.stage .phone{width:196px}.hero{padding-top:44px}}
 /* ── 층 스택: 스크롤하면 다음 층이 앞 층 위로 올라탄다 · 앞 층은 뒤로 살짝 물러난다 ── */
 .stack{position:relative;padding-top:56px}
 .layer{position:sticky;min-height:92svh;border-radius:34px 34px 0 0;padding:64px 0 96px;box-shadow:0 -30px 60px -34px rgba(27,26,22,.45);overflow:hidden;transform-origin:50% 0}
@@ -107,22 +107,45 @@ footer .links a{color:var(--ink-700);text-decoration:none;border-bottom:1px soli
 footer dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}footer dt{color:var(--ink-400)}footer dd{color:var(--ink-700)}
 footer .copy{margin-top:18px}
 @media(max-width:520px){header.top .tag{display:none}header.top .wrap{grid-template-columns:1fr auto}header.top .right{grid-column:2}.layer{padding:48px 0 72px}}
-/* ── 움직임: 전부 CSS · 스크립트 0 · 못 쓰는 브라우저는 정지 화면 ── */
+/* ── 움직임 v2(9/20 밤 · 사장님 「스크롤은 움직이는 게 생명」) — ① 트리거형 기본 · ② 스크러빙은 히어로·종이 두 곳 · 스크립트 = /chaeck/motion.js 하나
+   성격: 종이·채점펜 = Premium/Corporate 사이. 서명 이징 MD3 emphasized · 지속 180/420/700ms · 입장 = 아래에서 떠오름.
+   스크립트 없으면 html.js 가 없어 초기 숨김 없음 + --p 기본 1 = 끝 장면. ── */
+:root{--ease:cubic-bezier(.05,.7,.1,1);--ease-stamp:cubic-bezier(.175,.885,.32,1.2);--d1:180ms;--d2:420ms;--d3:700ms}
+/* ① 들어오면 알아서 — 기본 상태가 끝 장면, JS 가 있고 아직 안 들어왔을 때만 시작 장면 */
+.rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:opacity var(--d2) var(--ease),transform var(--d2) var(--ease),stroke-dashoffset var(--d3) var(--ease)}
+.text>*:nth-child(2){transition-delay:60ms}.text>*:nth-child(3){transition-delay:120ms}.text>*:nth-child(4){transition-delay:180ms}.text>*:nth-child(5){transition-delay:240ms}.text>*:nth-child(6){transition-delay:300ms}
+.shots{transition-delay:140ms}.wm-no{transition-duration:900ms}
+.stamp{transition:transform 320ms var(--ease-stamp) 520ms,opacity 200ms linear 520ms}
+.chips span{transition-delay:420ms}.chips span:nth-child(2){transition-delay:500ms}.chips span:nth-child(3){transition-delay:580ms}
+.zero ellipse{stroke-dashoffset:0;transition-delay:300ms}
+html.js [data-in]:not(.in) .rv{opacity:0;transform:translateY(28px)}
+html.js [data-in]:not(.in) .text>*{opacity:0;transform:translateY(18px)}
+html.js [data-in]:not(.in) .shots{opacity:0;transform:translateY(36px)}
+html.js .layer.rev[data-in]:not(.in) .shots{transform:translateX(-40px)}
+html.js .layer.l4[data-in]:not(.in) .shots{transform:translateX(-56px)}
+html.js [data-in]:not(.in) .wm-no{transform:translateY(60px)}
+html.js [data-in]:not(.in) .stamp{opacity:0;transform:rotate(-6deg) scale(1.4)}
+html.js [data-in]:not(.in) .chips span{opacity:0;transform:translateY(8px) scale(.96)}
+html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
+/* ② 스크롤한 만큼만 — 히어로 폰 부채꼴(--p 0 = 살짝 포개짐 → 1 = 다 펼쳐짐) */
+.stage{--p:1;--f:calc(.35 + .65*var(--p))}
+.stage .p1{transform:translateX(calc(-50% - 46%*var(--f))) translateY(calc(-40px*var(--p))) rotate(calc(-13deg*var(--f)))}
+.stage .p3{transform:translateX(calc(-50% + 46%*var(--f))) translateY(calc(-40px*var(--p))) rotate(calc(13deg*var(--f)))}
+.stage .blob{transform:rotate(calc(-4deg + 3deg*var(--p))) translateY(calc(24px*var(--p)))}
+.stage .t1,.stage .t3{opacity:calc(.15 + .85*var(--p))}
+@media(max-width:520px){.stage .p1{transform:translateX(calc(-50% - 52%*var(--f))) translateY(calc(-30px*var(--p))) rotate(calc(-13deg*var(--f)))}.stage .p3{transform:translateX(calc(-50% + 52%*var(--f))) translateY(calc(-30px*var(--p))) rotate(calc(13deg*var(--f)))}}
+/* ② 종이 — 답안지 조각의 마킹이 스크롤 따라 한 줄씩 채워진다(--n 0~4 순서) */
+.l1 .shots{position:relative;--p:1}
+.sheet{position:absolute;right:-4%;bottom:-10%;width:min(46%,230px);background:#fff;border:1.5px solid var(--line-2,#D8D3C7);border-radius:12px;padding:12px 12px 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:7px 9px;box-shadow:0 22px 44px -26px rgba(0,0,0,.45);transform:rotate(4deg);z-index:3}
+.sheet::before{content:"";grid-column:1/-1;height:4px;border-radius:2px;background:var(--line-2,#D8D3C7);margin-bottom:2px}
+.sheet i{display:block;aspect-ratio:1;border-radius:50%;border:1.5px solid #9A958A;position:relative}
+.sheet i[style]::after{content:"";position:absolute;inset:1px;border-radius:50%;background:var(--green-600);transform:scale(clamp(0,calc(var(--p)*5.6 - var(--n)),1))}
+/* 층이 다음 층에 덮이며 물러나는 것만 CSS 스크롤 타임라인(되는 브라우저에서 보너스) */
 @supports (animation-timeline: view()){ @media (prefers-reduced-motion: no-preference){
-  .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
-  @keyframes rv{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
-  .stage .p1{animation:par1 linear both;animation-timeline:scroll(root);animation-range:0 120vh}
-  .stage .p3{animation:par3 linear both;animation-timeline:scroll(root);animation-range:0 120vh}
-  .stage .blob{animation:parb linear both;animation-timeline:scroll(root);animation-range:0 120vh}
-  @keyframes par1{to{transform:translateX(-96%) translateY(-90px) rotate(-16deg)}}
-  @keyframes par3{to{transform:translateX(-4%) translateY(-60px) rotate(16deg)}}
-  @keyframes parb{to{transform:rotate(-1deg) translateY(40px)}}
-  .zero ellipse{animation:draw linear both;animation-timeline:view();animation-range:entry 30% entry 90%}
-  @keyframes draw{to{stroke-dashoffset:0}}
   .layer{animation:recede linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
   @keyframes recede{to{transform:scale(.94);filter:brightness(.82)}}
 }}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.phone .scr video{display:none}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.phone .scr video{display:none}.rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:none}}
 </style>
 </head>
 <body>
@@ -141,7 +164,7 @@ footer .copy{margin-top:18px}
 <main>
 
 <section class="hero">
-  <div class="wrap">
+  <div class="wrap" data-in>
     <div class="text rv">
       <p class="eyebrow">학원 시험 자동채점</p>
       <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.</span></h1>
@@ -149,7 +172,7 @@ footer .copy{margin-top:18px}
       <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight">학부모라면</a></div>
       <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 승인만.</p>
     </div>
-    <div class="stage rv" aria-label="학생·채점·학부모 화면">
+    <div class="stage rv" data-scrub="root" data-end="0.7" aria-label="학생·채점·학부모 화면">
       <div class="blob" aria-hidden="true"></div>
       <span class="tag t1">학생</span><span class="tag t2">자동채점</span><span class="tag t3">학부모</span>
       <figure class="phone p1"><div class="scr"><img src="/chaeck/img/student-home.jpg" alt="학생 앱 홈"></div></figure>
@@ -161,7 +184,7 @@ footer .copy{margin-top:18px}
 
 <div class="stack">
 
-<section class="layer l1">
+<section class="layer l1" data-in>
   <span class="wm-no" aria-hidden="true">1</span>
   <div class="wrap">
     <div class="text rv">
@@ -169,11 +192,11 @@ footer .copy{margin-top:18px}
       <h2>시험은<br>지금 그대로.</h2>
       <p class="l">바뀌는 건 QR 답안지 한 장뿐. 정답은 답안지에 실리지 않아요.</p>
     </div>
-    <div class="shots rv"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-qr.jpg" alt="QR 답안지 출력" loading="lazy"></div></figure></div>
+    <div class="shots rv" data-scrub data-start="0.95" data-end="0.55"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-qr.jpg" alt="QR 답안지 출력" loading="lazy"></div></figure><div class="sheet" aria-hidden="true"><i></i><i style="--n:0"></i><i></i><i></i><i></i><i></i><i></i><i style="--n:1"></i><i style="--n:2"></i><i></i><i></i><i></i><i></i><i></i><i style="--n:3"></i><i></i><i></i><i style="--n:4"></i><i></i><i></i></div></div>
   </div>
 </section>
 
-<section class="layer l2 rev">
+<section class="layer l2 rev" data-in>
   <span class="wm-no" aria-hidden="true">2</span>
   <div class="wrap">
     <div class="text rv">
@@ -187,7 +210,7 @@ footer .copy{margin-top:18px}
   </div>
 </section>
 
-<section class="layer l3" id="insight">
+<section class="layer l3" id="insight" data-in>
   <span class="wm-no" aria-hidden="true">3</span>
   <div class="wrap">
     <div class="text rv">
@@ -202,7 +225,7 @@ footer .copy{margin-top:18px}
   </div>
 </section>
 
-<section class="layer l4 rev">
+<section class="layer l4 rev" data-in>
   <span class="wm-no" aria-hidden="true">✓</span>
   <div class="wrap">
     <div class="text rv">
@@ -210,6 +233,7 @@ footer .copy{margin-top:18px}
       <h2 style="font-size:clamp(2.2rem,6vw,4.2rem)">반 전체가 약한 유형도<br>한눈에.</h2>
       <p class="l">어떤 유형을 다시 가르칠지, 채점이 끝나는 순간 보여요.</p>
       <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
+      <p class="note"><span class="stamp">선생님 손 안 대도 돼요</span> 시험은 그대로, 채점만 넘기세요.</p>
       <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
     </div>
     <div class="shots rv"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률" loading="lazy"></div></figure></div>
@@ -244,5 +268,6 @@ footer .copy{margin-top:18px}
 </footer>
 </div>
 
+<script src="/chaeck/motion.js" defer></script>
 </body>
 </html>

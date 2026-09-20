@@ -22,7 +22,7 @@ if (existsSync(LIBDIR)) process.env.LD_LIBRARY_PATH = `${LIBDIR}:${process.env.L
 const require = createRequire("/mnt/d/App/chaeck/package.json");
 const { chromium } = require("playwright");
 
-const MIME = { ".html": "text/html; charset=utf-8", ".jpg": "image/jpeg", ".png": "image/png", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json", ".css": "text/css" };
+const MIME = { ".html": "text/html; charset=utf-8", ".jpg": "image/jpeg", ".png": "image/png", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".json": "application/json", ".css": "text/css", ".js": "text/javascript; charset=utf-8", ".mp4": "video/mp4", ".webp": "image/webp" };
 const server = createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, "http://x").pathname);
   if (p.endsWith("/")) p += "index.html";
@@ -44,8 +44,9 @@ try {
       page.on("request", (rq) => { const u = new URL(rq.url()); if (u.origin !== base) ext.push(rq.url()); });
       await page.goto(base + p, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
-      // loading="lazy" 이미지는 스크롤해야 뜬다 — 끝까지 내려갔다 올라온 뒤 찍는다(안 그러면 빈 액자가 「버그」로 보인다)
-      await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } window.scrollTo(0, 0); });
+      // loading="lazy" 이미지·①트리거형 움직임([data-in])은 스크롤해야 뜬다 — 끝까지 내려갔다 올라온 뒤 찍는다(안 그러면 빈 액자·빈 층이 「버그」로 보인다)
+      // ⚠️ 사이트가 scroll-behavior:smooth 라 scrollTo(0,y) 는 애니메이션이 되어 120ms 안에 못 간다(9/20 실측: 3600 요청 → 1085px 이동) → behavior:"instant"
+      await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo({ top: y, behavior: "instant" }); await new Promise((r) => setTimeout(r, 160)); } await new Promise((r) => setTimeout(r, 900)); window.scrollTo({ top: 0, behavior: "instant" }); });
       await page.waitForLoadState("networkidle").catch(() => {}); await page.waitForTimeout(400);
       // fullPage 캡처는 sticky 헤더를 엉뚱한 자리에 그린다(Playwright 특성) — 찍을 때만 고정 해제(사이트 코드는 그대로)
       await page.evaluate(() => { const h = document.querySelector("header.top"); if (h) h.style.position = "static"; const st = document.createElement("style"); st.id = "rv-off"; st.textContent = ".rv{animation:none!important;opacity:1!important;transform:none!important}"; document.head.appendChild(st); });
