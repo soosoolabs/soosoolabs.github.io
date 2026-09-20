@@ -1,0 +1,18 @@
+{
+  // 수수 홈페이지 — Cloudflare Workers 정적 에셋(= 「Cloudflare Pages, now part of Workers」)
+  // 배포: npm run deploy (빌드 → 검수 → 업로드). 손으로 wrangler 를 부르지 않는다.
+  "name": "soosoo-site",
+  "compatibility_date": "2026-09-18",
+  "main": "src/worker.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none",
+    "run_worker_first": true
+  },
+  "routes": [
+    { "pattern": "soosoo.kr", "custom_domain": true },
+    { "pattern": "www.soosoo.kr", "custom_domain": true }
+  ]
+}

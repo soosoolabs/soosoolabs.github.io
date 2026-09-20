@@ -1,0 +1,59 @@
+{
+  "_설명": "이 사이트가 「주장하는 것」의 단일 출처. 검수기(tools/check.mjs)가 빌드 결과(dist/)를 이 값과 대조한다. 사람이 고치는 값은 여기뿐이다.",
+  "domain": "soosoo.kr",
+  "business": {
+    "name_ko": "수수",
+    "name_en": "SooSoo",
+    "representative": "이상훈",
+    "registration_no": "725-61-00925",
+    "email": "soosoo.labs@gmail.com",
+    "phone": null,
+    "_phone": "🧑 KT 듀얼번호 Lite(2026-09-04 확보) — 번호는 실물 폴더에. 사이트에 공개할지·어느 페이지에 둘지는 사장님 결정. 정해지면 여기 값을 넣고 디자인 프롬프트의 「연락」 칸에 반영한다",
+    "address": null,
+    "_address": "🧑 사업장이 자택이라 공개 여부는 사장님 결정(README 2026-08-25). 넣기로 하면 D&B 등록 주소를 글자 그대로. 결제를 받는 순간 전자상거래법 §10 으로 「영업소 소재지」 표시가 의무가 된다",
+    "mail_order_no": null,
+    "_mail_order_no": "통신판매업 신고번호 — 지금은 해당 없음(결제 없음). 결제·후원이 붙고 연 50회를 넘으면 신고 대상(일반과세자라 면제 ②가 안 된다 · refs 출시_법정표시의무와_신고포상)"
+  },
+  "fixed_paths": [
+    "/",
+    "/hantol/privacy/",
+    "/hantol/terms/",
+    "/hantol/support/"
+  ],
+  "_fixed_paths": "스토어·앱·약관 본문에 박히는 주소. 디자인을 갈아끼워도 이 경로는 옮기지 않는다(절대규칙 §1)",
+  "business_info_pages": [
+    "/",
+    "/hantol/privacy/",
+    "/hantol/terms/"
+  ],
+  "legacy_hosts": [
+    "soosoolabs.github.io"
+  ],
+  "legacy_exceptions": [
+    {
+      "path": "/hantol/terms/",
+      "until": "2026-10-20",
+      "why": "약관 본문 §에 적힌 「이 약관은 …에서 보실 수 있습니다」 자기 주소. 하루한톨(daily-verse) 소유 문서라 그 프로젝트가 소식 형식으로 고친다(옛 주소는 리다이렉트로 살아 있다)"
+    }
+  ],
+  "build": {
+    "include": [
+      "index.html",
+      "hantol"
+    ],
+    "deploy_files": [
+      "_headers"
+    ]
+  },
+  "urls": {
+    "check": [
+      "https://soosoo.kr/",
+      "https://soosoo.kr/hantol/privacy/"
+    ],
+    "redirects": {
+      "https://www.soosoo.kr/": "https://soosoo.kr/",
+      "https://soosoolabs.github.io/": "https://soosoo.kr/",
+      "https://soosoolabs.github.io/hantol/privacy/": "https://soosoo.kr/hantol/privacy/"
+    }
+  }
+}

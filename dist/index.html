@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="build" content="94d803bf492c-dirty 2026-09-20T10:03:55.405Z">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수수 SooSoo — 앱을 만듭니다</title>
+<meta name="description" content="수수(SooSoo)는 오래 쓰는 작은 앱을 만듭니다.">
+<style>
+  :root{
+    --bg:#faf9f6; --fg:#1b1a17; --muted:#6b675f; --line:#e6e2d9; --card:#fff; --accent:#3d5a45;
+  }
+  :root:not([data-theme="light"]){ }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#16150f; --fg:#f1eee6; --muted:#a29c90; --line:#2c2a22; --card:#1e1c15; --accent:#9dc0a5;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:72px 24px 56px}
+  header{margin-bottom:56px}
+  h1{font-size:1.9rem; margin:0 0 4px; letter-spacing:-.01em}
+  h1 .en{color:var(--muted); font-weight:400; font-size:1.05rem; margin-left:8px}
+  .tagline{color:var(--muted); margin:0; font-size:1.02rem}
+  h2{font-size:.82rem; letter-spacing:.12em; color:var(--muted); font-weight:600;
+     text-transform:uppercase; margin:0 0 16px}
+  section{margin-bottom:48px}
+  .cards{display:grid; gap:12px}
+  .card{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; text-decoration:none; color:inherit;
+  }
+  .card .ico{font-size:1.5rem; line-height:1.4}
+  .card .name{font-weight:600}
+  .card .desc{color:var(--muted); font-size:.94rem; margin-top:2px}
+  .badge{
+    display:inline-block; font-size:.74rem; color:var(--accent);
+    border:1px solid var(--accent); border-radius:99px; padding:1px 8px; margin-left:6px; vertical-align:1px;
+  }
+  .card--soon{border-style:dashed; opacity:.72}
+  .contact a{color:inherit}
+  footer{border-top:1px solid var(--line); padding-top:20px; color:var(--muted); font-size:.86rem}
+  footer dl{display:grid; grid-template-columns:auto 1fr; gap:2px 14px; margin:0}
+  footer dt{color:var(--muted)}
+  footer dd{margin:0}
+  @media (max-width:520px){ .wrap{padding:48px 20px 40px} h1{font-size:1.6rem} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>수수<span class="en">SooSoo</span></h1>
+    <p class="tagline">수수하게, 오래 쓰는 것을 만듭니다.</p>
+  </header>
+
+  <section>
+    <h2>만드는 것</h2>
+    <div class="cards">
+      <div class="card card--soon">
+        <div class="ico">🌾</div>
+        <div>
+          <div class="name">하루한톨 <span class="badge">준비 중</span></div>
+          <div class="desc">하루에 성경 한 절. 아무것도 고르지 않아도 됩니다.<br>
+            <a href="/hantol/support/" style="color:var(--accent)">도움말</a> ·
+            <a href="/hantol/privacy/" style="color:var(--accent)">개인정보처리방침</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>연락</h2>
+    <p><a href="mailto:soosoo.labs@gmail.com">soosoo.labs@gmail.com</a></p>
+  </section>
+
+  <footer>
+    <dl>
+      <dt>상호</dt><dd>수수 (SooSoo)</dd>
+      <dt>대표</dt><dd>이상훈</dd>
+      <dt>사업자등록번호</dt><dd>725-61-00925</dd>
+    </dl>
+    <p style="margin:16px 0 0">© 2026 수수</p>
+  </footer>
+
+</div>
+</body>
+</html>
