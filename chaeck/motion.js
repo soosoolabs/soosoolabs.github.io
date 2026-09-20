@@ -14,6 +14,19 @@
       if (!e.isIntersecting) return;
       var el = e.target;
       el.classList.add('in');
+      // 숫자 세어 내리기: [data-count-from] → 0 (900ms · 처음 빠르고 끝에 느리게 = ease-out)
+      el.querySelectorAll('[data-count-from]').forEach(function (n) {
+        var from = parseInt(n.getAttribute('data-count-from'), 10) || 0, to = parseInt(n.textContent, 10) || 0;
+        if (rm) { n.textContent = to; return; }
+        var t0 = null, D = 900;
+        function step(t) {
+          if (t0 === null) t0 = t;
+          var k = Math.min(1, (t - t0) / D); k = 1 - Math.pow(1 - k, 3);
+          n.textContent = Math.round(from + (to - from) * k);
+          if (k < 1) requestAnimationFrame(step); else n.textContent = to;
+        }
+        requestAnimationFrame(step);
+      });
       if (!rm) el.querySelectorAll('video').forEach(function (v) {
         try { v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (_) {}
       });

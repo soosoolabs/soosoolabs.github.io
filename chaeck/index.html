@@ -110,30 +110,31 @@ footer .copy{margin-top:18px}
 /* ── 움직임 v2(9/20 밤 · 사장님 「스크롤은 움직이는 게 생명」) — ① 트리거형 기본 · ② 스크러빙은 히어로·종이 두 곳 · 스크립트 = /chaeck/motion.js 하나
    성격: 종이·채점펜 = Premium/Corporate 사이. 서명 이징 MD3 emphasized · 지속 180/420/700ms · 입장 = 아래에서 떠오름.
    스크립트 없으면 html.js 가 없어 초기 숨김 없음 + --p 기본 1 = 끝 장면. ── */
-:root{--ease:cubic-bezier(.05,.7,.1,1);--ease-stamp:cubic-bezier(.175,.885,.32,1.2);--d1:180ms;--d2:420ms;--d3:700ms}
+:root{--ease:cubic-bezier(.05,.7,.1,1);--ease-stamp:cubic-bezier(.175,.885,.32,1.25);--d1:180ms;--d2:560ms;--d3:800ms}
 /* ① 들어오면 알아서 — 기본 상태가 끝 장면, JS 가 있고 아직 안 들어왔을 때만 시작 장면 */
 .rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:opacity var(--d2) var(--ease),transform var(--d2) var(--ease),stroke-dashoffset var(--d3) var(--ease)}
 .text>*:nth-child(2){transition-delay:60ms}.text>*:nth-child(3){transition-delay:120ms}.text>*:nth-child(4){transition-delay:180ms}.text>*:nth-child(5){transition-delay:240ms}.text>*:nth-child(6){transition-delay:300ms}
-.shots{transition-delay:140ms}.wm-no{transition-duration:900ms}
-.stamp{transition:transform 320ms var(--ease-stamp) 520ms,opacity 200ms linear 520ms}
-.chips span{transition-delay:420ms}.chips span:nth-child(2){transition-delay:500ms}.chips span:nth-child(3){transition-delay:580ms}
-.zero ellipse{stroke-dashoffset:0;transition-delay:300ms}
-html.js [data-in]:not(.in) .rv{opacity:0;transform:translateY(28px)}
-html.js [data-in]:not(.in) .text>*{opacity:0;transform:translateY(18px)}
-html.js [data-in]:not(.in) .shots{opacity:0;transform:translateY(36px)}
-html.js .layer.rev[data-in]:not(.in) .shots{transform:translateX(-40px)}
-html.js .layer.l4[data-in]:not(.in) .shots{transform:translateX(-56px)}
-html.js [data-in]:not(.in) .wm-no{transform:translateY(60px)}
-html.js [data-in]:not(.in) .stamp{opacity:0;transform:rotate(-6deg) scale(1.4)}
-html.js [data-in]:not(.in) .chips span{opacity:0;transform:translateY(8px) scale(.96)}
+.shots{transition-delay:140ms}.wm-no{transition-duration:1200ms;transition-timing-function:var(--ease)}
+.stamp{transition:transform 380ms var(--ease-stamp) 560ms,opacity 160ms linear 560ms}
+.chips span{transition-delay:1250ms}.chips span:nth-child(2){transition-delay:1340ms}.chips span:nth-child(3){transition-delay:1430ms}
+.zero ellipse{stroke-dashoffset:0;transition-delay:1000ms}
+.zero b{font:inherit;color:inherit}
+html.js [data-in]:not(.in) .rv{opacity:0;transform:translateY(64px)}
+html.js [data-in]:not(.in) .text>*{opacity:0;transform:translateY(44px)}
+html.js [data-in]:not(.in) .shots{opacity:0;transform:translateY(88px) scale(.94)}
+html.js .layer.rev[data-in]:not(.in) .shots{transform:translateX(-110px) scale(.94)}
+html.js .layer.l4[data-in]:not(.in) .shots{transform:translateX(-140px) scale(.94)}
+html.js [data-in]:not(.in) .wm-no{transform:translate(120px,260px);opacity:0}
+html.js [data-in]:not(.in) .stamp{opacity:0;transform:rotate(-16deg) scale(1.9)}
+html.js [data-in]:not(.in) .chips span{opacity:0;transform:translateY(16px) scale(.9)}
 html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
 /* ② 스크롤한 만큼만 — 히어로 폰 부채꼴(--p 0 = 살짝 포개짐 → 1 = 다 펼쳐짐) */
-.stage{--p:1;--f:calc(.35 + .65*var(--p))}
-.stage .p1{transform:translateX(calc(-50% - 46%*var(--f))) translateY(calc(-40px*var(--p))) rotate(calc(-13deg*var(--f)))}
-.stage .p3{transform:translateX(calc(-50% + 46%*var(--f))) translateY(calc(-40px*var(--p))) rotate(calc(13deg*var(--f)))}
-.stage .blob{transform:rotate(calc(-4deg + 3deg*var(--p))) translateY(calc(24px*var(--p)))}
-.stage .t1,.stage .t3{opacity:calc(.15 + .85*var(--p))}
-@media(max-width:520px){.stage .p1{transform:translateX(calc(-50% - 52%*var(--f))) translateY(calc(-30px*var(--p))) rotate(calc(-13deg*var(--f)))}.stage .p3{transform:translateX(calc(-50% + 52%*var(--f))) translateY(calc(-30px*var(--p))) rotate(calc(13deg*var(--f)))}}
+.stage{--p:1;--f:calc(.06 + .94*var(--p))}
+.stage .p1{transform:translateX(calc(-50% - 46%*var(--f))) translateY(calc(-70px*var(--p))) rotate(calc(-14deg*var(--f)))}
+.stage .p3{transform:translateX(calc(-50% + 46%*var(--f))) translateY(calc(-70px*var(--p))) rotate(calc(14deg*var(--f)))}
+.stage .blob{transform:rotate(calc(-7deg + 6deg*var(--p))) translateY(calc(48px*var(--p))) scale(calc(.92 + .08*var(--p)))}
+.stage .t1{opacity:var(--p);transform:rotate(-8deg) translateY(calc(40px*(1 - var(--p))))}.stage .t3{opacity:var(--p);transform:rotate(8deg) translateY(calc(40px*(1 - var(--p))))}
+@media(max-width:520px){.stage .p1{transform:translateX(calc(-50% - 52%*var(--f))) translateY(calc(-50px*var(--p))) rotate(calc(-14deg*var(--f)))}.stage .p3{transform:translateX(calc(-50% + 52%*var(--f))) translateY(calc(-50px*var(--p))) rotate(calc(14deg*var(--f)))}}
 /* ② 종이 — 답안지 조각의 마킹이 스크롤 따라 한 줄씩 채워진다(--n 0~4 순서) */
 .l1 .shots{position:relative;--p:1}
 .sheet{position:absolute;right:-4%;bottom:-10%;width:min(46%,230px);background:#fff;border:1.5px solid var(--line-2,#D8D3C7);border-radius:12px;padding:12px 12px 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:7px 9px;box-shadow:0 22px 44px -26px rgba(0,0,0,.45);transform:rotate(4deg);z-index:3}
@@ -201,7 +202,7 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
   <div class="wrap">
     <div class="text rv">
       <p class="no">LAYER 2 · 자동채점</p>
-      <span class="zero" aria-label="0">0<svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></span>
+      <span class="zero" aria-label="0"><b data-count-from="12">0</b><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></span>
       <h2 style="font-size:clamp(1.9rem,4.8vw,3.2rem);margin-top:22px">선생님이 채점하는 문항 수.</h2>
       <p class="l">학생이 답안지를 찍으면 그 자리에서 채점돼요. 읽힌 답은 학생이 확인하고 제출해요.</p>
       <div class="chips"><span>정답 입력</span><span>학생이 찍기</span><span>승인</span></div>
