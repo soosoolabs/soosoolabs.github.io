@@ -48,7 +48,7 @@ try {
       await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } window.scrollTo(0, 0); });
       await page.waitForLoadState("networkidle").catch(() => {}); await page.waitForTimeout(400);
       // fullPage 캡처는 sticky 헤더를 엉뚱한 자리에 그린다(Playwright 특성) — 찍을 때만 고정 해제(사이트 코드는 그대로)
-      await page.evaluate(() => { const h = document.querySelector("header.top"); if (h) h.style.position = "static"; });
+      await page.evaluate(() => { const h = document.querySelector("header.top"); if (h) h.style.position = "static"; const st = document.createElement("style"); st.id = "rv-off"; st.textContent = ".rv{animation:none!important;opacity:1!important;transform:none!important}"; document.head.appendChild(st); });
       const file = join(OUT, `${p.replace(/\//g, "_").replace(/^_|_$/g, "") || "home"}-${label}.png`);
       await page.screenshot({ path: file, fullPage: true });
       console.log(`📸 ${p} @${label} → doc/shots/${file.split("/").pop()}`);

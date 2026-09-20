@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>채크 — 채점은 이제 선생님 일이 아니에요</title>
+<title>채크 — 찍으면, 채점 끝 (B안)</title>
 <meta name="description" content="학원 시험은 지금처럼 종이로 보고, 채점과 결과 전달만 채크가 해요. 학생이 답안지를 찍으면 자동으로 채점되고, 선생님이 승인하면 학생·학부모 폰으로 결과가 가요.">
 <link rel="canonical" href="https://soosoo.kr/chaeck/">
+<meta name="robots" content="noindex">
 <meta property="og:title" content="채크 — 답안지만 찍으면, 채점 끝">
 <meta property="og:description" content="시험은 종이로 그대로. 채점과 결과 전달만 채크가 해요.">
 <meta property="og:url" content="https://soosoo.kr/chaeck/">
@@ -33,12 +34,7 @@ html{color-scheme:light}
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  font-family:var(--ff-body);color:var(--ink-900);background:var(--paper);
-  line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-  word-break:keep-all;overflow-wrap:anywhere;
-  background-image:repeating-linear-gradient(180deg,transparent 0 31px,var(--rule) 31px,var(--rule) 32px);
-}
+body{font-family:var(--ff-body);color:var(--ink-900);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;word-break:keep-all;overflow-wrap:anywhere}
 a{color:inherit}
 img{display:block;max-width:100%}
 svg{display:block}
@@ -141,36 +137,41 @@ footer dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}
 footer dt{color:var(--ink-400)}
 footer dd{color:var(--ink-700)}
 footer .copy{margin-top:18px}
-/* ── 손맛 요소(디자인 시스템 4.5·4.7) ── */
-.stamp{display:inline-block;white-space:nowrap;font-family:var(--ff-head);font-weight:800;font-size:1rem;color:var(--green-600);border:1.8px solid var(--green-600);border-radius:8px;padding:3px 11px;transform:rotate(-6deg);background:var(--card)}
-.ul{background:linear-gradient(transparent 60%,rgba(245,200,75,.75) 60%,rgba(245,200,75,.75) 94%,transparent 94%)}
-.hero{padding:56px 0 64px}
-.hero h1{font-size:clamp(3rem,9vw,5.6rem);letter-spacing:-.045em;line-height:1.02}
-.hero .sub{font-family:var(--ff-head);font-weight:700;font-size:clamp(1.15rem,2.4vw,1.5rem);color:var(--ink-700);margin-top:18px}
-.big{padding:72px 0}
-.big .wrap{display:grid;gap:28px;align-items:center}
-@media(min-width:860px){.big .wrap{grid-template-columns:1.1fr .9fr;gap:64px}.big.rev .text{order:2}.big.rev .shots{order:1}}
-.num{font-family:var(--ff-head);font-weight:800;font-size:clamp(6rem,18vw,11rem);line-height:.95;letter-spacing:-.05em;position:relative;display:inline-block}
-.num .ring{position:absolute;inset:-6% -14%;width:128%;height:112%}
-.num .ring ellipse{fill:none;stroke:var(--coral-500);stroke-width:3;stroke-linecap:round}
-.big h2{font-size:clamp(1.9rem,4.8vw,2.9rem);margin-top:18px;letter-spacing:-.035em}
-.big p.l{font-size:1.12rem;color:var(--ink-700);margin-top:12px;max-width:24em}
-.steps3{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:22px;font-family:var(--ff-head);font-weight:700;font-size:1.05rem;color:var(--ink-900)}
-.steps3 span{display:inline-flex;align-items:center;gap:8px}
-.steps3 span+span::before{content:"→";color:var(--coral-500)}
-.green{background:var(--green-600);color:#fff}
-.green .eyebrow{color:#DEF3EB}.green .eyebrow::before{border-color:var(--butter)}
-.green h2,.green .num{color:#fff}.green p.l{color:#E6F4EE}
-.green .ul{background:linear-gradient(transparent 60%,rgba(245,200,75,.9) 60%,rgba(245,200,75,.9) 94%,transparent 94%);color:var(--ink-900);padding:0 .1em}
-.green .num .ring ellipse{stroke:var(--butter)}
-.start{background:var(--card);border:1.5px solid var(--ink-900);border-radius:22px;padding:40px 24px;text-align:center;box-shadow:4px 5px 0 rgba(27,26,22,.08)}
-.start h2{font-size:clamp(1.8rem,4.6vw,2.6rem);margin-top:14px}
-.start .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
-.fine{font-size:.86rem;color:var(--ink-400);margin-top:16px}
-.vlink{text-align:center;font-size:.82rem;color:var(--ink-400);padding:10px 0 0}
-.vlink a{color:var(--ink-500)}
-@media(max-width:520px){section{padding:44px 0} header.top .tag{display:none} header.top .wrap{grid-template-columns:1fr auto} header.top .right{grid-column:2} .phone{width:min(100%,250px)} .pc{max-width:100%}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* ── B · 컬러 블록 포스터: 화면 하나 = 색 하나 + 말 하나 ── */
+section{padding:0}section+section{border:0}
+.blk{min-height:100svh;display:grid;align-items:center;padding:88px 0}
+.blk .wrap{display:grid;gap:36px;align-items:center}
+@media(min-width:860px){.blk .wrap{grid-template-columns:1.05fr .95fr;gap:64px}.blk.rev .text{order:2}.blk.rev .shots{order:1}}
+.k{font-family:var(--ff-head);font-weight:800;font-size:1rem;letter-spacing:.06em;opacity:.8;margin-bottom:16px}
+.blk h1,.blk h2{font-size:clamp(3.4rem,11vw,7.5rem);line-height:.98;letter-spacing:-.05em}
+.blk .l{font-size:clamp(1.15rem,2.2vw,1.45rem);margin-top:22px;max-width:22em;font-weight:500}
+.g{background:var(--green-600);color:#fff}
+.ink{background:var(--ink-900);color:#F4EFE3}
+.ink .l{color:#CFC9BB}
+.butter{background:var(--butter);color:var(--ink-900)}
+.white{background:#fff;color:var(--ink-900)}
+.coral{color:var(--coral-500)}
+.ink .coral{color:#FF8A5E}
+.g .yellow{color:var(--butter)}
+.numB{font-family:var(--ff-head);font-weight:800;font-size:clamp(9rem,30vw,20rem);line-height:.85;letter-spacing:-.07em;display:block}
+.tilt{transform:rotate(-6deg)}
+.tilt2{transform:rotate(5deg) translateY(30px)}
+.phone{width:min(100%,300px);background:#111;border-radius:38px;padding:9px;box-shadow:0 40px 80px -30px rgba(0,0,0,.55)}
+.phone .scr{border-radius:30px}
+.pc{background:#111}
+.btnB{display:inline-flex;align-items:center;min-height:60px;padding:0 30px;border-radius:999px;font-family:var(--ff-head);font-weight:800;font-size:1.15rem;text-decoration:none;border:0}
+.btnB.y{background:var(--butter);color:var(--ink-900)}
+.btnB.w{background:#fff;color:var(--ink-900)}
+.btnB.i{background:var(--ink-900);color:#fff}
+.btnB.o{background:transparent;color:inherit;border:2px solid currentColor}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chips span{font-family:var(--ff-head);font-weight:700;padding:8px 14px;border-radius:999px;border:2px solid currentColor;font-size:.98rem}
+.fine{font-size:.9rem;opacity:.75;margin-top:18px}
+header.top{background:rgba(255,255,255,.85)}
+footer{background:#fff}
+.vlink{text-align:center;font-size:.85rem;padding:18px 0;background:#fff;color:var(--ink-500)}
+@media(max-width:520px){header.top .tag{display:none} header.top .wrap{grid-template-columns:1fr auto} header.top .right{grid-column:2} .blk{padding:72px 0} .tilt2{transform:none}}
 /* 스크롤하면 떠오른다 — CSS 만(스크립트 0). 못 쓰는 브라우저는 그냥 보인다 */
 @supports (animation-timeline: view()){ @media (prefers-reduced-motion: no-preference){
   .rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
@@ -183,86 +184,67 @@ footer .copy{margin-top:18px}
 <header class="top">
   <div class="wrap">
     <span class="tag">학원 시험 자동채점</span>
-    <a class="wm" href="/chaeck/" aria-label="채크 홈"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="5" rx="1.2" fill="#1D9E75"/><path d="M4.2 6.6l1.5 1.4 2.4-2.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="6" width="11" height="1.6" rx=".8" fill="#D8D3C7"/><rect x="3" y="11" width="5" height="5" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="13" width="8" height="1.6" rx=".8" fill="#5C5950"/><rect x="3" y="18" width="5" height="4" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="19" width="9" height="1.6" rx=".8" fill="#5C5950"/></svg></span>채크</a>
+    <a class="wm" href="/chaeck/b/" aria-label="채크"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="5" rx="1.2" fill="#1D9E75"/><path d="M4.2 6.6l1.5 1.4 2.4-2.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="6" width="11" height="1.6" rx=".8" fill="#D8D3C7"/><rect x="3" y="11" width="5" height="5" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="13" width="8" height="1.6" rx=".8" fill="#5C5950"/><rect x="3" y="18" width="5" height="4" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="19" width="9" height="1.6" rx=".8" fill="#5C5950"/></svg></span>채크</a>
     <div class="right"><a class="btn soft sm" href="https://chaeck.soosoo.kr/login">로그인</a></div>
   </div>
 </header>
 
 <main>
 
-<section class="hero">
-  <div class="wrap two">
+<section class="blk g">
+  <div class="wrap">
     <div class="text rv">
-      <p class="eyebrow">학원 시험 자동채점</p>
-      <h1>찍으면,<br><span class="ul">채점 끝.</span></h1>
-      <p class="sub">종이 시험 그대로. 채점은 채크가 해요.</p>
-      <div class="cta">
-        <a class="btn green" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
-        <a class="btn soft" href="#insight">학부모라면</a>
-      </div>
-      <p class="note"><span class="stamp">채점 완료</span>&nbsp; 학생이 찍고, 채크가 읽고, 선생님은 승인만.</p>
+      <p class="k">학원 시험 자동채점</p>
+      <h1>찍으면,<br><span class="yellow">채점 끝.</span></h1>
+      <p class="l">종이 시험 그대로. 채점은 채크가 해요.</p>
+      <div class="cta"><a class="btnB y" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btnB o" href="#insight">학부모라면</a></div>
     </div>
-    <div class="shots rv">
-      <figure class="phone"><div class="scr"><img src="/chaeck/img/student-home.jpg" alt="학생 앱 홈 — 답안지 촬영하기" width="375" height="760"></div></figure>
-    </div>
+    <div class="shots rv"><figure class="phone tilt"><div class="scr"><img src="/chaeck/img/student-home.jpg" alt="학생 앱 홈 — 답안지 촬영하기" width="375" height="760"></div></figure></div>
   </div>
 </section>
 
-<section class="big band">
+<section class="blk ink rev">
   <div class="wrap">
     <div class="text rv">
-      <p class="eyebrow">자동채점</p>
-      <span class="num">0<svg class="ring" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></span>
-      <h2>선생님이 채점하는 문항 수.</h2>
+      <p class="k">자동채점</p>
+      <span class="numB coral">0</span>
+      <h2 style="font-size:clamp(1.9rem,5vw,3.2rem);margin-top:10px">선생님이 채점하는 문항 수.</h2>
       <p class="l">학생이 답안지를 찍으면 그 자리에서 채점돼요. 읽힌 답은 학생이 확인하고 제출해요.</p>
-      <div class="steps3"><span>정답 입력</span><span>학생이 찍기</span><span>승인</span></div>
+      <div class="chips"><span>정답 입력</span><span>학생이 찍기</span><span>승인</span></div>
     </div>
-    <div class="shots rv"><figure class="phone"><div class="scr"><img src="/chaeck/img/student-result.jpg" alt="학생 앱 채점 결과" loading="lazy"></div></figure></div>
+    <div class="shots rv"><figure class="phone tilt2"><div class="scr"><img src="/chaeck/img/student-result.jpg" alt="학생 앱 채점 결과" loading="lazy"></div></figure></div>
   </div>
 </section>
 
-<section class="big green" id="insight">
+<section class="blk butter" id="insight">
   <div class="wrap">
     <div class="text rv">
-      <p class="eyebrow">인사이트</p>
-      <h2>어디서 막히는지,<br><span class="ul">시험마다 보여요.</span></h2>
+      <p class="k">인사이트</p>
+      <h2>어디서<br>막히는지,<br><span class="coral">시험마다.</span></h2>
       <p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 등수 대신 우리 아이의 변화만 봐요. 다른 아이와 비교하지 않아요.</p>
     </div>
     <div class="shots rv">
-      <figure class="phone"><div class="scr"><img src="/chaeck/img/parent-result.jpg" alt="학부모 앱 결과 확인 — 유형별 정답률" loading="lazy"></div></figure>
-      <figure class="phone sm"><div class="scr"><img src="/chaeck/img/student-history.jpg" alt="점수 흐름" loading="lazy"></div></figure>
+      <figure class="phone tilt"><div class="scr"><img src="/chaeck/img/parent-result.jpg" alt="학부모 앱 결과 확인 — 유형별 정답률" loading="lazy"></div></figure>
+      <figure class="phone sm tilt2"><div class="scr"><img src="/chaeck/img/student-history.jpg" alt="점수 흐름" loading="lazy"></div></figure>
     </div>
   </div>
 </section>
 
-<section class="big rev">
+<section class="blk white rev">
   <div class="wrap">
     <div class="text rv">
-      <p class="eyebrow">인사이트 · 선생님</p>
-      <h2>반 전체가 약한 유형도<br>한눈에.</h2>
-      <p class="l">어떤 유형을 다시 가르칠지 채점이 끝나는 순간 보여요.</p>
+      <p class="k">인사이트 · 선생님</p>
+      <h2 style="font-size:clamp(2.2rem,6vw,4.2rem)">반 전체가 약한 유형도<br><span class="coral">한눈에.</span></h2>
+      <p class="l">어떤 유형을 다시 가르칠지, 채점이 끝나는 순간 보여요.</p>
+      <div class="cta"><a class="btnB i" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btnB o" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
+      <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
     </div>
     <div class="shots rv"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률" loading="lazy"></div></figure></div>
   </div>
 </section>
 
-<section id="start">
-  <div class="wrap">
-    <div class="start rv">
-      <span class="stamp" style="font-size:1.1rem">선생님 손 안 대도 돼요</span>
-      <h2>시험은 그대로, 채점만 넘기세요.</h2>
-      <div class="cta">
-        <a class="btn green" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
-        <a class="btn soft" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a>
-      </div>
-      <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
-    </div>
-    <p class="vlink">다른 방향 시안 → <a href="/chaeck/b/">B안(컬러 블록)</a> · <a href="/chaeck/c/">C안(레이어)</a></p>
-  </div>
-</section>
-
 </main>
-
+<p class="vlink"><a href="/chaeck/">A안(종이)</a> · B안 · <a href="/chaeck/c/">C안(레이어)</a></p>
 <footer class="">
   <div class="wrap">
     <div class="links">
