@@ -7,7 +7,9 @@
   python3 tools/img.py adjust  <in> <out> [--bright 1.0] [--contrast 1.0] [--sat 1.0] [--warm 0] [--sharp 1.0]
   python3 tools/img.py screen  <in> <out> --shot <앱캡처> --quad x1,y1,x2,y2,x3,y3,x4,y4 [--radius 24] [--shade 0.12]
                                (검은 폰 화면 네 모서리 좌표: 왼쪽위→오른쪽위→오른쪽아래→왼쪽아래 · 원본 픽셀 기준)
-  python3 tools/img.py dark    <in> --box x,y,w,h   (그 영역이 「꺼진 검은 화면」인지 — 평균 밝기·편차를 잰다)
+  python3 tools/img.py paper   <in> <out> --sheet <실물 답안지 PNG> --quad x1,y1,...,x4,y4 [--feather 2] [--keep-shade 1] [--mask m.png]
+                             (사진 속 종이 위에 실물 문서를 원근 맞춰 덧씌운다 · 손·폰 같은 가림은 남기고 종이의 그림자·빛은 유지)
+python3 tools/img.py dark    <in> --box x,y,w,h   (그 영역이 「꺼진 검은 화면」인지 — 평균 밝기·편차를 잰다)
   python3 tools/img.py tile    <in> <out> [--size 512]   (이음새 없이 타일이 되나 — 2×2 로 붙여 확인용)
   python3 tools/img.py webp    <in> <out> [--quality 82] [--width 1600]   (배포용 축소·변환)
   python3 tools/img.py rmbg    <in> <out.png>   (배경 제거 · hyperframes 로컬 모델 · 외부 전송 0)
@@ -73,6 +75,34 @@ def cmd_screen(a):
     out = Image.alpha_composite(base, warped).convert("RGB"); out.save(a.out, quality=92)
     print(f"✅ screen — 캡처를 {[tuple(map(int,p)) for p in quad]} 에 얹음 → {a.out}")
 
+def cmd_paper(a):
+    # 사진 속 「종이」 사각형에 실물 문서(답안지 PNG)를 원근으로 얹는다.
+    #  ① 문서를 quad 로 워프 ② 종이 영역 안에서 가림(손=살색 · 폰=어두움)을 빼고 ③ 원본의 부드러운 명암(그림자·빛)을 곱해 붙인다.
+    from PIL import ImageFilter
+    base = Image.open(a.inp).convert("RGB"); sheet = Image.open(a.sheet).convert("RGB")
+    q = list(map(float, a.quad.split(","))); quad = [(q[0], q[1]), (q[2], q[3]), (q[4], q[5]), (q[6], q[7])]
+    W, H = base.size
+    src = [(0, 0), (sheet.size[0], 0), (sheet.size[0], sheet.size[1]), (0, sheet.size[1])]
+    warped = sheet.transform((W, H), Image.PERSPECTIVE, _coeffs(src, quad), Image.BICUBIC)
+    P = Image.new("L", (W, H), 0); ImageDraw.Draw(P).polygon(quad, fill=255); Pm = np.asarray(P).astype(np.float32) / 255
+    hsv = np.asarray(base.convert("HSV")).astype(np.float32); h, sat, v = hsv[..., 0] * 360 / 255, hsv[..., 1] / 255, hsv[..., 2]
+    # 살색: 채도가 종이(햇빛 받은 미색 ≈ 0.15~0.25)보다 확실히 높고 종이보다 어둡다 · 어두움: 폰 몸통
+    skin = ((h < a.skin_hue) | (h > 330)) & (sat > a.skin_sat) & (v > 60) & (v < 232)
+    dark = v < 70
+    O = Image.fromarray(((skin | dark) * 255).astype(np.uint8))
+    O = O.filter(ImageFilter.MinFilter(5)).filter(ImageFilter.MaxFilter(15))   # 얇은 선·점은 먹고(침식) 손·폰은 살려서 넓힌다(팽창)
+    if a.warped: warped.save(a.warped)
+    Om = np.asarray(O.filter(ImageFilter.GaussianBlur(a.feather))).astype(np.float32) / 255
+    M = Pm * (1 - Om)
+    M = np.asarray(Image.fromarray((M * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(a.feather))).astype(np.float32) / 255
+    L = np.asarray(base.convert("L").filter(ImageFilter.GaussianBlur(10))).astype(np.float32)
+    ref_px = L[(M > 0.9)]; ref = float(np.percentile(ref_px, 92)) if ref_px.size else 235.0
+    shade = np.clip(L / ref, 0.5, 1.04)[..., None] if a.keep_shade else 1.0
+    out = np.asarray(base).astype(np.float32) * (1 - M[..., None]) + np.asarray(warped).astype(np.float32) * shade * M[..., None]
+    Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).save(a.out, quality=94)
+    if a.mask: Image.fromarray((M * 255).astype(np.uint8)).save(a.mask)
+    print(f"✅ paper — 문서를 {[tuple(map(int,p)) for p in quad]} 에 얹음 · 종이 안 가림 {float((Om*Pm).sum()/max(Pm.sum(),1))*100:.0f}% · 기준 밝기 {ref:.0f} → {a.out}")
+
 def cmd_dark(a):
     x, y, w, h = map(int, a.box.split(",")); arr = np.asarray(Image.open(a.inp).convert("L").crop((x, y, x+w, y+h))).astype(np.float32)
     mean, std = arr.mean(), arr.std(); ok = mean < 40 and std < 18
@@ -101,6 +131,7 @@ s = sp.add_parser("fit"); s.add_argument("inp"); s.add_argument("out"); s.add_ar
 s = sp.add_parser("crop"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--box", required=True); s.set_defaults(f=cmd_crop)
 s = sp.add_parser("adjust"); s.add_argument("inp"); s.add_argument("out"); [s.add_argument(k, type=float, default=1.0) for k in ("--bright", "--contrast", "--sat", "--sharp")]; s.add_argument("--warm", type=float, default=0); s.set_defaults(f=cmd_adjust)
 s = sp.add_parser("screen"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--shot", required=True); s.add_argument("--quad", required=True); s.add_argument("--radius", type=float, default=24); s.add_argument("--shade", type=float, default=0.12); s.set_defaults(f=cmd_screen)
+s = sp.add_parser("paper"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--sheet", required=True); s.add_argument("--quad", required=True); s.add_argument("--feather", type=float, default=2.0); s.add_argument("--keep-shade", type=int, default=1); s.add_argument("--mask", default=None); s.add_argument("--warped", default=None); s.add_argument("--skin-sat", type=float, default=0.30); s.add_argument("--skin-hue", type=float, default=28); s.set_defaults(f=cmd_paper)
 s = sp.add_parser("dark"); s.add_argument("inp"); s.add_argument("--box", required=True); s.set_defaults(f=cmd_dark)
 s = sp.add_parser("tile"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--size", type=int, default=512); s.set_defaults(f=cmd_tile)
 s = sp.add_parser("webp"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--quality", type=int, default=82); s.add_argument("--width", type=int, default=1600); s.set_defaults(f=cmd_webp)

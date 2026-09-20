@@ -41,7 +41,7 @@ npm run deploy         # build → check → wrangler deploy  (⛔ wrangler 를 
 npm run deploy:check   # 배포된 사이트에 박힌 해시 = HEAD 인가 · 옛 주소가 넘어오나 (상태 셋: ✅ ❌ ⬜)
 npm run fonts          # 페이지 글자만 담은 폰트 서브셋 생성(원본 = 채크 저장소 · OFL) — ⚠️문구를 고치면 다시 돌린다(check G 가 잡는다)
 node tools/shots.mjs   # 375/1280 전체 스크린샷 → doc/shots/ + 네트워크 탭 외부 호스트 0건 확인(표준골격 ⑥)
-python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼: dark(화면이 검은가) · screen(실제 앱 캡처를 폰 화면에 투시 합성) · fit · crop · adjust · tile · webp · rmbg(로컬 배경 제거)
+python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼: dark(화면이 검은가) · screen(실제 앱 캡처를 폰 화면에 투시 합성) · ★paper(사진 속 종이에 실물 답안지를 원근 합성 — 손·폰은 남기고 그림자·빛 유지 · 9/20 H1 실측) · fit · crop · adjust · tile · webp · rmbg(로컬 배경 제거)
 ```
 - 배포 뒤 **반드시** `deploy:check` — 「업로드 성공」과 「최신 코드가 나간다」는 다르다.
 - 검수 축 A~H(`tools/check.mjs` 머리). **F 페이지 규칙**(`data/site.json` page_rules)= 채크 정체성 금지어(등수·비교·최고·혁신·학원으로 연결·영어 특화·즉시 삭제) + 있어야 할 문장(30일·만 14세·학생 5명·10문항·방침 링크). 채크 방침·금지어가 바뀌면 여기부터 고친다.
