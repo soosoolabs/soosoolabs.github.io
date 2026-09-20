@@ -96,7 +96,8 @@ header.top .right{text-align:right}
 .zero svg{position:absolute;inset:-8% -16%;width:132%;height:116%;overflow:visible}
 .zero ellipse{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000}
 .pair{display:flex;gap:16px;justify-content:center;align-items:flex-end}
-.pair .phone:first-child{transform:rotate(-5deg)}.pair .phone.sm{transform:rotate(6deg) translateY(-24px)}
+.pair .phone{flex:0 0 auto;width:min(58%,262px)}
+.pair .phone:first-child{transform:rotate(-5deg)}.pair .phone.sm{width:min(40%,196px);transform:rotate(6deg) translateY(-24px)}
 .fine{font-size:.92rem;opacity:.75;margin-top:18px}
 .tail{position:relative;z-index:9;background:var(--paper-2)}
 .vlink{text-align:center;font-size:.85rem;padding:18px 0;color:var(--ink-500)}
@@ -195,8 +196,8 @@ footer .copy{margin-top:18px}
       <p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 등수 대신 우리 아이의 변화만 봐요. 다른 아이와 비교하지 않아요.</p>
     </div>
     <div class="shots rv pair">
-      <figure class="phone" style="max-width:262px"><div class="scr"><img src="/chaeck/vid/parent-result.jpg" alt="학부모 앱 — 유형별 정답률과 문항별 답" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/parent-result.jpg" aria-hidden="true"><source src="/chaeck/vid/parent-result.mp4" type="video/mp4"></video></div></figure>
-      <figure class="phone sm" style="max-width:196px"><div class="scr"><img src="/chaeck/img/student-history.jpg" alt="점수 흐름" loading="lazy"></div></figure>
+      <figure class="phone"><div class="scr"><img src="/chaeck/vid/parent-result.jpg" alt="학부모 앱 — 유형별 정답률과 문항별 답" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/parent-result.jpg" aria-hidden="true"><source src="/chaeck/vid/parent-result.mp4" type="video/mp4"></video></div></figure>
+      <figure class="phone sm"><div class="scr"><img src="/chaeck/img/student-history.jpg" alt="점수 흐름" loading="lazy"></div></figure>
     </div>
   </div>
 </section>
