@@ -77,6 +77,7 @@ export function run(dist) {
     [/<link[^>]*href=["']https?:\/\/[^>]*>/gi, "link href"],
     [/<img[^>]+src=["']https?:\/\//gi, "img src"],
     [/<iframe[^>]+src=["']https?:\/\//gi, "iframe"],
+    [/<(?:video|source)[^>]+src=["']https?:\/\//gi, "video src"],
     [/url\(\s*["']?https?:\/\//gi, "css url()"],
     [/@import\s+["']?https?:\/\//gi, "@import"],
   ];
@@ -125,7 +126,7 @@ export function run(dist) {
   // H 로컬 이미지·폰트 참조가 실제로 dist 에 있나(깨진 그림은 검사기가 아니면 아무도 못 본다)
   for (const f of pages) {
     const html = readFileSync(f, "utf8"), rel = relative(dist, f);
-    for (const m of html.matchAll(/(?:src|href)=["'](\/[^"'#?]+\.(?:jpg|jpeg|png|webp|svg|woff2))["']/gi)) {
+    for (const m of html.matchAll(/(?:src|href|poster)=["'](\/[^"'#?]+\.(?:jpg|jpeg|png|webp|svg|woff2|mp4|webm))["']/gi)) {
       targets++;
       if (!existsSync(join(dist, m[1]))) v.push(`H 없는 파일 참조 ${m[1]}: ${rel}`);
     }

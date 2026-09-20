@@ -99,8 +99,8 @@
       ]
     },
     {
-      "path": "/chaeck/b/",
-      "_왜": "A 와 같은 규칙(B 시안 · noindex)",
+      "path": "/chaeck/a/",
+      "_왜": "A 참고 시안(noindex)",
       "forbid": [
         "등수를",
         "석차를",
@@ -128,8 +128,8 @@
       ]
     },
     {
-      "path": "/chaeck/c/",
-      "_왜": "A 와 같은 규칙(C 시안 · noindex)",
+      "path": "/chaeck/b/",
+      "_왜": "B 참고 시안(noindex)",
       "forbid": [
         "등수를",
         "석차를",
