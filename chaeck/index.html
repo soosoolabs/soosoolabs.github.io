@@ -11,11 +11,13 @@
 <meta property="og:url" content="https://soosoo.kr/chaeck/">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#F1ECE0">
+<meta name="color-scheme" content="light only">
 <style>
 /* ── 채크 「채점펜」 디자인 시스템 토큰 (chaeck/src/styles/global.css 실측값 그대로) ── */
 @font-face{font-family:'Pretendard';font-weight:100 900;font-display:swap;src:url('/assets/fonts/Pretendard-sub.woff2') format('woff2')}
 @font-face{font-family:'Paperlogy';font-weight:800;font-display:swap;src:url('/assets/fonts/Paperlogy-8-sub.woff2') format('woff2')}
 @font-face{font-family:'Paperlogy';font-weight:700;font-display:swap;src:url('/assets/fonts/Paperlogy-7-sub.woff2') format('woff2')}
+html{color-scheme:light}
 :root{
   --paper:#F1ECE0; --paper-2:#E9E2D2; --card:#FFFFFF; --card-2:#FBF9F3;
   --line:rgba(27,26,22,.10); --line-2:rgba(27,26,22,.16);
@@ -28,24 +30,6 @@
   --r-card:18px; --r-btn:13px;
   --rule:rgba(27,26,22,.045); --margin-line:rgba(216,84,43,.13);
   --phone:#211F1A;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#1B1A16; --paper-2:#22201B; --card:#262420; --card-2:#2B2924;
-    --line:rgba(244,239,227,.10); --line-2:rgba(244,239,227,.18);
-    --ink-900:#F4EFE3; --ink-700:#DCD6C8; --ink-500:#B5B0A3; --ink-400:#8F8A7E; --ink-200:#4A4740;
-    --green-700:#9FE1CB; --green-600:#54C9A0; --green-500:#35C79A; --green-300:#1F6B52; --green-100:#1E4A3B; --green-050:#233A32;
-    --coral-600:#F0A28A; --coral-500:#E8734F; --coral-100:#4A2A1F;
-    --rule:rgba(244,239,227,.05); --margin-line:rgba(232,115,79,.18); --phone:#0E0D0B;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#1B1A16; --paper-2:#22201B; --card:#262420; --card-2:#2B2924;
-  --line:rgba(244,239,227,.10); --line-2:rgba(244,239,227,.18);
-  --ink-900:#F4EFE3; --ink-700:#DCD6C8; --ink-500:#B5B0A3; --ink-400:#8F8A7E; --ink-200:#4A4740;
-  --green-700:#9FE1CB; --green-600:#54C9A0; --green-500:#35C79A; --green-300:#1F6B52; --green-100:#1E4A3B; --green-050:#233A32;
-  --coral-600:#F0A28A; --coral-500:#E8734F; --coral-100:#4A2A1F;
-  --rule:rgba(244,239,227,.05); --margin-line:rgba(232,115,79,.18); --phone:#0E0D0B;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -60,7 +44,7 @@ img{display:block;max-width:100%}
 svg{display:block}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 h1,h2,h3{font-family:var(--ff-head);font-weight:800;letter-spacing:-.025em;line-height:1.2}
-h2{font-size:1.6rem}
+h2{font-size:clamp(1.7rem,4.2vw,2.4rem)}
 h3{font-size:1.05rem;font-weight:700}
 p{margin:0}
 .muted{color:var(--ink-500)}
@@ -120,7 +104,6 @@ figcaption{font-size:.8rem;color:var(--ink-400);text-align:center;margin-top:8px
 .flowshots .phone .scr{aspect-ratio:375/640}
 /* 목록 카드 */
 .cards{display:grid;gap:12px;margin-top:22px}
-@media(min-width:700px){.cards{grid-template-columns:repeat(3,1fr)}}
 .card{background:var(--card);border:1px solid var(--line-2);border-radius:16px;padding:16px 18px}
 .card h3{display:flex;align-items:center;gap:8px}
 .card p{margin-top:6px;font-size:.93rem;color:var(--ink-700)}
@@ -158,6 +141,37 @@ footer dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}
 footer dt{color:var(--ink-400)}
 footer dd{color:var(--ink-700)}
 footer .copy{margin-top:18px}
+/* ── 손맛 요소(디자인 시스템 4.5·4.7·4.9) ── */
+.pen-num{position:relative;display:inline-grid;place-items:center;width:52px;height:46px;font-family:var(--ff-head);font-weight:800;font-size:1.5rem;color:var(--ink-900)}
+.pen-num svg{position:absolute;inset:0;width:100%;height:100%}
+.pen-num ellipse{fill:none;stroke:var(--coral-500);stroke-width:2.3;stroke-linecap:round}
+.stamp{display:inline-block;white-space:nowrap;font-family:var(--ff-head);font-weight:800;font-size:.95rem;color:var(--green-600);border:1.8px solid var(--green-600);border-radius:8px;padding:3px 10px;transform:rotate(-6deg);background:var(--card)}
+.tilt{transform:rotate(2deg)}
+.ul-coral{background:linear-gradient(transparent 62%,rgba(216,84,43,.28) 62%,rgba(216,84,43,.28) 92%,transparent 92%)}
+.band{background:var(--card-2)}
+.steps{display:grid;gap:0;margin-top:26px;border-left:2px dashed var(--ink-200);margin-left:26px}
+@media(min-width:700px){.steps{grid-template-columns:repeat(4,1fr);border-left:0;margin-left:0;gap:10px}}
+.step{background:none;border:0;border-radius:0;padding:6px 0 26px 30px;box-shadow:none;position:relative}
+@media(min-width:700px){.step{padding:0 8px 0 0}}
+.step .who{position:static;display:inline-block;margin-left:8px;vertical-align:middle;transform:rotate(-2deg)}
+.step .pen-num{margin-left:-56px}
+@media(min-width:700px){.step .pen-num{margin-left:0}}
+.step h3{margin-top:8px;font-size:1.15rem}
+.cards{display:grid;gap:0;margin-top:18px}
+.card{background:none;border:0;border-bottom:1px dashed var(--ink-200);border-radius:0;padding:14px 0}
+.card:last-child{border-bottom:0}
+.card h3{font-size:1.1rem}
+.mark-o{width:26px;height:26px;flex:0 0 auto}
+.mark-o ellipse{fill:none;stroke:var(--green-500);stroke-width:2.6;stroke-linecap:round}
+.facts{gap:0;margin-top:18px}
+.fact{background:none;border:0;border-bottom:1px dashed var(--ink-200);border-radius:0;padding:14px 0;grid-template-columns:auto 1fr;align-items:start}
+.fact:last-child{border-bottom:0}
+.fact .i{width:auto;height:auto;background:none;color:var(--ink-900)}
+.faq{grid-template-columns:1fr;gap:0;margin-top:14px;max-width:44em}
+.qa{background:none;border:0;border-bottom:1px dashed var(--ink-200);border-radius:0;padding:16px 0}
+.qa h3{font-size:1.05rem}
+.limits .k{transform:rotate(-1.5deg);display:inline-block}
+.hero-note{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font-size:.95rem;color:var(--ink-700)}
 @media(max-width:520px){section{padding:44px 0} header.top .tag{display:none} header.top .wrap{grid-template-columns:1fr auto} header.top .right{grid-column:2} .phone{width:min(100%,250px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -182,12 +196,12 @@ footer .copy{margin-top:18px}
     <div class="text">
       <p class="eyebrow">학원 시험 자동 채점</p>
       <h1>답안지만 찍으면,<br><span class="hl">채점 끝.</span></h1>
-      <p class="lead">시험은 지금처럼 종이로 봐요. <b>채점과 결과 전달만</b> 채크가 해요. 학생이 답안지를 찍으면 자동으로 채점되고, 선생님이 승인하면 학생·학부모 폰으로 결과가 가요.</p>
+      <p class="lead">시험은 종이로 그대로. 채점과 결과 전달만 채크가 해요.</p>
       <div class="cta">
         <a class="btn green" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
         <a class="btn soft" href="#parent">학부모라면</a>
       </div>
-      <p class="note">학생·학부모는 선생님께 받은 코드로 들어와요. 지금은 무료예요.</p>
+      <p class="hero-note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 승인만.</p>
     </div>
     <div class="shots">
       <figure class="phone"><div class="scr"><img src="/chaeck/img/student-home.jpg" alt="학생 앱 홈 — 제출할 시험과 답안지 촬영하기 버튼" width="375" height="760"></div><figcaption>학생 앱 · 홈</figcaption></figure>
@@ -195,15 +209,15 @@ footer .copy{margin-top:18px}
   </div>
 </section>
 
-<section id="flow">
+<section id="flow" class="band">
   <div class="wrap">
     <p class="eyebrow">이렇게 돌아가요</p>
-    <h2>학원이 바꿀 건 없어요.<br>채점 뒤에 붙는 일만 사라져요.</h2>
+    <h2>학원이 바꿀 건 <span class="ul-coral">없어요.</span></h2>
     <div class="steps">
-      <div class="step"><span class="who">선생님</span><div class="n">1</div><h3>정답을 넣어요</h3><p>시험지는 지금 쓰는 그대로. 정답만 채크에 넣어요.</p></div>
-      <div class="step"><span class="who">선생님</span><div class="n">2</div><h3>QR 답안지를 뽑아요</h3><p>QR 이 찍힌 답안지를 인쇄해 나눠 줘요. 답안지엔 정답이 담기지 않아요. 시험은 종이로 봐요.</p></div>
-      <div class="step"><span class="who">학생</span><div class="n">3</div><h3>찍고, 확인하고, 제출해요</h3><p>답안지를 찍으면 읽힌 답이 바로 떠요. 잘못 읽힌 곳은 학생이 고쳐서 제출해요.</p></div>
-      <div class="step"><span class="who">선생님</span><div class="n">4</div><h3>승인하면 결과가 가요</h3><p>버튼 하나로 학생·학부모 폰에 결과가 도착해요. 문자·전화가 필요 없어요.</p></div>
+      <div class="step"><span class="pen-num" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>1</span><span class="who">선생님</span><h3>정답을 넣어요</h3></div>
+      <div class="step"><span class="pen-num" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(6 26 23)"/></svg>2</span><span class="who">선생님</span><h3>QR 답안지를 뽑아요</h3></div>
+      <div class="step"><span class="pen-num" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>3</span><span class="who">학생</span><h3>찍고, 확인하고, 제출해요</h3></div>
+      <div class="step"><span class="pen-num" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(6 26 23)"/></svg>4</span><span class="who">선생님</span><h3>승인하면 결과가 가요</h3></div>
     </div>
     <div class="flowshots">
       <figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-exam-new.jpg" alt="강사 웹 새 시험 만들기 — 문항별 정답 입력" loading="lazy" width="1280" height="760"></div><figcaption>1 · 정답 입력(PC)</figcaption></figure>
@@ -219,13 +233,13 @@ footer .copy{margin-top:18px}
     <div class="text">
       <p class="eyebrow">학부모께</p>
       <h2>내 아이는 이렇게 관리돼요.</h2>
-      <p class="lead">시험 하나가 끝날 때마다 <b>점수·유형별 정답률·문항별로 제출한 답</b>이 그대로 남아요. 다른 아이와 비교하지 않아요. 내 아이의 변화만 봐요.</p>
       <div class="cards">
-        <div class="card"><h3><span class="ok" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.8 9L10 3.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>시험마다 결과</h3><p>점수와 맞은 개수·틀린 개수. 새 결과가 오면 카드에 표시가 붙어요.</p></div>
-        <div class="card"><h3><span class="ok" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.8 9L10 3.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>유형별 정답률</h3><p>어떤 유형을 잘하고 어디서 막히는지 막대로 보여요. 잘한 유형이 위에 와요.</p></div>
-        <div class="card"><h3><span class="ok" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.8 9L10 3.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>문항별로 낸 답</h3><p>아이가 확인하고 제출한 답과 정답을 문항마다 나란히 봐요.</p></div>
+        <div class="card"><h3><svg class="mark-o" viewBox="0 0 26 26" aria-hidden="true"><ellipse cx="13" cy="13" rx="10.5" ry="9" transform="rotate(-9 13 13)"/></svg>시험마다 점수</h3></div>
+        <div class="card"><h3><svg class="mark-o" viewBox="0 0 26 26" aria-hidden="true"><ellipse cx="13" cy="13" rx="10.5" ry="9" transform="rotate(-9 13 13)"/></svg>유형별로 어디가 약한지</h3></div>
+        <div class="card"><h3><svg class="mark-o" viewBox="0 0 26 26" aria-hidden="true"><ellipse cx="13" cy="13" rx="10.5" ry="9" transform="rotate(-9 13 13)"/></svg>문항마다 아이가 낸 답</h3></div>
+        <div class="card"><h3><svg class="mark-o" viewBox="0 0 26 26" aria-hidden="true"><ellipse cx="13" cy="13" rx="10.5" ry="9" transform="rotate(-9 13 13)"/></svg>지난 시험과 비교한 흐름</h3></div>
       </div>
-      <p class="note">아이는 자기 앱에서 지난 시험의 <b>점수 흐름</b>과 유형별 누적 정답률을 봐요. 등수·반 평균은 어디에도 없어요. 안 보여주는 게 아니라 <b>안 만들었어요.</b></p>
+      <p class="note">다른 아이와는 비교하지 않아요. 등수·반 평균은 없어요.</p>
     </div>
     <div class="shots">
       <figure class="phone"><div class="scr"><img src="/chaeck/img/parent-result.jpg" alt="학부모 앱 결과 확인 — 점수, 유형별 정답률, 문항별 정오답" loading="lazy" width="375" height="760"></div><figcaption>학부모 앱 · 결과 확인</figcaption></figure>
@@ -234,18 +248,17 @@ footer .copy{margin-top:18px}
   </div>
 </section>
 
-<section id="accuracy">
+<section id="accuracy" class="band">
   <div class="wrap two">
     <div class="text">
       <p class="eyebrow">정확해요?</p>
       <h2>기계가 읽고, 학생이 확인하고,<br>선생님이 승인해요.</h2>
-      <p class="lead">한 번에 끝내지 않아요. 결과가 학부모께 가기까지 <b>세 번</b> 거쳐요.</p>
       <div class="facts">
-        <div class="fact"><span class="i">1</span><p><b>객관식 마킹은 채크 서버가 직접 읽어요.</b> 외부로 보내지 않아요. 빈칸과 두 개 이상 마킹은 오답으로 처리해요.</p></div>
-        <div class="fact"><span class="i">2</span><p><b>학생이 읽힌 답을 눈으로 확인해요.</b> 잘못 읽힌 문항은 그 자리에서 고쳐서 제출해요. 선생님이 따로 검수하지 않아도 되는 이유예요.</p></div>
-        <div class="fact"><span class="i">3</span><p><b>선생님이 승인한 뒤에야 결과가 공개돼요.</b> 승인 전엔 학생도 학부모도 못 봐요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>1</span><p><b>채크 서버가 마킹을 읽어요.</b> 외부로 보내지 않아요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(6 26 23)"/></svg>2</span><p><b>학생이 읽힌 답을 확인해요.</b> 잘못 읽힌 건 그 자리에서 고쳐요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>3</span><p><b>선생님이 승인해야 공개돼요.</b></p></div>
       </div>
-      <p class="note">주관식은 <b>짧은 영문 답</b>의 손글씨를 읽어요(Google 손글씨 인식). 이것도 학생이 확인하고 제출해요. 답안지 사진은 제출일부터 <b>30일 동안</b> 남겨 두니, 결과에 이의가 있으면 그 사이에 선생님께 말씀해 주세요.</p>
+      <p class="note">주관식은 짧은 영문 답만 읽어요. 답안지 사진은 30일 동안 남아요.</p>
     </div>
     <div class="shots">
       <figure class="phone"><div class="scr"><img src="/chaeck/img/student-result.jpg" alt="학생 앱 채점 결과 — 점수, 정답·오답 수, 유형별 정답률" loading="lazy" width="375" height="760"></div><figcaption>학생 앱 · 채점 결과</figcaption></figure>
@@ -256,31 +269,30 @@ footer .copy{margin-top:18px}
 <section id="limits">
   <div class="wrap">
     <p class="eyebrow">안 되는 것부터 말할게요</p>
-    <h2>가입하고 나서 알게 되면 늦으니까요.</h2>
+    <h2>가입하고 나서 알게 되면 <span class="ul-coral">늦으니까요.</span></h2>
     <div class="limits">
-      <div class="row"><span class="k">학생 5명</span><span class="v">선생님 한 분이 <b>학생 5명</b>까지 관리해요. 더 필요하면 알려 주세요.</span></div>
-      <div class="row"><span class="k">주관식 10문항</span><span class="v">주관식 자동 인식은 모두 합쳐 <b>10문항</b>까지예요. 객관식은 제한이 없어요.</span></div>
-      <div class="row"><span class="k">종이 시험만</span><span class="v">온라인 시험이 아니에요. <b>종이로 본 시험의 답안지</b>를 찍는 방식이에요.</span></div>
-      <div class="row"><span class="k">만 14세 이상</span><span class="v">학생·학부모 모두 <b>만 14세 이상</b>만 가입해요. 그 아래 나이는 받지 않아요.</span></div>
-      <div class="row"><span class="k">등수 없음</span><span class="v">등수·석차·반 평균·다른 학생과의 비교는 <b>없어요.</b> 앞으로도 안 만들어요.</span></div>
-      <div class="row"><span class="k">웹으로 써요</span><span class="v">지금은 <b>웹 주소</b>로 바로 써요. 앱스토어 등록은 준비 중이에요.</span></div>
-      <div class="row"><span class="k">무료</span><span class="v">지금은 <b>무료</b>예요. 바뀌면 미리 알려 드려요.</span></div>
+      <div class="row"><span class="k">학생 5명</span><span class="v">선생님 한 분당</span></div>
+      <div class="row"><span class="k">주관식 10문항</span><span class="v">모두 합쳐서</span></div>
+      <div class="row"><span class="k">종이 시험만</span><span class="v">온라인 시험 아니에요</span></div>
+      <div class="row"><span class="k">만 14세 이상</span><span class="v">학생·학부모 모두</span></div>
+      <div class="row"><span class="k">등수 없음</span><span class="v">앞으로도 안 만들어요</span></div>
+      <div class="row"><span class="k">웹으로 써요</span><span class="v">앱스토어는 준비 중</span></div>
+      <div class="row"><span class="k">무료</span><span class="v">지금은요</span></div>
     </div>
   </div>
 </section>
 
-<section id="privacy">
+<section id="privacy" class="band">
   <div class="wrap two rev">
     <div class="text">
       <p class="eyebrow">내 아이 정보는</p>
-      <h2>개인정보처리방침에 적힌 대로만 해요.</h2>
+      <h2>방침에 적힌 대로만 해요.</h2>
       <div class="facts">
-        <div class="fact"><span class="i">1</span><p><b>답안지 사진</b>은 제출일부터 30일 동안 보관하고 지워요. 그동안은 <b>본인·학부모·담당 선생님만</b> 볼 수 있어요.</p></div>
-        <div class="fact"><span class="i">2</span><p><b>결과</b>는 선생님이 승인한 학부모만 봐요. 학부모가 요청하면 <b>학생이 수락</b>해야 연결돼요.</p></div>
-        <div class="fact"><span class="i">3</span><p><b>객관식 마킹</b>은 외부로 보내지 않아요. <b>주관식 손글씨</b>는 사용할 때만 Google 이 읽어요.</p></div>
-        <div class="fact"><span class="i">4</span><p><b>계정</b>은 설정에서 직접 지울 수 있어요. 지우면 되돌릴 수 없어요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>1</span><p>답안지 사진은 <b>30일</b> 뒤 지워요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(6 26 23)"/></svg>2</span><p>결과는 <b>학생이 수락</b>한 학부모만 봐요.</p></div>
+        <div class="fact"><span class="pen-num" style="width:44px;height:40px;font-size:1.25rem" aria-hidden="true"><svg viewBox="0 0 52 46"><ellipse cx="26" cy="23" rx="23" ry="19" transform="rotate(-7 26 23)"/></svg>3</span><p>계정은 직접 지울 수 있어요.</p></div>
       </div>
-      <p class="note">저장 위치·보관 기간·권리 행사 방법은 <a href="https://chaeck.soosoo.kr/privacy">개인정보처리방침</a>에 전부 적혀 있어요. 이 페이지와 방침이 다르면 방침이 맞아요.</p>
+      <p class="note"><a href="https://chaeck.soosoo.kr/privacy">개인정보처리방침</a> 전문 보기</p>
     </div>
     <div class="shots">
       <figure class="phone"><div class="scr"><img src="/chaeck/img/parent-home.jpg" alt="학부모 앱 홈 — 자녀의 최근 시험 결과 목록" loading="lazy" width="375" height="760"></div><figcaption>학부모 앱 · 홈</figcaption></figure>
@@ -291,23 +303,20 @@ footer .copy{margin-top:18px}
 <section id="teacher">
   <div class="wrap">
     <p class="eyebrow">선생님께</p>
-    <h2>정답 입력과 답안지 출력까지가 선생님 일이에요.</h2>
-    <p class="lead">채점도, 마킹 검수도, 결과 통보도 안 해요. 승인 버튼 하나면 학생·학부모에게 가요. 결과는 PC 웹에서 시험별·학생별로 봐요.</p>
+    <h2>선생님 일은 정답 입력까지예요.</h2>
+    <p class="lead">채점도 검수도 통보도 안 해요. 승인 버튼 하나.</p>
     <figure class="pc" style="margin-top:26px"><div class="scr"><img src="/chaeck/img/teacher-results.jpg" alt="강사 웹 채점 결과 화면" loading="lazy" width="1280" height="760"></div><figcaption>강사 웹 · 채점 결과</figcaption></figure>
   </div>
 </section>
 
-<section id="faq">
+<section id="faq" class="band">
   <div class="wrap">
-    <p class="eyebrow">자주 묻는 것</p>
-    <h2>궁금한 건 여기서 먼저 확인하세요.</h2>
+    <h2>자주 묻는 것</h2>
     <div class="faq">
-      <div class="qa"><h3>학생이 읽힌 답을 고칠 수 있으면 답을 바꿀 수 있는 거 아닌가요?</h3><p>학생이 고치는 건 「기계가 잘못 읽은 것」이에요. 답안지 사진이 30일 동안 남아 있고, 선생님과 학부모는 학생이 제출한 답을 문항마다 그대로 봐요.</p></div>
-      <div class="qa"><h3>앱은 어디서 받나요?</h3><p>지금은 웹 주소 <a href="https://chaeck.soosoo.kr">chaeck.soosoo.kr</a> 에서 바로 써요. 홈 화면에 추가하면 앱처럼 열려요. 앱스토어 등록은 준비 중이에요.</p></div>
-      <div class="qa"><h3>학부모가 두 명이면요?</h3><p>각자 가입해서 자녀에게 연결을 요청해요. 학생이 수락하면 두 분 다 결과를 봐요.</p></div>
-      <div class="qa"><h3>자녀가 여럿이면요?</h3><p>한 계정에서 자녀를 바꿔 가며 봐요. 아이마다 따로 가입하지 않아요.</p></div>
-      <div class="qa"><h3>답안지는 어떤 종이에 뽑나요?</h3><p>채크가 만들어 주는 QR 답안지를 인쇄해요. 시험지는 지금 쓰는 그대로예요.</p></div>
-      <div class="qa"><h3>비용은요?</h3><p>지금은 무료예요. 바뀌면 미리 알려 드려요.</p></div>
+      <div class="qa"><h3>학생이 답을 바꿀 수 있는 거 아닌가요?</h3><p>고치는 건 「잘못 읽힌 것」뿐이에요. 사진이 30일 남고, 낸 답은 문항마다 그대로 보여요.</p></div>
+      <div class="qa"><h3>앱은 어디서 받나요?</h3><p>지금은 <a href="https://chaeck.soosoo.kr">chaeck.soosoo.kr</a> 에서 바로 써요.</p></div>
+      <div class="qa"><h3>학부모가 두 명이면요?</h3><p>각자 가입해요. 학생이 수락하면 둘 다 봐요.</p></div>
+      <div class="qa"><h3>답안지는요?</h3><p>채크가 만들어 주는 QR 답안지를 인쇄해요. 시험지는 그대로.</p></div>
     </div>
   </div>
 </section>
@@ -315,13 +324,13 @@ footer .copy{margin-top:18px}
 <section id="start">
   <div class="wrap">
     <div class="start">
-      <h2>시험은 그대로, 채점만 넘기세요.</h2>
-      <p class="lead" style="margin:10px auto 0">강사로 가입하면 정답 입력부터 바로 시작해요.</p>
+      <p><span class="stamp" style="font-size:1.05rem">선생님 손 안 대도 돼요</span></p>
+      <h2 style="margin-top:14px">시험은 그대로, 채점만 넘기세요.</h2>
       <div class="cta">
         <a class="btn green" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
         <a class="btn soft" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a>
       </div>
-      <p class="note">학생·학부모는 선생님께 받은 코드로 들어와요.</p>
+      <p class="note">학생·학부모는 선생님께 받은 코드로.</p>
     </div>
   </div>
 </section>
