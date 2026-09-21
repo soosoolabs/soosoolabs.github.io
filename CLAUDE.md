@@ -11,7 +11,7 @@
 | 정본 주소 | **https://soosoo.kr** ✅ 살아 있음(Cloudflare Workers 정적 에셋 · `www` → 301) |
 | 옛 주소 | `soosoolabs.github.io` = **껍데기**(`gh-pages` 브랜치 · 같은 경로로 soosoo.kr 에 넘긴다). 스토어·약관 문서에 박혀 있어 **죽이면 안 된다** |
 | 디자인 | ⬜ **아직 없다** — 🧑 사장님이 클로드 디자인에서 만드신다. 지금 화면은 2026-08-25 임시본 |
-| ★ **채크 앱 소개 페이지** | ✅ **https://soosoo.kr/chaeck/ 살아 있음**(9/20 밤 · 사장님 「추천대로」). 구조 = 「따지는 순서」(뭐 하는 앱 → 흐름 4단계 → 학부모: 내 아이 관리 → 정확성 3단계 → 안 되는 것 표 → 개인정보 → 선생님 → FAQ → 시작). 화면은 **채크 dev 데모 데이터 실제 캡처 8장**(`chaeck/img/`) · 채점펜 토큰 · 폰트 서브셋 자체 호스팅 · **스크립트 = `/chaeck/motion.js` 하나**(9/20 밤 · ①트리거형 기본 + ②스크러빙 히어로·종이 · 외부 요청 0 유지 · `doc/채크_소개_구성.md` §4-b). 🧑 눈으로 보고 「눈에 확」을 위한 다듬기는 클로드 디자인 차례(`doc/채크_소개_구상.md` §5) |
+| ★ **채크 앱 소개 페이지** | ✅ **https://soosoo.kr/chaeck/ = 「손넘김 릴레이」 정본**(9/21 사장님 「릴레이 정본으로 올려」). **화면 전체가 무대 · 스크롤이 카메라**(`chaeck/relay.js` 키프레임 보간 · 라이브러리 0): S0 실사 H1 줌인 → 답안지 통과 → S1 사무실·프린터 실사 → S2 학생 실사(실물 답안지 위 마킹 겹판 스크러빙) → S3 카메라 폰·셔터·초록 펜 O/X·「0」 → S4 저녁 사무실·「결과 공개」 도장 → S5 부엌 학부모 → 시작. 실사 5장(`chaeck/img/ai/src/` 원본 · `S*.webp` 합성본 — 화면은 실제 캡처, 종이는 실물 답안지) · 문안 = 9/21 확정 + 임팩트판(⛔「연필」 금지어). 이전 판 `/chaeck/_old/` · 잉크 판 `/chaeck/ink/` · `/chaeck/relay/` 는 정본으로 넘김. **웹(1280) 우선 · 폰 배치는 후순위**(사장님). 정본 문서 `doc/채크_소개_구성.md` §1-c·§H·§I·§J |
 | 사업자 표기 | 상호·영문·대표·등록번호·이메일 ✅ · 전화·주소·통신판매업 신고번호 = **자리만**(`data/site.json` 의 `null` + 사유) |
 
 ## 1. 🔴 되돌리면 안 되는 것 (다음 세션이 되돌리지 말 것)
@@ -53,7 +53,7 @@ python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼
 
 ```
 index.html            수수 홈 (임시본 · 디자인 오면 교체 · 채크 카드 → /chaeck/)
-chaeck/index.html     ★채크 앱 소개(스크립트 0 · 채점펜 토큰) · chaeck/img/ 실제 캡처 8장(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
+chaeck/index.html     ★채크 앱 소개 = 손넘김 릴레이(스크립트 chaeck/relay.js 하나) · chaeck/_old/ 이전 판 · chaeck/ink/ 잉크 시안(motion.js) · chaeck/img/ 실제 캡처 8장 · chaeck/img/ai/ 실사(사장님 생성 → 합성)(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
 assets/fonts/         Pretendard·Paperlogy 서브셋(OFL) + manifest.json(글자 해시)
 hantol/{privacy,terms,support}/index.html   하루한톨 법적 문서 — ⛔ 내용은 daily-verse 정본. 여기선 게시만
 data/site.json        ★ 사람이 고치는 값은 여기뿐 (사업자 정보 · 고정 경로 · 옛 주소 예외(기한) · 검사 URL)

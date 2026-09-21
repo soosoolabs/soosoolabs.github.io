@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>채크 — 찍으면, 채점 끝</title>
-<meta name="description" content="학원 영어 시험은 종이로 그대로. 학생이 답안지를 찍으면 객관식·단답형이 자동으로 채점되고, 유형별로 어디서 막히는지 시험마다 보여요.">
-<link rel="canonical" href="https://soosoo.kr/chaeck/">
 <meta property="og:title" content="채크 — 찍으면, 채점 끝">
 <meta property="og:description" content="종이 시험 그대로. 채점은 채크가 해요. 등수 대신 우리 아이의 변화.">
 <meta property="og:url" content="https://soosoo.kr/chaeck/">
-<meta property="og:type" content="website">
+<link rel="canonical" href="https://soosoo.kr/chaeck/">
+<meta name="description" content="학원 영어 시험은 종이로 그대로. 학생이 답안지를 찍으면 객관식·단답형이 자동으로 채점되고, 유형별로 어디서 막히는지 시험마다 보여요.">
 <meta name="theme-color" content="#F1ECE0">
-<meta name="color-scheme" content="light only">
+<link rel="preload" href="/assets/fonts/Paperlogy-8-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:'Pretendard';font-weight:100 900;font-display:swap;src:url('/assets/fonts/Pretendard-sub.woff2') format('woff2')}
 @font-face{font-family:'Paperlogy';font-weight:800;font-display:swap;src:url('/assets/fonts/Paperlogy-8-sub.woff2') format('woff2')}
@@ -107,50 +107,104 @@ footer .links a{color:var(--ink-700);text-decoration:none;border-bottom:1px soli
 footer dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}footer dt{color:var(--ink-400)}footer dd{color:var(--ink-700)}
 footer .copy{margin-top:18px}
 @media(max-width:520px){header.top .tag{display:none}header.top .wrap{grid-template-columns:1fr auto}header.top .right{grid-column:2}.layer{padding:48px 0 72px}}
-/* ── 움직임 v2(9/20 밤 · 사장님 「스크롤은 움직이는 게 생명」) — ① 트리거형 기본 · ② 스크러빙은 히어로·종이 두 곳 · 스크립트 = /chaeck/motion.js 하나
-   성격: 종이·채점펜 = Premium/Corporate 사이. 서명 이징 MD3 emphasized · 지속 180/420/700ms · 입장 = 아래에서 떠오름.
-   스크립트 없으면 html.js 가 없어 초기 숨김 없음 + --p 기본 1 = 끝 장면. ── */
-:root{--ease:cubic-bezier(.05,.7,.1,1);--ease-stamp:cubic-bezier(.175,.885,.32,1.25);--d1:180ms;--d2:560ms;--d3:800ms}
-/* ① 들어오면 알아서 — 기본 상태가 끝 장면, JS 가 있고 아직 안 들어왔을 때만 시작 장면 */
-.rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:opacity var(--d2) var(--ease),transform var(--d2) var(--ease),stroke-dashoffset var(--d3) var(--ease)}
-.text>*:nth-child(2){transition-delay:60ms}.text>*:nth-child(3){transition-delay:120ms}.text>*:nth-child(4){transition-delay:180ms}.text>*:nth-child(5){transition-delay:240ms}.text>*:nth-child(6){transition-delay:300ms}
-.shots{transition-delay:140ms}.wm-no{transition-duration:1200ms;transition-timing-function:var(--ease)}
-.stamp{transition:transform 380ms var(--ease-stamp) 560ms,opacity 160ms linear 560ms}
-.chips span{transition-delay:1250ms}.chips span:nth-child(2){transition-delay:1340ms}.chips span:nth-child(3){transition-delay:1430ms}
-.zero ellipse{stroke-dashoffset:0;transition-delay:1000ms}
-.zero b{font:inherit;color:inherit}
-html.js [data-in]:not(.in) .rv{opacity:0;transform:translateY(64px)}
-html.js [data-in]:not(.in) .text>*{opacity:0;transform:translateY(44px)}
-html.js [data-in]:not(.in) .shots{opacity:0;transform:translateY(88px) scale(.94)}
-html.js .layer.rev[data-in]:not(.in) .shots{transform:translateX(-110px) scale(.94)}
-html.js .layer.l4[data-in]:not(.in) .shots{transform:translateX(-140px) scale(.94)}
-html.js [data-in]:not(.in) .wm-no{transform:translate(120px,260px);opacity:0}
-html.js [data-in]:not(.in) .stamp{opacity:0;transform:rotate(-16deg) scale(1.9)}
-html.js [data-in]:not(.in) .chips span{opacity:0;transform:translateY(16px) scale(.9)}
-html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
-/* ② 스크롤한 만큼만 — 히어로 폰 부채꼴(--p 0 = 살짝 포개짐 → 1 = 다 펼쳐짐) */
-.stage{--p:1;--f:calc(.06 + .94*var(--p))}
-.stage .p1{transform:translateX(calc(-50% - 46%*var(--f))) translateY(calc(-70px*var(--p))) rotate(calc(-14deg*var(--f)))}
-.stage .p3{transform:translateX(calc(-50% + 46%*var(--f))) translateY(calc(-70px*var(--p))) rotate(calc(14deg*var(--f)))}
-.stage .blob{transform:rotate(calc(-7deg + 6deg*var(--p))) translateY(calc(48px*var(--p))) scale(calc(.92 + .08*var(--p)))}
-.stage .t1{opacity:var(--p);transform:rotate(-8deg) translateY(calc(40px*(1 - var(--p))))}.stage .t3{opacity:var(--p);transform:rotate(8deg) translateY(calc(40px*(1 - var(--p))))}
-@media(max-width:520px){.stage .p1{transform:translateX(calc(-50% - 52%*var(--f))) translateY(calc(-50px*var(--p))) rotate(calc(-14deg*var(--f)))}.stage .p3{transform:translateX(calc(-50% + 52%*var(--f))) translateY(calc(-50px*var(--p))) rotate(calc(14deg*var(--f)))}}
-/* ② 종이 — 답안지 조각의 마킹이 스크롤 따라 한 줄씩 채워진다(--n 0~4 순서) */
-.l1 .shots{position:relative;--p:1}
-.sheet{position:absolute;right:-4%;bottom:-10%;width:min(46%,230px);background:#fff;border:1.5px solid var(--line-2,#D8D3C7);border-radius:12px;padding:12px 12px 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:7px 9px;box-shadow:0 22px 44px -26px rgba(0,0,0,.45);transform:rotate(4deg);z-index:3}
-.sheet::before{content:"";grid-column:1/-1;height:4px;border-radius:2px;background:var(--line-2,#D8D3C7);margin-bottom:2px}
-.sheet i{display:block;aspect-ratio:1;border-radius:50%;border:1.5px solid #9A958A;position:relative}
-.sheet i[style]::after{content:"";position:absolute;inset:1px;border-radius:50%;background:var(--green-600);transform:scale(clamp(0,calc(var(--p)*5.6 - var(--n)),1))}
-/* 층이 다음 층에 덮이며 물러나는 것만 CSS 스크롤 타임라인(되는 브라우저에서 보너스) */
-@supports (animation-timeline: view()){ @media (prefers-reduced-motion: no-preference){
-  .layer{animation:recede linear both;animation-timeline:view();animation-range:exit 0% exit 100%}
-  @keyframes recede{to{transform:scale(.94);filter:brightness(.82)}}
-}}
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.phone .scr video{display:none}.rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:none}}
+
+/* ══ 릴레이: 화면 전체가 무대 · 스크롤이 카메라 ══ */
+html{scroll-behavior:auto}
+.story{position:relative;height:calc(100svh + 6*165svh)}
+.stage{position:sticky;top:0;height:100svh;width:100%;max-width:none;margin:0;overflow:hidden;isolation:isolate}
+.stage .phone{top:50%;left:50%;transform-origin:50% 50%}
+.a-bg{position:absolute;inset:0;background:#EFE9DB;z-index:0}
+.stage::after{content:"";position:absolute;inset:-20%;pointer-events:none;z-index:8;opacity:.09;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.stage::before{content:"";position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(120% 90% at 18% 10%,rgba(255,255,255,.28),transparent 55%),radial-gradient(90% 70% at 100% 100%,rgba(27,26,22,.12),transparent 60%)}
+.actor{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);will-change:transform,opacity}
+.a-photo{width:100%;height:100%;z-index:1;transform-origin:50.6% 42.5%}
+.a-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.a-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(241,236,224,.92) 0,rgba(241,236,224,.55) 34%,rgba(241,236,224,0) 60%)}
+@media(max-width:720px){.a-photo::after{background:linear-gradient(180deg,rgba(241,236,224,0) 30%,rgba(241,236,224,.85) 62%,rgba(241,236,224,.97) 100%)}}
+/* 기기 — 베젤 하이라이트 · 유리 반사 · 그림자 두 겹 */
+.dev{background:#141311;border-radius:44px;padding:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.06),0 2px 0 rgba(0,0,0,.45),0 30px 60px -22px rgba(27,26,22,.55),0 90px 140px -60px rgba(27,26,22,.45)}
+.dev .scr{border-radius:36px;overflow:hidden;position:relative;background:#FBF9F3}
+.dev .scr::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(112deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.04) 28%,rgba(255,255,255,0) 46%)}
+.dev.phone{width:min(46vh,300px);z-index:4}.dev.phone .scr{aspect-ratio:390/844}
+.dev.phone .scr img,.dev.phone .scr video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}.dev.phone .scr video{z-index:2}
+.dev.phone::before{content:"";position:absolute;right:-3px;top:22%;width:3px;height:12%;border-radius:2px;background:#2a2824}
+.a-pc{width:min(78vw,940px);z-index:3;background:#141311;border-radius:18px;padding:9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 2px 0 rgba(0,0,0,.45),0 40px 80px -30px rgba(27,26,22,.55),0 120px 160px -80px rgba(27,26,22,.4)}
+.a-pc .scr{border-radius:11px;overflow:hidden;aspect-ratio:1280/800;background:#FBF9F3;position:relative}
+.a-pc .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:opacity 500ms var(--ease)}
+.a-pc .scr .img2{opacity:0}.stage[data-scene="4"] .a-pc .scr .img2,.stage[data-scene="5"] .a-pc .scr .img2{opacity:1}
+/* 카메라 폰: 화면이 투명 — 뒤의 답안지가 뷰파인더로 보인다 */
+.a-phone{background:transparent;padding:0;border:10px solid #141311;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 0 rgba(0,0,0,.45),0 30px 60px -22px rgba(27,26,22,.55),0 90px 140px -60px rgba(27,26,22,.45)}
+.a-phone .scr{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 40px 60px -40px rgba(0,0,0,.3)}
+.a-phone .scr::before{content:"";position:absolute;inset:0;background:rgba(20,19,17,.06)}
+/* 답안지 */
+.a-sheet{height:min(80vh,560px);width:auto;z-index:2;filter:drop-shadow(0 18px 24px rgba(27,26,22,.22)) drop-shadow(0 60px 80px rgba(27,26,22,.18))}
+.a-sheet .paper{fill:#fff;stroke:#DDD6C6;stroke-width:1.2}.a-sheet .cm{fill:#1B1A16}.a-sheet .t1{fill:#1B1A16}.a-sheet .t2{fill:#B9B3A5}.a-sheet .t3{fill:#EDE8DC}.a-sheet .qr{fill:none;stroke:#1B1A16;stroke-width:2.2}.a-sheet .qrin{fill:#1B1A16}
+.a-sheet .num{font:700 11px var(--ff-head);fill:#1B1A16}
+.a-sheet .bb{fill:none;stroke:#8A867C;stroke-width:1.3}
+.a-sheet .f{fill:#1B1A16;opacity:clamp(0,calc(var(--fill) - var(--i)),1);transform-box:fill-box;transform-origin:center;transform:scale(clamp(.2,calc(var(--fill) - var(--i)),1))}
+.a-sheet .o{fill:none;stroke:var(--green-500);stroke-width:3.4;stroke-linecap:round;filter:url(#rough);stroke-dasharray:110;stroke-dashoffset:calc(110 - 110*clamp(0,calc(var(--grade) - var(--i)),1))}
+.a-sheet .x{fill:none;stroke:var(--coral-500);stroke-width:3.4;stroke-linecap:round;filter:url(#rough);stroke-dasharray:80;stroke-dashoffset:calc(80 - 80*clamp(0,calc(var(--grade) - var(--i)),1))}
+.a-pen{height:min(26vh,200px);width:auto;z-index:5;filter:drop-shadow(0 3px 2px rgba(27,26,22,.25)) drop-shadow(0 18px 22px rgba(27,26,22,.3))}
+.a-pen .body{fill:var(--green-500)}.a-pen .cap{fill:var(--green-700)}.a-pen .cone{fill:#E9E2D2}.a-pen .tip{fill:#1B1A16}
+/* 큰 0 · 도장 · 플래시 */
+.a-zero{z-index:6;font-family:var(--ff-head);font-weight:800;font-size:clamp(9rem,26vw,20rem);line-height:.8;letter-spacing:-.08em;color:var(--ink-900);padding:.06em .14em}
+.a-zero svg{position:absolute;inset:-8% -12%;width:124%;height:116%;overflow:visible}
+.a-zero ellipse{fill:none;stroke:var(--green-500);stroke-width:7;stroke-linecap:round;filter:url(#rough);stroke-dasharray:1200;stroke-dashoffset:calc(1200 - 1200*clamp(0,calc((var(--t) - 3.62)*3),1))}
+.a-stamp{z-index:6;font-family:var(--ff-head);font-weight:800;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--green-500);border:3px solid var(--green-500);border-radius:12px;padding:10px 22px;white-space:nowrap;filter:url(#rough);background:rgba(255,255,255,.04)}
+.a-flash{position:absolute;inset:0;background:#fff;z-index:9;opacity:0;pointer-events:none}
+/* 글(스텝) */
+.steps{position:absolute;inset:0;z-index:10;pointer-events:none}
+.step{position:absolute;inset:0;display:flex;align-items:center;opacity:0}
+.step .wrap{width:100%}
+.step .txt{max-width:min(30em,38vw);padding:24px 0}
+.step .no{font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7}
+.step h2{font-size:clamp(2.4rem,6.4vw,5rem);margin-top:12px;line-height:1.02}
+.step .l{font-size:clamp(1.05rem,1.9vw,1.3rem);margin-top:16px;font-weight:500;max-width:24em}
+.step a{pointer-events:auto}
+.step.dark,.step.dark h2,.step.dark .no{color:#F4EFE3}.step.dark .l{color:#CFC9BB}
+.s0 h1{font-size:clamp(3.6rem,10vw,8.4rem);line-height:.96}
+.s0 .g{position:relative;display:inline-block}.s0 .g svg{position:absolute;left:-1%;right:-1%;bottom:-.02em;height:.2em;overflow:visible}
+.s0 .g path{fill:none;stroke:var(--green-500);stroke-width:6.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough);stroke-dasharray:1000;stroke-dashoffset:calc(1000 - 1000*clamp(0,calc(.15 + var(--t)*8),1))}
+.s3 .txt,.s5 .txt{margin-left:auto}.s4 h2{font-size:clamp(2.2rem,5.4vw,4.3rem)}.s4 .txt{max-width:min(28em,36vw)}.s2 .txt{align-self:flex-start;padding-top:12vh}
+@media(max-width:720px){.step{align-items:flex-end}.step .txt{padding-bottom:26px;background:linear-gradient(180deg,transparent,rgba(241,236,224,.85) 30%);margin:0 -16px;padding-left:16px;padding-right:16px;max-width:none}.step.dark .txt{background:linear-gradient(180deg,transparent,rgba(27,26,22,.85) 30%)}.s3 .txt,.s5 .txt{margin-left:0}.s0 h1{font-size:clamp(3rem,15vw,4.6rem)}}
+/* 마무리 · 푸터 */
+.finish{position:relative;z-index:11;background:var(--paper-2);padding:96px 0 56px}
+.finish h2{font-size:clamp(2.4rem,6vw,4.6rem)}
+html:not(.js) .stage{position:static;height:auto;min-height:60svh}html:not(.js) .actor:not(.a-photo){display:none}html:not(.js) .steps{position:static}html:not(.js) .stage .step{position:static;display:block}html:not(.js) .step{position:static;height:auto;opacity:1;padding:48px 0}html:not(.js) .story{height:auto}
+html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{position:static;height:auto;opacity:1;padding:48px 0}
+.btn.g{background:var(--ink-900);color:#fff;box-shadow:4px 5px 0 rgba(27,26,22,.22)}.hero h1 .g,.s0 h1 .g{color:var(--ink-900)}.chips span{border-color:currentColor}
+.fine{font-size:.92rem;opacity:.75;margin-top:14px}
+
+/* ── 다듬기 1차(9/21 「더 구체적으로」) ── */
+.a-desk{width:100%;height:100%;z-index:1;opacity:0}.a-desk img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;filter:blur(14px) saturate(.9);transform:scale(1.06)}
+.a-desk::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,242,232,.55),rgba(246,242,232,.35))}
+/* 기기: 다이내믹 아일랜드 · 옆면 하이라이트 · 바닥 접촉 그림자 */
+.dev.phone .scr::before{content:"";position:absolute;left:50%;top:10px;width:26%;height:3.2%;border-radius:999px;background:#0b0b0a;transform:translateX(-50%);z-index:3}
+.a-phone .scr::before{background:#0b0b0a}
+.dev{box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.06),inset -2px 0 3px -2px rgba(255,255,255,.18),0 2px 0 rgba(0,0,0,.45),0 12px 18px -12px rgba(27,26,22,.6),0 30px 60px -22px rgba(27,26,22,.5),0 90px 140px -60px rgba(27,26,22,.4)}
+.a-pc::after{content:"";position:absolute;left:50%;top:4px;width:5px;height:5px;border-radius:50%;background:#2a2824;transform:translateX(-50%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+/* 손그림 획: 압력 — 아래에 굵고 옅은 획 한 겹 더 */
+.a-sheet .o,.a-zero ellipse{paint-order:stroke;filter:url(#rough) drop-shadow(0 0 .6px rgba(29,158,117,.55))}
+.a-sheet .x{filter:url(#rough) drop-shadow(0 0 .6px rgba(216,84,43,.55))}
+/* 먹 장면 비네트 · 종이 장면 결 강화 */
+.stage[data-scene="4"]::before{background:radial-gradient(90% 70% at 30% 20%,rgba(255,255,255,.06),transparent 60%),radial-gradient(100% 100% at 100% 100%,rgba(0,0,0,.35),transparent 60%)}
+/* 모바일 글: 3·5 장면은 아래, 2 장면은 위 */
+@media(max-width:720px){.s3 .txt,.s5 .txt{margin-left:0}.step .txt{padding-bottom:22px}.s2 .txt{padding-top:9vh}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── 실사 장면 배경(9/21 사장님 생성 · 화면·답안지는 실물 합성) ── */
+.ph{width:1264px;height:848px;z-index:1;opacity:0;transform-origin:50% 50%}
+.ph img{width:100%;height:100%;display:block}
+.ph .ov{position:absolute;left:0;top:0;width:1842px;height:2700px;transform-origin:0 0;overflow:visible}
+.ph .ov .f{fill:#1B1A16;opacity:clamp(0,calc(var(--fill) - var(--i)),1);transform-box:fill-box;transform-origin:center;transform:scale(clamp(.2,calc(var(--fill) - var(--i)),1))}
+.a-bg4 img{filter:brightness(.92)}
+.s1 .txt{margin-left:auto}.s2 .txt{margin-left:auto;align-self:flex-start;padding-top:10vh}.s5 .txt{margin-left:0}
+.s1 .txt,.s2 .txt,.s5 .txt{background:linear-gradient(90deg,rgba(241,236,224,.0),rgba(241,236,224,.72) 18%,rgba(241,236,224,.72) 82%,rgba(241,236,224,0));padding-left:28px;padding-right:28px;border-radius:18px}
+.s4 .txt{background:linear-gradient(90deg,rgba(27,26,22,0),rgba(27,26,22,.55) 18%,rgba(27,26,22,.55) 82%,rgba(27,26,22,0));padding-left:28px;padding-right:28px;border-radius:18px}
 </style>
 </head>
 <body>
-
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
 <header class="top">
   <div class="wrap">
     <span class="tag">학원 영어 시험 자동채점</span>
@@ -161,93 +215,64 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
     <div class="right"><a class="btn w sm" href="https://chaeck.soosoo.kr/login">로그인</a></div>
   </div>
 </header>
-
 <main>
-
-<section class="hero">
-  <div class="wrap" data-in>
-    <div class="text rv">
+<section class="story" aria-label="채크가 하는 일 — 선생님에서 학생, 학부모까지">
+  <div class="stage" data-scene="0" style="--t:0;--p:0">
+    <div class="a-bg"></div>
+    <div class="a-photo actor"><img src="/chaeck/img/ai/H1.webp" alt="학생이 QR 답안지를 폰으로 찍는 순간"></div>
+    <div class="a-desk actor" aria-hidden="true"><img src="/chaeck/img/ai/H1.webp" alt=""></div>
+    <div class="a-bg1 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S1.webp" alt=""></div>
+    <div class="a-bg2 actor ph" aria-hidden="true" style="--fill:0"><img src="/chaeck/img/ai/S2.webp" alt=""><svg class="ov" viewBox="0 0 1842 2700" style="transform:matrix3d(0.318268,0.0725958,0,1.98109e-05,-0.164956,0.169501,0,-7.50801e-05,0,0,1,0,557,114,0,1)"><circle class="f" style="--i:0" cx="529" cy="1157" r="19"/><circle class="f" style="--i:1" cx="410" cy="1241" r="19"/><circle class="f" style="--i:2" cx="649" cy="1325" r="19"/><circle class="f" style="--i:3" cx="290" cy="1409" r="19"/><circle class="f" style="--i:4" cx="767" cy="1493" r="19"/><circle class="f" style="--i:5" cx="529" cy="1576" r="19"/><circle class="f" style="--i:6" cx="410" cy="1660" r="19"/><circle class="f" style="--i:7" cx="649" cy="1744" r="19"/><circle class="f" style="--i:8" cx="767" cy="1828" r="19"/><circle class="f" style="--i:9" cx="290" cy="1912" r="19"/></svg></div>
+    <div class="a-bg4 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S4.webp" alt=""></div>
+    <div class="a-bg5 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S5.webp" alt=""></div>
+    <div class="a-pc actor"><div class="scr"><img class="img1" src="/chaeck/img/teacher-exam-new.jpg" alt="강사 웹 — 시험 만들기"><img class="img2" src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률"></div></div>
+    <svg class="a-sheet actor" viewBox="0 0 320 500" aria-hidden="true" style="--fill:0;--grade:0">
+  <rect x="1" y="1" width="318" height="498" rx="6" class="paper"/>
+  <rect x="14" y="14" width="10" height="10" class="cm"/><rect x="296" y="14" width="10" height="10" class="cm"/><rect x="14" y="476" width="10" height="10" class="cm"/><rect x="296" y="476" width="10" height="10" class="cm"/>
+  <rect x="34" y="30" width="120" height="9" rx="2" class="t1"/><rect x="34" y="46" width="170" height="5" rx="2" class="t2"/>
+  <rect x="236" y="26" width="52" height="52" rx="4" class="qr"/><path class="qrin" d="M244 34h12v12h-12zM272 34h8v8h-8zM244 62h8v8h-8zM262 52h4v4h-4zM270 60h10v4h-10zM266 68h4v6h-4zM276 68h6v6h-6z"/>
+  <rect x="34" y="70" width="60" height="4" rx="2" class="t2"/><rect x="120" y="70" width="90" height="4" rx="2" class="t2"/>
+  <rect x="44" y="94" width="232" height="10" rx="2" class="t3"/>
+  <rect x="49" y="100" width="7" height="7" class="cm"/><rect x="264" y="100" width="7" height="7" class="cm"/><rect x="49" y="437" width="7" height="7" class="cm"/><rect x="264" y="437" width="7" height="7" class="cm"/>
+  <text x="34" y="122" class="num">1</text><text x="34" y="158" class="num">2</text><text x="34" y="194" class="num">3</text><text x="34" y="230" class="num">4</text><text x="34" y="266" class="num">5</text><text x="34" y="302" class="num">6</text><text x="34" y="338" class="num">7</text><text x="34" y="374" class="num">8</text><text x="34" y="410" class="num">9</text><text x="34" y="446" class="num">10</text>
+  <circle cx="70" cy="118" r="10" class="bb"/><circle cx="110" cy="118" r="10" class="bb"/><circle cx="150" cy="118" r="10" class="bb"/><circle cx="150" cy="118" r="8.2" class="f" style="--i:0"/><circle cx="190" cy="118" r="10" class="bb"/><circle cx="230" cy="118" r="10" class="bb"/><ellipse class="o" style="--i:0" cx="150" cy="118" rx="17" ry="15" transform="rotate(-12 150 118)"/><circle cx="70" cy="154" r="10" class="bb"/><circle cx="110" cy="154" r="10" class="bb"/><circle cx="110" cy="154" r="8.2" class="f" style="--i:1"/><circle cx="150" cy="154" r="10" class="bb"/><circle cx="190" cy="154" r="10" class="bb"/><circle cx="230" cy="154" r="10" class="bb"/><ellipse class="o" style="--i:1" cx="110" cy="154" rx="17" ry="15" transform="rotate(-12 110 154)"/><circle cx="70" cy="190" r="10" class="bb"/><circle cx="110" cy="190" r="10" class="bb"/><circle cx="150" cy="190" r="10" class="bb"/><circle cx="190" cy="190" r="10" class="bb"/><circle cx="190" cy="190" r="8.2" class="f" style="--i:2"/><circle cx="230" cy="190" r="10" class="bb"/><path class="x" style="--i:2" d="M176 176 L204 204 M204 176 L176 204"/><circle cx="70" cy="226" r="10" class="bb"/><circle cx="70" cy="226" r="8.2" class="f" style="--i:3"/><circle cx="110" cy="226" r="10" class="bb"/><circle cx="150" cy="226" r="10" class="bb"/><circle cx="190" cy="226" r="10" class="bb"/><circle cx="230" cy="226" r="10" class="bb"/><ellipse class="o" style="--i:3" cx="70" cy="226" rx="17" ry="15" transform="rotate(-12 70 226)"/><circle cx="70" cy="262" r="10" class="bb"/><circle cx="110" cy="262" r="10" class="bb"/><circle cx="150" cy="262" r="10" class="bb"/><circle cx="190" cy="262" r="10" class="bb"/><circle cx="230" cy="262" r="10" class="bb"/><circle cx="230" cy="262" r="8.2" class="f" style="--i:4"/><ellipse class="o" style="--i:4" cx="230" cy="262" rx="17" ry="15" transform="rotate(-12 230 262)"/><circle cx="70" cy="298" r="10" class="bb"/><circle cx="110" cy="298" r="10" class="bb"/><circle cx="150" cy="298" r="10" class="bb"/><circle cx="150" cy="298" r="8.2" class="f" style="--i:5"/><circle cx="190" cy="298" r="10" class="bb"/><circle cx="230" cy="298" r="10" class="bb"/><ellipse class="o" style="--i:5" cx="150" cy="298" rx="17" ry="15" transform="rotate(-12 150 298)"/><circle cx="70" cy="334" r="10" class="bb"/><circle cx="110" cy="334" r="10" class="bb"/><circle cx="110" cy="334" r="8.2" class="f" style="--i:6"/><circle cx="150" cy="334" r="10" class="bb"/><circle cx="190" cy="334" r="10" class="bb"/><circle cx="230" cy="334" r="10" class="bb"/><path class="x" style="--i:6" d="M96 320 L124 348 M124 320 L96 348"/><circle cx="70" cy="370" r="10" class="bb"/><circle cx="110" cy="370" r="10" class="bb"/><circle cx="150" cy="370" r="10" class="bb"/><circle cx="190" cy="370" r="10" class="bb"/><circle cx="190" cy="370" r="8.2" class="f" style="--i:7"/><circle cx="230" cy="370" r="10" class="bb"/><ellipse class="o" style="--i:7" cx="190" cy="370" rx="17" ry="15" transform="rotate(-12 190 370)"/><circle cx="70" cy="406" r="10" class="bb"/><circle cx="110" cy="406" r="10" class="bb"/><circle cx="150" cy="406" r="10" class="bb"/><circle cx="190" cy="406" r="10" class="bb"/><circle cx="230" cy="406" r="10" class="bb"/><circle cx="230" cy="406" r="8.2" class="f" style="--i:8"/><ellipse class="o" style="--i:8" cx="230" cy="406" rx="17" ry="15" transform="rotate(-12 230 406)"/><circle cx="70" cy="442" r="10" class="bb"/><circle cx="70" cy="442" r="8.2" class="f" style="--i:9"/><circle cx="110" cy="442" r="10" class="bb"/><circle cx="150" cy="442" r="10" class="bb"/><circle cx="190" cy="442" r="10" class="bb"/><circle cx="230" cy="442" r="10" class="bb"/><ellipse class="o" style="--i:9" cx="70" cy="442" rx="17" ry="15" transform="rotate(-12 70 442)"/>
+</svg>
+    <div class="a-phone actor dev phone"><div class="scr"></div></div>
+    <svg class="a-pen actor" viewBox="0 0 40 200" aria-hidden="true"><defs><linearGradient id="pb" x1="0" x2="1"><stop offset="0" stop-color="#0E6B50"/><stop offset=".35" stop-color="#1D9E75"/><stop offset=".6" stop-color="#25B889"/><stop offset="1" stop-color="#0C5A44"/></linearGradient><linearGradient id="pg" x1="0" x2="1"><stop offset="0" stop-color="#15140f"/><stop offset=".5" stop-color="#3a3833"/><stop offset="1" stop-color="#0d0c0a"/></linearGradient><linearGradient id="pm" x1="0" x2="1"><stop offset="0" stop-color="#8f8a7c"/><stop offset=".5" stop-color="#e8e2d3"/><stop offset="1" stop-color="#6e6a60"/></linearGradient></defs><rect x="11" y="8" width="18" height="118" rx="6" fill="url(#pb)"/><rect x="11" y="8" width="18" height="20" rx="6" fill="#0E6B50"/><rect x="26" y="14" width="3" height="26" rx="1.5" fill="#EFE9DB" opacity=".9"/><rect x="14" y="12" width="2.5" height="90" rx="1.2" fill="#fff" opacity=".28"/><rect x="11" y="124" width="18" height="26" rx="4" fill="url(#pg)"/><path d="M11 150 L20 176 L29 150 Z" fill="url(#pm)"/><path d="M18.5 174 L20 182 L21.5 174 Z" fill="#111"/></svg>
+    <div class="a-zero actor" aria-hidden="true"><b>0</b><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></div>
+    <div class="a-stamp actor" aria-hidden="true">결과 공개</div>
+    <div class="a-phone-b actor dev phone" data-scene-video="5"><div class="scr"><img src="/chaeck/vid/student-result.jpg" alt="학생 앱 — 채점 결과"><video muted loop playsinline preload="metadata" poster="/chaeck/vid/student-result.jpg" aria-hidden="true"><source src="/chaeck/vid/student-result.mp4" type="video/mp4"></video></div></div>
+    <div class="a-phone-c actor dev phone" data-scene-video="5"><div class="scr"><img src="/chaeck/vid/parent-result.jpg" alt="학부모 앱 — 유형별 정답률과 점수 흐름"><video muted loop playsinline preload="metadata" poster="/chaeck/vid/parent-result.jpg" aria-hidden="true"><source src="/chaeck/vid/parent-result.mp4" type="video/mp4"></video></div></div>
+    <div class="a-flash"></div>
+  <div class="steps">
+    <div class="step s0"><div class="wrap"><div class="txt">
       <p class="eyebrow">학원 영어 시험 자동채점</p>
-      <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.</span></h1>
-      <p class="l">종이 시험 그대로. 그 위에 채점 한 층, 유형별 정답률 한 층.</p>
-      <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight">학부모라면</a></div>
-      <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 승인만.</p>
-    </div>
-    <div class="stage rv" data-scrub="root" data-end="0.7" aria-label="학생·채점·학부모 화면">
-      <div class="blob" aria-hidden="true"></div>
-      <span class="tag t1">학생</span><span class="tag t2">자동채점</span><span class="tag t3">학부모</span>
-      <figure class="phone p1"><div class="scr"><img src="/chaeck/img/student-home.jpg" alt="학생 앱 홈"></div></figure>
-      <figure class="phone p2"><div class="scr"><img src="/chaeck/vid/student-home-history.jpg" alt="학생 앱 — 홈에서 점수 흐름으로"><video autoplay muted loop playsinline poster="/chaeck/vid/student-home-history.jpg" aria-hidden="true"><source src="/chaeck/vid/student-home-history.mp4" type="video/mp4"></video></div></figure>
-      <figure class="phone p3"><div class="scr"><img src="/chaeck/img/parent-result.jpg" alt="학부모 결과 확인"></div></figure>
-    </div>
+      <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span></h1>
+      <p class="l">시험은 종이 그대로. 채점만 사라집니다.</p>
+      <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight" data-jump="5">학부모라면</a></div>
+      <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 확인만.</p>
+    </div></div></div>
+    <div class="step s1"><div class="wrap"><div class="txt"><p class="no">1 · 선생님</p><h2>바뀌는 건<br>종이 한 장.</h2><p class="l">QR 답안지 한 장만 새로 뽑으세요. 정답은 답안지에 실리지 않아요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설까지 채워져요.</p></div></div></div>
+    <div class="step s2"><div class="wrap"><div class="txt"><p class="no">2 · 학생</p><h2>답은 종이에,<br>늘 하던 대로.</h2></div></div></div>
+    <div class="step s3"><div class="wrap"><div class="txt"><p class="no">3 · 자동채점</p><h2><span class="sr">0 — </span>선생님이 채점하는<br>문항 수.</h2><p class="l">찍는 순간 채점. 읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>단답형 손글씨</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
+    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no">4 · 선생님 · 공개</p><h2>틀린 학생 5명 중<br>5명이 2번.</h2><p class="l">오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요. 공개는 선생님이 한 번 보고.</p></div></div></div>
+    <div class="step s5" id="insight"><div class="wrap"><div class="txt"><p class="no">5 · 학생 · 학부모</p><h2>어디서 막히는지,<br><span class="c" style="color:var(--coral-500)">시험마다.</span></h2><p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만. 다른 아이와 비교하지 않아요.</p></div></div></div>
+  </div>
   </div>
 </section>
-
-<div class="stack">
-
-<section class="layer l1" data-in>
-  <span class="wm-no" aria-hidden="true">1</span>
+<section class="finish" data-in>
   <div class="wrap">
-    <div class="text rv">
-      <p class="no">LAYER 1 · 종이</p>
-      <h2>시험은<br>지금 그대로.</h2>
-      <p class="l">바뀌는 건 QR 답안지 한 장뿐. 정답은 답안지에 실리지 않아요.</p>
-    </div>
-    <div class="shots rv" data-scrub data-start="0.95" data-end="0.55"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-qr.jpg" alt="QR 답안지 출력" loading="lazy"></div></figure><div class="sheet" aria-hidden="true"><i></i><i style="--n:0"></i><i></i><i></i><i></i><i></i><i></i><i style="--n:1"></i><i style="--n:2"></i><i></i><i></i><i></i><i></i><i></i><i style="--n:3"></i><i></i><i></i><i style="--n:4"></i><i></i><i></i></div></div>
+    <p class="no" style="font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7">시작</p>
+    <h2 style="margin-top:12px">시험은 그대로,<br>채점만 넘기세요.</h2>
+    <div class="cta" style="margin-top:28px"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
+    <p class="note"><span class="stamp">선생님 손 안 대도 돼요</span></p>
+    <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
+    <p class="fine">추후 · 단어 공부 · 서술형(문장) 채점 · 유형 코칭</p>
   </div>
 </section>
-
-<section class="layer l2 rev" data-in>
-  <span class="wm-no" aria-hidden="true">2</span>
-  <div class="wrap">
-    <div class="text rv">
-      <p class="no">LAYER 2 · 자동채점</p>
-      <span class="zero" aria-label="0"><b data-count-from="12">0</b><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></span>
-      <h2 style="font-size:clamp(1.9rem,4.8vw,3.2rem);margin-top:22px">선생님이 채점하는 문항 수.</h2>
-      <p class="l">학생이 답안지를 찍으면 그 자리에서 채점돼요. 읽힌 답은 학생이 확인하고 제출해요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설이 자동으로 채워지고, 선생님은 확인만 해요.</p>
-      <div class="chips"><span>객관식</span><span>단답형 손글씨</span><span>시험지 파일로 문항 자동 입력</span></div>
-    </div>
-    <div class="shots rv"><figure class="phone" style="max-width:290px;margin:0 auto"><div class="scr"><img src="/chaeck/vid/student-result.jpg" alt="학생 앱 — 채점 결과가 뜨는 순간" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/student-result.jpg" aria-hidden="true"><source src="/chaeck/vid/student-result.mp4" type="video/mp4"></video></div></figure></div>
-  </div>
-</section>
-
-<section class="layer l3" id="insight" data-in>
-  <span class="wm-no" aria-hidden="true">3</span>
-  <div class="wrap">
-    <div class="text rv">
-      <p class="no">LAYER 3 · 학생·학부모</p>
-      <h2>어디서 막히는지,<br><span class="c">시험마다.</span></h2>
-      <p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 등수 대신 우리 아이의 변화만 봐요. 다른 아이와 비교하지 않아요.</p>
-    </div>
-    <div class="shots rv pair">
-      <figure class="phone"><div class="scr"><img src="/chaeck/vid/parent-result.jpg" alt="학부모 앱 — 유형별 정답률과 문항별 답" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/parent-result.jpg" aria-hidden="true"><source src="/chaeck/vid/parent-result.mp4" type="video/mp4"></video></div></figure>
-      <figure class="phone sm"><div class="scr"><img src="/chaeck/img/student-history.jpg" alt="점수 흐름" loading="lazy"></div></figure>
-    </div>
-  </div>
-</section>
-
-<section class="layer l4 rev" data-in>
-  <span class="wm-no" aria-hidden="true">✓</span>
-  <div class="wrap">
-    <div class="text rv">
-      <p class="no">LAYER 4 · 선생님</p>
-      <h2 style="font-size:clamp(2.2rem,6vw,4.2rem)">반 전체가 약한 유형도<br>한눈에.</h2>
-      <p class="l">틀린 학생 5명 중 5명이 2번 — 오답이 쏠린 문항과 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요.</p>
-      <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
-      <p class="note"><span class="stamp">선생님 손 안 대도 돼요</span> 시험은 그대로, 채점만 넘기세요.</p>
-      <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
-      <p class="fine">추후 · 단어 공부 · 서술형(문장) 채점 · 유형 코칭</p>
-    </div>
-    <div class="shots rv"><figure class="pc"><div class="scr"><img src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률" loading="lazy"></div></figure></div>
-  </div>
-</section>
-
-</div>
-
 </main>
-
 <div class="tail">
-<p class="vlink">참고 시안 · <a href="/chaeck/ink/">잉크 비율</a> · <a href="/chaeck/a/">A(종이)</a> · <a href="/chaeck/b/">B(컬러 블록)</a></p>
+<p class="vlink">참고 · <a href="/chaeck/_old/">이전 판</a> · <a href="/chaeck/ink/">잉크</a></p>
 <footer>
   <div class="wrap">
     <div class="links">
@@ -269,7 +294,6 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
   </div>
 </footer>
 </div>
-
-<script src="/chaeck/motion.js" defer></script>
+<script src="/chaeck/relay.js" defer></script>
 </body>
 </html>
