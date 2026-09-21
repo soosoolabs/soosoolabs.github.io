@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>채크 — 찍으면, 채점 끝 (릴레이 시안)</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="학원 영어 시험은 종이로 그대로. 학생이 답안지를 찍으면 객관식·단답형이 자동으로 채점되고, 유형별로 어디서 막히는지 시험마다 보여요.">
+<meta name="theme-color" content="#F1ECE0">
+<link rel="preload" href="/assets/fonts/Paperlogy-8-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Pretendard';font-weight:100 900;font-display:swap;src:url('/assets/fonts/Pretendard-sub.woff2') format('woff2')}
+@font-face{font-family:'Paperlogy';font-weight:800;font-display:swap;src:url('/assets/fonts/Paperlogy-8-sub.woff2') format('woff2')}
+@font-face{font-family:'Paperlogy';font-weight:700;font-display:swap;src:url('/assets/fonts/Paperlogy-7-sub.woff2') format('woff2')}
+html{color-scheme:light}
+:root{
+  --paper:#F1ECE0; --paper-2:#E9E2D2; --card:#FFFFFF; --card-2:#FBF9F3;
+  --line:rgba(27,26,22,.10); --line-2:rgba(27,26,22,.16);
+  --ink-900:#1B1A16; --ink-700:#3A3833; --ink-500:#5C5950; --ink-400:#8A867C; --ink-200:#D8D3C7;
+  --green-700:#0E6B50; --green-600:#137C5B; --green-500:#1D9E75; --green-300:#9FE1CB; --green-100:#DEF3EB; --green-050:#EFF9F5;
+  --coral-600:#9A3B1C; --coral-500:#D8542B; --coral-100:#F8E7DF; --butter:#F5C84B;
+  --ff-head:'Paperlogy','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  --ff-body:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);color:var(--ink-900);background:var(--paper-2);line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;word-break:keep-all;overflow-wrap:anywhere;overflow-x:hidden}
+a{color:inherit}img,video{display:block;max-width:100%}svg{display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2{font-family:var(--ff-head);font-weight:800;letter-spacing:-.05em;line-height:.98}
+p{margin:0}
+/* 헤더 */
+header.top{position:sticky;top:0;z-index:20;background:rgba(233,226,210,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:60px;gap:12px}
+header.top .tag{font-size:.9rem;color:var(--ink-500)}
+header.top .right{text-align:right}
+.wm{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-head);font-weight:800;font-size:1.25rem;letter-spacing:-.03em;text-decoration:none}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--ink-900);display:grid;place-items:center}
+.mark svg{width:18px;height:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 28px;border-radius:14px;font-family:var(--ff-head);font-weight:800;font-size:1.1rem;text-decoration:none;border:1.5px solid var(--ink-900);transition:transform .08s}
+.btn.g{background:var(--green-600);color:#fff;box-shadow:4px 5px 0 rgba(14,107,80,.35)}
+.btn.w{background:#fff;color:var(--ink-900);box-shadow:4px 5px 0 rgba(27,26,22,.1)}
+.btn.sm{min-height:42px;padding:0 16px;font-size:.95rem;box-shadow:none}
+.btn:active{transform:translate(2px,3px)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.eyebrow{font-family:var(--ff-head);font-weight:800;font-size:.95rem;letter-spacing:.06em;display:inline-flex;align-items:center;gap:10px;opacity:.85}
+.eyebrow::before{content:"";width:14px;height:14px;border-radius:50%;border:2.6px solid var(--coral-500)}
+.stamp{display:inline-block;white-space:nowrap;font-family:var(--ff-head);font-weight:800;font-size:1.05rem;color:var(--green-600);border:2px solid var(--green-600);border-radius:9px;padding:4px 12px;transform:rotate(-6deg);background:#fff}
+/* 폰·PC 프레임 (영상은 첫 프레임 = 캡처) */
+.phone{background:#111;border-radius:38px;padding:8px;box-shadow:0 44px 90px -34px rgba(0,0,0,.55);position:relative}
+.phone .scr{border-radius:31px;overflow:hidden;aspect-ratio:390/844;background:#FBF9F3;position:relative}
+.phone .scr img,.phone .scr video{width:100%;height:100%;object-fit:cover;object-position:top;position:absolute;inset:0}
+.phone .scr video{z-index:2}
+.pc{background:#111;border-radius:16px;padding:7px;box-shadow:0 44px 90px -34px rgba(0,0,0,.55)}
+.pc .scr{border-radius:10px;overflow:hidden;aspect-ratio:1280/800;background:#FBF9F3}
+.pc .scr img{width:100%;height:100%;object-fit:cover;object-position:top}
+/* ── 히어로: 거대 제목 + 초록 블록 위에 부채꼴로 겹친 폰 3장(시차) ── */
+.hero{padding:64px 0 0;overflow:hidden;position:relative}
+.hero .wrap{display:grid;gap:32px;align-items:center}
+@media(min-width:900px){.hero .wrap{grid-template-columns:1.05fr 1fr;gap:24px}}
+.hero h1{font-size:clamp(3.8rem,11vw,8.6rem)}
+.hero h1 .g{color:var(--green-600)}
+.hero .l{font-size:clamp(1.15rem,2.2vw,1.5rem);color:var(--ink-700);margin-top:22px;max-width:20em;font-weight:500}
+.hero .note,.layer .note{margin-top:26px;font-size:1rem;color:var(--ink-700);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.stage{position:relative;height:720px;width:100%;max-width:560px;margin:0 auto}
+.stage .blob{position:absolute;inset:8% -6% 4% -6%;background:var(--green-600);border-radius:44px;box-shadow:inset 0 -80px 120px -80px rgba(0,0,0,.25)}
+.stage .phone{position:absolute;width:250px;left:50%;top:4%;transform-origin:50% 100%}
+.stage .p1{z-index:1}
+.stage .p2{transform:translateX(-50%) translateY(-6px);z-index:3}
+.stage .p3{z-index:2}
+.stage .tag{position:absolute;font-family:var(--ff-head);font-weight:800;font-size:.95rem;padding:7px 13px;border-radius:999px;background:var(--ink-900);color:#fff;z-index:5;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+.stage .t1{left:0;top:66%;transform:rotate(-8deg)}.stage .t2{left:50%;top:-2px;transform:translateX(-50%);background:var(--butter);color:var(--ink-900)}.stage .t3{right:0;top:66%;transform:rotate(8deg);background:var(--coral-500)}
+@media(max-width:520px){.stage{height:560px}.stage .phone{width:196px}.hero{padding-top:44px}}
+/* ── 층 스택: 스크롤하면 다음 층이 앞 층 위로 올라탄다 · 앞 층은 뒤로 살짝 물러난다 ── */
+.stack{position:relative;padding-top:56px}
+.layer{position:sticky;min-height:92svh;border-radius:34px 34px 0 0;padding:64px 0 96px;box-shadow:0 -30px 60px -34px rgba(27,26,22,.45);overflow:hidden;transform-origin:50% 0}
+.layer .wrap{display:grid;gap:34px;align-items:center;position:relative;z-index:2}
+@media(min-width:900px){.layer .wrap{grid-template-columns:1.05fr .95fr;gap:56px}.layer.rev .text{order:2}.layer.rev .shots{order:1}}
+.layer .no{font-family:var(--ff-head);font-weight:800;font-size:.95rem;letter-spacing:.1em;opacity:.7}
+.layer h2{font-size:clamp(2.6rem,7.2vw,5.4rem);margin-top:14px}
+.layer .l{font-size:clamp(1.1rem,2vw,1.35rem);margin-top:18px;max-width:22em;font-weight:500}
+.layer .wm-no{position:absolute;right:-2%;bottom:-8%;font-family:var(--ff-head);font-weight:800;font-size:clamp(14rem,36vw,30rem);line-height:.8;letter-spacing:-.08em;opacity:.07;z-index:1;pointer-events:none;user-select:none}
+.l1{background:var(--card-2);color:var(--ink-900);top:60px}
+.l2{background:var(--green-600);color:#fff;top:80px}.l2 .l{color:#E6F4EE}.l2 .no{color:#DEF3EB}.l2 .wm-no{color:#fff}
+.l3{background:var(--ink-900);color:#F4EFE3;top:100px}.l3 .l{color:#CFC9BB}.l3 .c{color:#FF8A5E}.l3 .wm-no{color:#fff}
+.l4{background:var(--butter);color:var(--ink-900);top:120px;min-height:80svh}.l4 .wm-no{color:var(--ink-900)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chips span{font-family:var(--ff-head);font-weight:700;padding:9px 15px;border-radius:999px;border:2px solid currentColor;font-size:1rem}
+/* 칩은 순서가 아니라 나란한 항목(9/21 확정: 객관식·단답형·파일 입력) — 화살표 없음 */
+/* 「0」 + 그려지는 코랄 원 */
+.zero{position:relative;display:inline-block;font-family:var(--ff-head);font-weight:800;font-size:clamp(9rem,28vw,19rem);line-height:.82;letter-spacing:-.08em;color:var(--butter);margin-top:10px}
+.zero svg{position:absolute;inset:-8% -16%;width:132%;height:116%;overflow:visible}
+.zero ellipse{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000}
+.pair{display:flex;gap:16px;justify-content:center;align-items:flex-end}
+.pair .phone{flex:0 0 auto;width:min(58%,262px)}
+.pair .phone:first-child{transform:rotate(-5deg)}.pair .phone.sm{width:min(40%,196px);transform:rotate(6deg) translateY(-24px)}
+.fine{font-size:.92rem;opacity:.75;margin-top:18px}
+.tail{position:relative;z-index:9;background:var(--paper-2)}
+.vlink{text-align:center;font-size:.85rem;padding:18px 0;color:var(--ink-500)}
+footer{padding:32px 0 56px;font-size:.88rem;color:var(--ink-500)}
+footer .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:18px}
+footer .links a{color:var(--ink-700);text-decoration:none;border-bottom:1px solid var(--line-2)}
+footer dl{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}footer dt{color:var(--ink-400)}footer dd{color:var(--ink-700)}
+footer .copy{margin-top:18px}
+@media(max-width:520px){header.top .tag{display:none}header.top .wrap{grid-template-columns:1fr auto}header.top .right{grid-column:2}.layer{padding:48px 0 72px}}
+
+/* ══ 릴레이: 화면 전체가 무대 · 스크롤이 카메라 ══ */
+html{scroll-behavior:auto}
+.story{position:relative;height:calc(100svh + 6*165svh)}
+.stage{position:sticky;top:0;height:100svh;width:100%;max-width:none;margin:0;overflow:hidden;isolation:isolate}
+.stage .phone{top:50%;left:50%;transform-origin:50% 50%}
+.a-bg{position:absolute;inset:0;background:#EFE9DB;z-index:0}
+.stage::after{content:"";position:absolute;inset:-20%;pointer-events:none;z-index:8;opacity:.09;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.stage::before{content:"";position:absolute;inset:0;z-index:7;pointer-events:none;background:radial-gradient(120% 90% at 18% 10%,rgba(255,255,255,.28),transparent 55%),radial-gradient(90% 70% at 100% 100%,rgba(27,26,22,.12),transparent 60%)}
+.actor{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);will-change:transform,opacity}
+.a-photo{width:100%;height:100%;z-index:1;transform-origin:50.6% 42.5%}
+.a-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.a-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(241,236,224,.92) 0,rgba(241,236,224,.55) 34%,rgba(241,236,224,0) 60%)}
+@media(max-width:720px){.a-photo::after{background:linear-gradient(180deg,rgba(241,236,224,0) 30%,rgba(241,236,224,.85) 62%,rgba(241,236,224,.97) 100%)}}
+/* 기기 — 베젤 하이라이트 · 유리 반사 · 그림자 두 겹 */
+.dev{background:#141311;border-radius:44px;padding:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.06),0 2px 0 rgba(0,0,0,.45),0 30px 60px -22px rgba(27,26,22,.55),0 90px 140px -60px rgba(27,26,22,.45)}
+.dev .scr{border-radius:36px;overflow:hidden;position:relative;background:#FBF9F3}
+.dev .scr::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(112deg,rgba(255,255,255,.16) 0,rgba(255,255,255,.04) 28%,rgba(255,255,255,0) 46%)}
+.dev.phone{width:min(46vh,300px);z-index:4}.dev.phone .scr{aspect-ratio:390/844}
+.dev.phone .scr img,.dev.phone .scr video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}.dev.phone .scr video{z-index:2}
+.dev.phone::before{content:"";position:absolute;right:-3px;top:22%;width:3px;height:12%;border-radius:2px;background:#2a2824}
+.a-pc{width:min(78vw,940px);z-index:3;background:#141311;border-radius:18px;padding:9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 2px 0 rgba(0,0,0,.45),0 40px 80px -30px rgba(27,26,22,.55),0 120px 160px -80px rgba(27,26,22,.4)}
+.a-pc .scr{border-radius:11px;overflow:hidden;aspect-ratio:1280/800;background:#FBF9F3;position:relative}
+.a-pc .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:opacity 500ms var(--ease)}
+.a-pc .scr .img2{opacity:0}.stage[data-scene="4"] .a-pc .scr .img2,.stage[data-scene="5"] .a-pc .scr .img2{opacity:1}
+/* 카메라 폰: 화면이 투명 — 뒤의 답안지가 뷰파인더로 보인다 */
+.a-phone{background:transparent;padding:0;border:10px solid #141311;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 0 rgba(0,0,0,.45),0 30px 60px -22px rgba(27,26,22,.55),0 90px 140px -60px rgba(27,26,22,.45)}
+.a-phone .scr{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 40px 60px -40px rgba(0,0,0,.3)}
+.a-phone .scr::before{content:"";position:absolute;inset:0;background:rgba(20,19,17,.06)}
+/* 답안지 */
+.a-sheet{height:min(80vh,560px);width:auto;z-index:2;filter:drop-shadow(0 18px 24px rgba(27,26,22,.22)) drop-shadow(0 60px 80px rgba(27,26,22,.18))}
+.a-sheet .paper{fill:#fff;stroke:#DDD6C6;stroke-width:1.2}.a-sheet .cm{fill:#1B1A16}.a-sheet .t1{fill:#1B1A16}.a-sheet .t2{fill:#B9B3A5}.a-sheet .t3{fill:#EDE8DC}.a-sheet .qr{fill:none;stroke:#1B1A16;stroke-width:2.2}.a-sheet .qrin{fill:#1B1A16}
+.a-sheet .num{font:700 11px var(--ff-head);fill:#1B1A16}
+.a-sheet .bb{fill:none;stroke:#8A867C;stroke-width:1.3}
+.a-sheet .f{fill:#1B1A16;opacity:clamp(0,calc(var(--fill) - var(--i)),1);transform-box:fill-box;transform-origin:center;transform:scale(clamp(.2,calc(var(--fill) - var(--i)),1))}
+.a-sheet .o{fill:none;stroke:var(--green-500);stroke-width:3.4;stroke-linecap:round;filter:url(#rough);stroke-dasharray:110;stroke-dashoffset:calc(110 - 110*clamp(0,calc(var(--grade) - var(--i)),1))}
+.a-sheet .x{fill:none;stroke:var(--coral-500);stroke-width:3.4;stroke-linecap:round;filter:url(#rough);stroke-dasharray:80;stroke-dashoffset:calc(80 - 80*clamp(0,calc(var(--grade) - var(--i)),1))}
+.a-pen{height:min(26vh,200px);width:auto;z-index:5;filter:drop-shadow(0 14px 18px rgba(27,26,22,.35))}
+.a-pen .body{fill:var(--green-500)}.a-pen .cap{fill:var(--green-700)}.a-pen .cone{fill:#E9E2D2}.a-pen .tip{fill:#1B1A16}
+/* 큰 0 · 도장 · 플래시 */
+.a-zero{z-index:6;font-family:var(--ff-head);font-weight:800;font-size:clamp(9rem,26vw,20rem);line-height:.8;letter-spacing:-.08em;color:var(--ink-900);padding:.06em .14em}
+.a-zero svg{position:absolute;inset:-8% -12%;width:124%;height:116%;overflow:visible}
+.a-zero ellipse{fill:none;stroke:var(--green-500);stroke-width:7;stroke-linecap:round;filter:url(#rough);stroke-dasharray:1200;stroke-dashoffset:calc(1200 - 1200*clamp(0,calc((var(--t) - 3.62)*3),1))}
+.a-stamp{z-index:6;font-family:var(--ff-head);font-weight:800;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--green-500);border:3px solid var(--green-500);border-radius:12px;padding:10px 22px;white-space:nowrap;filter:url(#rough);background:rgba(255,255,255,.04)}
+.a-flash{position:absolute;inset:0;background:#fff;z-index:9;opacity:0;pointer-events:none}
+/* 글(스텝) */
+.steps{position:absolute;inset:0;z-index:10;pointer-events:none}
+.step{position:absolute;inset:0;display:flex;align-items:center;opacity:0}
+.step .wrap{width:100%}
+.step .txt{max-width:min(30em,38vw);padding:24px 0}
+.step .no{font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7}
+.step h2{font-size:clamp(2.4rem,6.4vw,5rem);margin-top:12px;line-height:1.02}
+.step .l{font-size:clamp(1.05rem,1.9vw,1.3rem);margin-top:16px;font-weight:500;max-width:24em}
+.step a{pointer-events:auto}
+.step.dark,.step.dark h2,.step.dark .no{color:#F4EFE3}.step.dark .l{color:#CFC9BB}
+.s0 h1{font-size:clamp(3.6rem,10vw,8.4rem);line-height:.96}
+.s0 .g{position:relative;display:inline-block}.s0 .g svg{position:absolute;left:-1%;right:-1%;bottom:-.02em;height:.2em;overflow:visible}
+.s0 .g path{fill:none;stroke:var(--green-500);stroke-width:6.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough);stroke-dasharray:1000;stroke-dashoffset:calc(1000 - 1000*clamp(0,calc(.15 + var(--t)*8),1))}
+.s3 .txt,.s5 .txt{margin-left:auto}.s2 .txt{align-self:flex-start;padding-top:12vh}
+@media(max-width:720px){.step{align-items:flex-end}.step .txt{padding-bottom:26px;background:linear-gradient(180deg,transparent,rgba(241,236,224,.85) 30%);margin:0 -16px;padding-left:16px;padding-right:16px;max-width:none}.step.dark .txt{background:linear-gradient(180deg,transparent,rgba(27,26,22,.85) 30%)}.s3 .txt,.s5 .txt{margin-left:0}.s0 h1{font-size:clamp(3rem,15vw,4.6rem)}}
+/* 마무리 · 푸터 */
+.finish{position:relative;z-index:11;background:var(--paper-2);padding:96px 0 56px}
+.finish h2{font-size:clamp(2.4rem,6vw,4.6rem)}
+html:not(.js) .stage{position:static;height:auto;min-height:60svh}html:not(.js) .actor:not(.a-photo){display:none}html:not(.js) .steps{position:static}html:not(.js) .stage .step{position:static;display:block}html:not(.js) .step{position:static;height:auto;opacity:1;padding:48px 0}html:not(.js) .story{height:auto}
+html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{position:static;height:auto;opacity:1;padding:48px 0}
+.btn.g{background:var(--ink-900);color:#fff;box-shadow:4px 5px 0 rgba(27,26,22,.22)}.hero h1 .g,.s0 h1 .g{color:var(--ink-900)}.chips span{border-color:currentColor}
+.fine{font-size:.92rem;opacity:.75;margin-top:14px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
+<header class="top">
+  <div class="wrap">
+    <span class="tag">학원 영어 시험 자동채점</span>
+    <a class="wm" href="/chaeck/" aria-label="채크">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="5" rx="1.2" fill="#1D9E75"/><path d="M4.2 6.6l1.5 1.4 2.4-2.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="6" width="11" height="1.6" rx=".8" fill="#D8D3C7"/><rect x="3" y="11" width="5" height="5" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="13" width="8" height="1.6" rx=".8" fill="#5C5950"/><rect x="3" y="18" width="5" height="4" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="19" width="9" height="1.6" rx=".8" fill="#5C5950"/></svg></span>
+      채크
+    </a>
+    <div class="right"><a class="btn w sm" href="https://chaeck.soosoo.kr/login">로그인</a></div>
+  </div>
+</header>
+<main>
+<section class="story" aria-label="채크가 하는 일 — 선생님에서 학생, 학부모까지">
+  <div class="stage" data-scene="0" style="--t:0;--p:0">
+    <div class="a-bg"></div>
+    <div class="a-photo actor"><img src="/chaeck/img/ai/H1.webp" alt="학생이 QR 답안지를 폰으로 찍는 순간"></div>
+    <div class="a-pc actor"><div class="scr"><img class="img1" src="/chaeck/img/teacher-exam-new.jpg" alt="강사 웹 — 시험 만들기"><img class="img2" src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률"></div></div>
+    <svg class="a-sheet actor" viewBox="0 0 320 500" aria-hidden="true" style="--fill:0;--grade:0">
+  <rect x="1" y="1" width="318" height="498" rx="6" class="paper"/>
+  <rect x="14" y="14" width="10" height="10" class="cm"/><rect x="296" y="14" width="10" height="10" class="cm"/><rect x="14" y="476" width="10" height="10" class="cm"/><rect x="296" y="476" width="10" height="10" class="cm"/>
+  <rect x="34" y="30" width="120" height="9" rx="2" class="t1"/><rect x="34" y="46" width="170" height="5" rx="2" class="t2"/>
+  <rect x="236" y="26" width="52" height="52" rx="4" class="qr"/><path class="qrin" d="M244 34h12v12h-12zM272 34h8v8h-8zM244 62h8v8h-8zM262 52h4v4h-4zM270 60h10v4h-10zM266 68h4v6h-4zM276 68h6v6h-6z"/>
+  <rect x="34" y="70" width="60" height="4" rx="2" class="t2"/><rect x="120" y="70" width="90" height="4" rx="2" class="t2"/>
+  <rect x="44" y="94" width="232" height="10" rx="2" class="t3"/>
+  <rect x="49" y="100" width="7" height="7" class="cm"/><rect x="264" y="100" width="7" height="7" class="cm"/><rect x="49" y="437" width="7" height="7" class="cm"/><rect x="264" y="437" width="7" height="7" class="cm"/>
+  <text x="34" y="122" class="num">1</text><text x="34" y="158" class="num">2</text><text x="34" y="194" class="num">3</text><text x="34" y="230" class="num">4</text><text x="34" y="266" class="num">5</text><text x="34" y="302" class="num">6</text><text x="34" y="338" class="num">7</text><text x="34" y="374" class="num">8</text><text x="34" y="410" class="num">9</text><text x="34" y="446" class="num">10</text>
+  <circle cx="70" cy="118" r="10" class="bb"/><circle cx="110" cy="118" r="10" class="bb"/><circle cx="150" cy="118" r="10" class="bb"/><circle cx="150" cy="118" r="8.2" class="f" style="--i:0"/><circle cx="190" cy="118" r="10" class="bb"/><circle cx="230" cy="118" r="10" class="bb"/><ellipse class="o" style="--i:0" cx="150" cy="118" rx="17" ry="15" transform="rotate(-12 150 118)"/><circle cx="70" cy="154" r="10" class="bb"/><circle cx="110" cy="154" r="10" class="bb"/><circle cx="110" cy="154" r="8.2" class="f" style="--i:1"/><circle cx="150" cy="154" r="10" class="bb"/><circle cx="190" cy="154" r="10" class="bb"/><circle cx="230" cy="154" r="10" class="bb"/><ellipse class="o" style="--i:1" cx="110" cy="154" rx="17" ry="15" transform="rotate(-12 110 154)"/><circle cx="70" cy="190" r="10" class="bb"/><circle cx="110" cy="190" r="10" class="bb"/><circle cx="150" cy="190" r="10" class="bb"/><circle cx="190" cy="190" r="10" class="bb"/><circle cx="190" cy="190" r="8.2" class="f" style="--i:2"/><circle cx="230" cy="190" r="10" class="bb"/><path class="x" style="--i:2" d="M176 176 L204 204 M204 176 L176 204"/><circle cx="70" cy="226" r="10" class="bb"/><circle cx="70" cy="226" r="8.2" class="f" style="--i:3"/><circle cx="110" cy="226" r="10" class="bb"/><circle cx="150" cy="226" r="10" class="bb"/><circle cx="190" cy="226" r="10" class="bb"/><circle cx="230" cy="226" r="10" class="bb"/><ellipse class="o" style="--i:3" cx="70" cy="226" rx="17" ry="15" transform="rotate(-12 70 226)"/><circle cx="70" cy="262" r="10" class="bb"/><circle cx="110" cy="262" r="10" class="bb"/><circle cx="150" cy="262" r="10" class="bb"/><circle cx="190" cy="262" r="10" class="bb"/><circle cx="230" cy="262" r="10" class="bb"/><circle cx="230" cy="262" r="8.2" class="f" style="--i:4"/><ellipse class="o" style="--i:4" cx="230" cy="262" rx="17" ry="15" transform="rotate(-12 230 262)"/><circle cx="70" cy="298" r="10" class="bb"/><circle cx="110" cy="298" r="10" class="bb"/><circle cx="150" cy="298" r="10" class="bb"/><circle cx="150" cy="298" r="8.2" class="f" style="--i:5"/><circle cx="190" cy="298" r="10" class="bb"/><circle cx="230" cy="298" r="10" class="bb"/><ellipse class="o" style="--i:5" cx="150" cy="298" rx="17" ry="15" transform="rotate(-12 150 298)"/><circle cx="70" cy="334" r="10" class="bb"/><circle cx="110" cy="334" r="10" class="bb"/><circle cx="110" cy="334" r="8.2" class="f" style="--i:6"/><circle cx="150" cy="334" r="10" class="bb"/><circle cx="190" cy="334" r="10" class="bb"/><circle cx="230" cy="334" r="10" class="bb"/><path class="x" style="--i:6" d="M96 320 L124 348 M124 320 L96 348"/><circle cx="70" cy="370" r="10" class="bb"/><circle cx="110" cy="370" r="10" class="bb"/><circle cx="150" cy="370" r="10" class="bb"/><circle cx="190" cy="370" r="10" class="bb"/><circle cx="190" cy="370" r="8.2" class="f" style="--i:7"/><circle cx="230" cy="370" r="10" class="bb"/><ellipse class="o" style="--i:7" cx="190" cy="370" rx="17" ry="15" transform="rotate(-12 190 370)"/><circle cx="70" cy="406" r="10" class="bb"/><circle cx="110" cy="406" r="10" class="bb"/><circle cx="150" cy="406" r="10" class="bb"/><circle cx="190" cy="406" r="10" class="bb"/><circle cx="230" cy="406" r="10" class="bb"/><circle cx="230" cy="406" r="8.2" class="f" style="--i:8"/><ellipse class="o" style="--i:8" cx="230" cy="406" rx="17" ry="15" transform="rotate(-12 230 406)"/><circle cx="70" cy="442" r="10" class="bb"/><circle cx="70" cy="442" r="8.2" class="f" style="--i:9"/><circle cx="110" cy="442" r="10" class="bb"/><circle cx="150" cy="442" r="10" class="bb"/><circle cx="190" cy="442" r="10" class="bb"/><circle cx="230" cy="442" r="10" class="bb"/><ellipse class="o" style="--i:9" cx="70" cy="442" rx="17" ry="15" transform="rotate(-12 70 442)"/>
+</svg>
+    <div class="a-phone actor dev phone"><div class="scr"></div></div>
+    <svg class="a-pen actor" viewBox="0 0 40 200" aria-hidden="true"><rect x="12" y="10" width="16" height="130" rx="5" class="body"/><rect x="12" y="10" width="16" height="16" rx="5" class="cap"/><path d="M12 140 L20 170 L28 140 Z" class="cone"/><path d="M18 168 L20 178 L22 168 Z" class="tip"/></svg>
+    <div class="a-zero actor" aria-label="0"><b>12</b><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="30" rx="46" ry="25" transform="rotate(-6 50 30)"/></svg></div>
+    <div class="a-stamp actor">결과 공개</div>
+    <div class="a-phone-b actor dev phone" data-scene-video="5"><div class="scr"><img src="/chaeck/vid/student-result.jpg" alt="학생 앱 — 채점 결과"><video muted loop playsinline preload="metadata" poster="/chaeck/vid/student-result.jpg" aria-hidden="true"><source src="/chaeck/vid/student-result.mp4" type="video/mp4"></video></div></div>
+    <div class="a-phone-c actor dev phone" data-scene-video="5"><div class="scr"><img src="/chaeck/vid/parent-result.jpg" alt="학부모 앱 — 유형별 정답률과 점수 흐름"><video muted loop playsinline preload="metadata" poster="/chaeck/vid/parent-result.jpg" aria-hidden="true"><source src="/chaeck/vid/parent-result.mp4" type="video/mp4"></video></div></div>
+    <div class="a-flash"></div>
+  <div class="steps">
+    <div class="step s0"><div class="wrap"><div class="txt">
+      <p class="eyebrow">학원 영어 시험 자동채점</p>
+      <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span></h1>
+      <p class="l">종이 시험 그대로. 그 위에 채점 한 층, 유형별 정답률 한 층.</p>
+      <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight">학부모라면</a></div>
+      <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 확인만.</p>
+    </div></div></div>
+    <div class="step s1"><div class="wrap"><div class="txt"><p class="no">1 · 선생님</p><h2>시험은<br>지금 그대로.</h2><p class="l">바뀌는 건 QR 답안지 한 장뿐. 정답은 답안지에 실리지 않아요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설이 자동으로 채워지고, 선생님은 확인만 해요.</p></div></div></div>
+    <div class="step s2"><div class="wrap"><div class="txt"><p class="no">2 · 학생</p><h2>답은 종이에,<br>그대로.</h2></div></div></div>
+    <div class="step s3"><div class="wrap"><div class="txt"><p class="no">3 · 자동채점</p><h2>선생님이 채점하는<br>문항 수.</h2><p class="l">학생이 답안지를 찍으면 그 자리에서 채점돼요. 읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>단답형 손글씨</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
+    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no">4 · 선생님</p><h2>반 전체가 약한 유형도<br>한눈에.</h2><p class="l">틀린 학생 5명 중 5명이 2번 — 오답이 쏠린 문항과 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요. 내보내기 전에 선생님이 한 번 보고, 공개.</p></div></div></div>
+    <div class="step s5" id="insight"><div class="wrap"><div class="txt"><p class="no">5 · 학생 · 학부모</p><h2>어디서 막히는지,<br><span class="c" style="color:var(--coral-500)">시험마다.</span></h2><p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 등수 대신 우리 아이의 변화만 봐요. 다른 아이와 비교하지 않아요.</p></div></div></div>
+  </div>
+  </div>
+</section>
+<section class="finish" data-in>
+  <div class="wrap">
+    <p class="no" style="font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7">시작</p>
+    <h2 style="margin-top:12px">시험은 그대로,<br>채점만 넘기세요.</h2>
+    <div class="cta" style="margin-top:28px"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
+    <p class="note"><span class="stamp">선생님 손 안 대도 돼요</span></p>
+    <p class="fine">지금은 무료 · 웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
+    <p class="fine">추후 · 단어 공부 · 서술형(문장) 채점 · 유형 코칭</p>
+  </div>
+</section>
+</main>
+<div class="tail">
+<p class="vlink">릴레이 시안 · 정본은 <a href="/chaeck/">/chaeck/</a> · <a href="/chaeck/ink/">잉크</a></p>
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://chaeck.soosoo.kr/terms">이용약관</a>
+      <a href="https://chaeck.soosoo.kr/privacy">개인정보처리방침</a>
+      <a href="https://chaeck.soosoo.kr/notices">공지사항</a>
+      <a href="mailto:soosoo.labs@gmail.com">문의 soosoo.labs@gmail.com</a>
+      <a href="/">수수의 다른 앱</a>
+    </div>
+    <dl>
+      <dt>상호</dt><dd>수수 (SooSoo)</dd>
+      <dt>대표</dt><dd>이상훈</dd>
+      <dt>사업자등록번호</dt><dd>725-61-00925</dd>
+      <dt>사업장 주소</dt><dd>경기도 안산시 상록구 이호로4길 14, 503호</dd>
+      <dt>대표전화</dt><dd>010-9821-2506</dd>
+      <dt>문의</dt><dd><a href="mailto:soosoo.labs@gmail.com">soosoo.labs@gmail.com</a></dd>
+    </dl>
+    <p class="copy">© 2026 수수 · 채크는 수수가 만드는 앱이에요.</p>
+  </div>
+</footer>
+</div>
+<script src="/chaeck/relay/relay.js" defer></script>
+</body>
+</html>
