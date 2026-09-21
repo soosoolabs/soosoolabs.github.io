@@ -110,6 +110,14 @@
     }
   }
   function onScroll() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
+  // 「학부모라면」: 5 장면(학생·학부모)으로 정확히 점프 — 앵커는 고정 무대 안이라 스크롤 위치를 계산해야 한다
+  d.querySelectorAll('[data-jump]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var top = story.getBoundingClientRect().top + scrollY, total = story.offsetHeight - innerHeight;
+      scrollTo({ top: top + (parseFloat(a.getAttribute('data-jump')) + .45) * total / N, behavior: rm ? 'auto' : 'smooth' });
+    });
+  });
   if (rm) { h.classList.add('nojs'); return; }              // 움직임 축소: 정지 화면(끝 장면들)
   addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); frame();
 })();
