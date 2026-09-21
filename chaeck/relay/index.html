@@ -171,6 +171,22 @@ html:not(.js) .stage{position:static;height:auto;min-height:60svh}html:not(.js) 
 html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{position:static;height:auto;opacity:1;padding:48px 0}
 .btn.g{background:var(--ink-900);color:#fff;box-shadow:4px 5px 0 rgba(27,26,22,.22)}.hero h1 .g,.s0 h1 .g{color:var(--ink-900)}.chips span{border-color:currentColor}
 .fine{font-size:.92rem;opacity:.75;margin-top:14px}
+
+/* ── 다듬기 1차(9/21 「더 구체적으로」) ── */
+.a-desk{width:100%;height:100%;z-index:1;opacity:0}.a-desk img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;filter:blur(14px) saturate(.9);transform:scale(1.06)}
+.a-desk::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(246,242,232,.55),rgba(246,242,232,.35))}
+/* 기기: 다이내믹 아일랜드 · 옆면 하이라이트 · 바닥 접촉 그림자 */
+.dev.phone .scr::before{content:"";position:absolute;left:50%;top:10px;width:26%;height:3.2%;border-radius:999px;background:#0b0b0a;transform:translateX(-50%);z-index:3}
+.a-phone .scr::before{background:#0b0b0a}
+.dev{box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.06),inset -2px 0 3px -2px rgba(255,255,255,.18),0 2px 0 rgba(0,0,0,.45),0 12px 18px -12px rgba(27,26,22,.6),0 30px 60px -22px rgba(27,26,22,.5),0 90px 140px -60px rgba(27,26,22,.4)}
+.a-pc::after{content:"";position:absolute;left:50%;top:4px;width:5px;height:5px;border-radius:50%;background:#2a2824;transform:translateX(-50%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+/* 손그림 획: 압력 — 아래에 굵고 옅은 획 한 겹 더 */
+.a-sheet .o,.a-zero ellipse{paint-order:stroke;filter:url(#rough) drop-shadow(0 0 .6px rgba(29,158,117,.55))}
+.a-sheet .x{filter:url(#rough) drop-shadow(0 0 .6px rgba(216,84,43,.55))}
+/* 먹 장면 비네트 · 종이 장면 결 강화 */
+.stage[data-scene="4"]::before{background:radial-gradient(90% 70% at 30% 20%,rgba(255,255,255,.06),transparent 60%),radial-gradient(100% 100% at 100% 100%,rgba(0,0,0,.35),transparent 60%)}
+/* 모바일 글: 3·5 장면은 아래, 2 장면은 위 */
+@media(max-width:720px){.s3 .txt,.s5 .txt{margin-left:0}.step .txt{padding-bottom:22px}.s2 .txt{padding-top:9vh}}
 </style>
 </head>
 <body>
@@ -190,6 +206,7 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
   <div class="stage" data-scene="0" style="--t:0;--p:0">
     <div class="a-bg"></div>
     <div class="a-photo actor"><img src="/chaeck/img/ai/H1.webp" alt="학생이 QR 답안지를 폰으로 찍는 순간"></div>
+    <div class="a-desk actor" aria-hidden="true"><img src="/chaeck/img/ai/H1.webp" alt=""></div>
     <div class="a-pc actor"><div class="scr"><img class="img1" src="/chaeck/img/teacher-exam-new.jpg" alt="강사 웹 — 시험 만들기"><img class="img2" src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률"></div></div>
     <svg class="a-sheet actor" viewBox="0 0 320 500" aria-hidden="true" style="--fill:0;--grade:0">
   <rect x="1" y="1" width="318" height="498" rx="6" class="paper"/>
