@@ -155,6 +155,35 @@
         "chaeck.soosoo.kr/terms",
         "chaeck.soosoo.kr/signup"
       ]
+    },
+    {
+      "path": "/chaeck/ink/",
+      "_왜": "잉크 비율 시안(noindex · 9/21 사장님 「1로 가봐」 — 초록은 선만)",
+      "forbid": [
+        "등수를",
+        "석차를",
+        "백분위",
+        "반 평균을",
+        "1등",
+        "순위",
+        "최고의",
+        "혁신",
+        "AI 가",
+        "학원으로 연결",
+        "저희 팀",
+        "영어 특화",
+        "즉시 삭제",
+        "채점 직후 지워",
+        "무제한"
+      ],
+      "must": [
+        "만 14세 이상",
+        "비교하지 않아요",
+        "개인정보처리방침",
+        "chaeck.soosoo.kr/privacy",
+        "chaeck.soosoo.kr/terms",
+        "chaeck.soosoo.kr/signup"
+      ]
     }
   ]
 }

@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>채크 — 찍으면, 채점 끝</title>
+<title>채크 — 찍으면, 채점 끝 (잉크 시안)</title>
+<meta name="robots" content="noindex">
 <meta name="description" content="학원 영어 시험은 종이로 그대로. 학생이 답안지를 찍으면 객관식·단답형이 자동으로 채점되고, 유형별로 어디서 막히는지 시험마다 보여요.">
 <link rel="canonical" href="https://soosoo.kr/chaeck/">
 <meta property="og:title" content="채크 — 찍으면, 채점 끝">
@@ -147,6 +148,45 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
   @keyframes recede{to{transform:scale(.94);filter:brightness(.82)}}
 }}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.phone .scr video{display:none}.rv,.text>*,.shots,.wm-no,.stamp,.chips span,.zero ellipse{transition:none}}
+
+/* ══ 잉크 판(9/21 사장님 「1로 가봐」): 초록은 «면»이 아니라 «선»(펜 자국)만 · 바탕은 먹+미색 · 초록 펜이 층 2 에서 첫 등장 ══ */
+.btn.g{background:var(--ink-900);color:#fff;box-shadow:4px 5px 0 rgba(27,26,22,.22)}
+.hero h1 .g{color:var(--ink-900);position:relative;display:inline-block}
+.hero h1 .g .ul{position:absolute;left:-1%;right:-1%;bottom:-.02em;height:.2em;overflow:visible}
+.hero h1 .g .ul path{fill:none;stroke:var(--green-500);stroke-width:6.5;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1000;stroke-dashoffset:0;transition:stroke-dashoffset 700ms var(--ease) 620ms}
+html.js [data-in]:not(.in) .hero h1 .g .ul path{stroke-dashoffset:1000}
+.stage .blob{background:var(--card-2);border:1.5px solid var(--ink-200);box-shadow:0 34px 70px -34px rgba(27,26,22,.4);background-image:repeating-linear-gradient(0deg,transparent 0 30px,rgba(27,26,22,.07) 30px 31px)}
+.stage .t1{background:var(--ink-900)}.stage .t2{background:#fff;color:var(--green-600);border:2px solid var(--green-500)}.stage .t3{background:#fff;color:var(--coral-600);border:2px solid var(--coral-500)}
+.l2{background:var(--card);color:var(--ink-900)}.l2 .l{color:var(--ink-700)}.l2 .no{color:var(--ink-500)}.l2 .wm-no{color:var(--ink-900)}
+.zero{color:var(--ink-900)}.zero ellipse{stroke:var(--green-500)}
+.l4{background:var(--card-2)}
+.sheet i[style]::after{background:var(--ink-900)}   /* 학생은 연필 */
+/* 층 2 채점 장면 */
+.l2 .shots{position:relative}
+.grade{position:absolute;left:-6%;bottom:-8%;width:min(52%,250px);transform:rotate(-5deg);filter:drop-shadow(0 22px 30px rgba(27,26,22,.28));z-index:3}
+.gsheet{width:100%;height:auto;display:block;overflow:visible}
+.gsheet .paper{fill:#fff;stroke:var(--ink-200);stroke-width:1.5}.gsheet .rule{fill:var(--ink-200)}
+.gsheet .b{fill:none;stroke:#8A867C;stroke-width:1.6}.gsheet .b.f{fill:var(--ink-900);stroke:var(--ink-900)}
+.gsheet .o{fill:none;stroke:var(--green-500);stroke-width:4;stroke-linecap:round;stroke-dasharray:110;stroke-dashoffset:0;transition:stroke-dashoffset 420ms var(--ease) calc(1500ms + var(--d)*420ms)}
+.gsheet .x{fill:none;stroke:var(--coral-500);stroke-width:4;stroke-linecap:round;stroke-dasharray:80;stroke-dashoffset:0;transition:stroke-dashoffset 360ms var(--ease) calc(1500ms + var(--d)*420ms)}
+html.js .l2:not(.in) .gsheet .o{stroke-dashoffset:110}html.js .l2:not(.in) .gsheet .x{stroke-dashoffset:80}
+.gsheet .pen .body{fill:var(--green-500)}.gsheet .pen .cap{fill:var(--green-700)}.gsheet .pen .tip{fill:var(--ink-900)}
+.gsheet .pen{transform:translate(300px,-40px) rotate(28deg);opacity:0}
+html.js .l2.in .gsheet .pen{animation:penrun 3.9s var(--ease) 900ms both}
+@keyframes penrun{
+  0%{transform:translate(300px,-40px) rotate(28deg);opacity:0}
+  10%{transform:translate(100px,46px) rotate(28deg);opacity:1}     /* 1행 */
+  24%{transform:translate(100px,46px) rotate(28deg)}
+  32%{transform:translate(196px,90px) rotate(28deg)}                 /* 2행 */
+  45%{transform:translate(196px,90px) rotate(28deg)}
+  53%{transform:translate(52px,134px) rotate(28deg)}                 /* 3행 X */
+  65%{transform:translate(52px,134px) rotate(28deg)}
+  73%{transform:translate(148px,178px) rotate(28deg)}                /* 4행 */
+  84%{transform:translate(148px,178px) rotate(28deg)}
+  92%{transform:translate(100px,222px) rotate(28deg)}                /* 5행 */
+  100%{transform:translate(120px,262px) rotate(28deg);opacity:1}
+}
+@media (prefers-reduced-motion: reduce){.gsheet .pen{opacity:1;transform:translate(120px,262px) rotate(28deg)}.gsheet .o,.gsheet .x,.hero h1 .g .ul path{transition:none}}
 </style>
 </head>
 <body>
@@ -168,7 +208,7 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
   <div class="wrap" data-in>
     <div class="text rv">
       <p class="eyebrow">학원 영어 시험 자동채점</p>
-      <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.</span></h1>
+      <h1 style="margin-top:16px">찍으면,<br><span class="g">채점 끝.<svg class="ul" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span></h1>
       <p class="l">종이 시험 그대로. 그 위에 채점 한 층, 유형별 정답률 한 층.</p>
       <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight">학부모라면</a></div>
       <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 승인만.</p>
@@ -207,7 +247,9 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
       <p class="l">학생이 답안지를 찍으면 그 자리에서 채점돼요. 읽힌 답은 학생이 확인하고 제출해요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설이 자동으로 채워지고, 선생님은 확인만 해요.</p>
       <div class="chips"><span>객관식</span><span>단답형 손글씨</span><span>시험지 파일로 문항 자동 입력</span></div>
     </div>
-    <div class="shots rv"><figure class="phone" style="max-width:290px;margin:0 auto"><div class="scr"><img src="/chaeck/vid/student-result.jpg" alt="학생 앱 — 채점 결과가 뜨는 순간" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/student-result.jpg" aria-hidden="true"><source src="/chaeck/vid/student-result.mp4" type="video/mp4"></video></div></figure></div>
+    <div class="shots rv"><figure class="phone" style="max-width:290px;margin:0 auto"><div class="scr"><img src="/chaeck/vid/student-result.jpg" alt="학생 앱 — 채점 결과가 뜨는 순간" loading="lazy"><video autoplay muted loop playsinline poster="/chaeck/vid/student-result.jpg" aria-hidden="true"><source src="/chaeck/vid/student-result.mp4" type="video/mp4"></video></div></figure><div class="grade" aria-hidden="true">
+        <svg viewBox="0 0 230 260" class="gsheet"><rect x="1" y="1" width="228" height="258" rx="12" class="paper"/><rect x="14" y="14" width="202" height="4" rx="2" class="rule"/><circle cx="36" cy="46" r="9.5" class="b"/><circle cx="84" cy="46" r="9.5" class="b f"/><circle cx="132" cy="46" r="9.5" class="b"/><circle cx="180" cy="46" r="9.5" class="b"/><circle class="o" cx="84" cy="46" r="16" transform="rotate(-100 84 46)" style="--d:0"/><circle cx="36" cy="90" r="9.5" class="b"/><circle cx="84" cy="90" r="9.5" class="b"/><circle cx="132" cy="90" r="9.5" class="b"/><circle cx="180" cy="90" r="9.5" class="b f"/><circle class="o" cx="180" cy="90" r="16" transform="rotate(-100 180 90)" style="--d:1"/><circle cx="36" cy="134" r="9.5" class="b f"/><circle cx="84" cy="134" r="9.5" class="b"/><circle cx="132" cy="134" r="9.5" class="b"/><circle cx="180" cy="134" r="9.5" class="b"/><path class="x" d="M23 121 L49 147 M49 121 L23 147" style="--d:2"/><circle cx="36" cy="178" r="9.5" class="b"/><circle cx="84" cy="178" r="9.5" class="b"/><circle cx="132" cy="178" r="9.5" class="b f"/><circle cx="180" cy="178" r="9.5" class="b"/><circle class="o" cx="132" cy="178" r="16" transform="rotate(-100 132 178)" style="--d:3"/><circle cx="36" cy="222" r="9.5" class="b"/><circle cx="84" cy="222" r="9.5" class="b f"/><circle cx="132" cy="222" r="9.5" class="b"/><circle cx="180" cy="222" r="9.5" class="b"/><circle class="o" cx="84" cy="222" r="16" transform="rotate(-100 84 222)" style="--d:4"/><g class="pen"><rect x="-6" y="-70" width="12" height="62" rx="3" class="body"/><path d="M-6 -8 L0 6 L6 -8 Z" class="tip"/><rect x="-6" y="-70" width="12" height="9" rx="3" class="cap"/></g></svg>
+      </div></div>
   </div>
 </section>
 
@@ -247,7 +289,7 @@ html.js [data-in]:not(.in) .zero ellipse{stroke-dashoffset:1000}
 </main>
 
 <div class="tail">
-<p class="vlink">참고 시안 · <a href="/chaeck/ink/">잉크 비율</a> · <a href="/chaeck/a/">A(종이)</a> · <a href="/chaeck/b/">B(컬러 블록)</a></p>
+<p class="vlink">잉크 비율 시안 · 정본은 <a href="/chaeck/">/chaeck/</a> · <a href="/chaeck/a/">A</a> · <a href="/chaeck/b/">B</a></p>
 <footer>
   <div class="wrap">
     <div class="links">

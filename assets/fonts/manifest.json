@@ -1,22 +1,22 @@
 {
-  "chars": 544,
-  "hash": "bea872cef4a6743b",
+  "chars": 546,
+  "hash": "5036d06b65555b56",
   "made": [
     {
       "name": "Pretendard-sub.woff2",
-      "bytes": 124484,
+      "bytes": 124876,
       "source": "/mnt/d/App/chaeck/public/fonts/PretendardVariable.woff2"
     },
     {
       "name": "Paperlogy-8-sub.woff2",
-      "bytes": 28144,
+      "bytes": 28260,
       "source": "/mnt/d/App/chaeck/public/fonts/Paperlogy-8ExtraBold.woff2"
     },
     {
       "name": "Paperlogy-7-sub.woff2",
-      "bytes": 28612,
+      "bytes": 28676,
       "source": "/mnt/d/App/chaeck/public/fonts/Paperlogy-7Bold.woff2"
     }
   ],
-  "at": "2026-09-20T15:16:21.530Z"
+  "at": "2026-09-21T00:11:01.658Z"
 }
