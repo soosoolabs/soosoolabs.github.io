@@ -13,6 +13,10 @@
             phoneB: $('.a-phone-b'), phoneC: $('.a-phone-c'), zero: $('.a-zero'), stamp: $('.a-stamp'), flash: $('.a-flash'),
             bg: $('.a-bg'), tags: $('.a-tags'), desk: $('.a-desk'), bg1: $('.a-bg1'), bg2: $('.a-bg2'), bg4: $('.a-bg4'), bg5: $('.a-bg5') };
   var steps = Array.prototype.slice.call(d.querySelectorAll('.step'));
+  // 프레임 연속 미리 받기(1 장면 · 약 1MB)
+  var SEQ = null; (function () { var el = stage.querySelector('img.seq'); if (!el) return; var n = parseInt(el.getAttribute('data-seq-n'), 10), tpl = el.getAttribute('data-seq'), imgs = [];
+    for (var i = 0; i < n; i++) { var im = new Image(); im.src = tpl.replace('{i}', (i < 10 ? '0' : '') + i); imgs.push(im); }
+    SEQ = { el: el, imgs: imgs, n: n, cur: 0 }; })();
 
   // ── 이징 ─────────────────────────────────────────────
   function io(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }    // easeInOutCubic
@@ -52,8 +56,8 @@
             // S4 강사 결과: 다시 앞으로
             [4.05, { x: mob ? 0 : 14, y: 40, s: .8, o: 0 }], [4.3, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [5.15, { x: 14, y: -30, s: .7, o: 0 }]],
     sheet: [[.86, { x: 0, y: 2, s: 1.25, o: 0, r: 0 }], [.96, { x: 0, y: 2, s: 1.15, o: 1, r: 0 }],                  // 폰 화면을 통과 → 답안지가 화면 가득
-            [1.4, { x: 25, y: 20, s: .28, o: 1, r: -8 }],                                                   // 사진 속 프린터에서 나온 종이 자리로 되감김
-            [1.85, { x: 25, y: 20, s: .28, o: 1, r: -8 }],
+            [1.4, { x: 21.5, y: -27, s: .17, o: 1, r: -22 }],                                              // 선생님 손에 든 종이 자리로 되감김
+            [1.85, { x: 21.5, y: -27, s: .17, o: 1, r: -22 }],
             [2.1, { x: 8, y: -2, s: .55, o: .8, r: -18 }],                                                 // 학생 책상 위 종이 자리로 날아가
             [2.25, { x: 2, y: -6, s: .62, o: 0, r: -22 }],                                                  // 사진의 실물 답안지로 바뀐다
             [3.0, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 0 }],
@@ -98,6 +102,8 @@
     var cover = Math.max(stage.clientWidth / 1264, stage.clientHeight / 848);
     for (var k in K) apply(A[k], interp(K[k], t), k.indexOf('bg') === 0 ? cover : 1);
     if (A.bg2) A.bg2.style.setProperty('--fill', (clamp((t - 2.2) / .7, 0, 1) * 10.5).toFixed(2));
+    // 1 장면 프레임 연속(선생님이 답안지를 읽는 1.75초 → 22장): 스크롤 진행률 = 프레임 · 양방향 즉시
+    if (SEQ) { var fi = Math.round(clamp((t - 1.05) / .8, 0, 1) * (SEQ.n - 1)); if (fi !== SEQ.cur && SEQ.imgs[fi] && SEQ.imgs[fi].complete) { SEQ.cur = fi; SEQ.el.src = SEQ.imgs[fi].src; } }
     if (A.bg) A.bg.style.background = bgAt(t);
     // S2 학생 연필: 스크롤한 만큼 행이 채워진다(10행)
     if (A.sheet) A.sheet.style.setProperty('--fill', (clamp((t - 2.15) / .75, 0, 1) * 10.5).toFixed(2));
