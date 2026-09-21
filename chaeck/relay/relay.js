@@ -11,7 +11,7 @@
   var $ = function (s) { return stage.querySelector(s); };
   var A = { photo: $('.a-photo'), pc: $('.a-pc'), sheet: $('.a-sheet'), pen: $('.a-pen'), phone: $('.a-phone'),
             phoneB: $('.a-phone-b'), phoneC: $('.a-phone-c'), zero: $('.a-zero'), stamp: $('.a-stamp'), flash: $('.a-flash'),
-            bg: $('.a-bg'), tags: $('.a-tags'), desk: $('.a-desk') };
+            bg: $('.a-bg'), tags: $('.a-tags'), desk: $('.a-desk'), bg1: $('.a-bg1'), bg2: $('.a-bg2'), bg4: $('.a-bg4'), bg5: $('.a-bg5') };
   var steps = Array.prototype.slice.call(d.querySelectorAll('.step'));
 
   // ── 이징 ─────────────────────────────────────────────
@@ -33,11 +33,11 @@
     }
     return track[track.length - 1][1];
   }
-  function apply(el, st) {
+  function apply(el, st, mul) {
     if (!el) return;
-    var W = stage.clientWidth, H = stage.clientHeight;
+    var W = stage.clientWidth, H = stage.clientHeight; mul = mul || 1;
     var x = (st.x == null ? 0 : st.x) * W / 100, y = (st.y == null ? 0 : st.y) * H / 100;
-    el.style.transform = 'translate(-50%,-50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (st.r || 0).toFixed(2) + 'deg) scale(' + (st.s == null ? 1 : st.s).toFixed(4) + ')';
+    el.style.transform = 'translate(-50%,-50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (st.r || 0).toFixed(2) + 'deg) scale(' + ((st.s == null ? 1 : st.s) * mul).toFixed(4) + ')';
     el.style.opacity = (st.o == null ? 1 : st.o).toFixed(3);
   }
 
@@ -47,25 +47,30 @@
     // S0 히어로: 실사가 화면을 채우고 → 카메라가 사진 속 폰 화면으로 들어간다(배율 1 → 3.2 · 원점은 CSS transform-origin = 폰 화면)
     photo: [[0, { s: 1, o: 1 }], [.55, { s: 1.35, o: 1 }], [.9, { s: 3.4, o: 1 }], [1.0, { s: 3.8, o: 0 }]],
     // S1 강사: PC 가 아래에서 올라와 가운데 → 답안지가 PC 아래에서 「인쇄」되어 나옴 → PC 는 왼쪽 뒤로
-    pc:    [[1.0, { x: mob ? 0 : 16, y: 60, s: .9, o: 0 }], [1.15, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }], [1.85, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }],
+    pc:    [[0, { o: 0 }]], pcOLD: [[1.0, { x: mob ? 0 : 16, y: 60, s: .9, o: 0 }], [1.15, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }], [1.85, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }],
             [2.15, { x: mob ? 0 : -30, y: -30, s: .6, o: .3 }], [2.35, { x: -50, y: -60, s: .5, o: 0 }],
             // S4 강사 결과: 다시 앞으로
             [4.05, { x: mob ? 0 : 14, y: 40, s: .8, o: 0 }], [4.3, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [5.15, { x: 14, y: -30, s: .7, o: 0 }]],
     sheet: [[.86, { x: 0, y: 2, s: 1.25, o: 0, r: 0 }], [.96, { x: 0, y: 2, s: 1.15, o: 1, r: 0 }],                  // 폰 화면을 통과 → 답안지가 화면 가득
-            [1.35, { x: mob ? 0 : 16, y: mob ? -4 : 8, s: .38, o: 1, r: 0 }],                                        // PC 안으로 되감김           // PC 안에 있다
-            [1.85, { x: mob ? 0 : 16, y: 46, s: .5, o: 1, r: 0 }],                                            // 인쇄돼 아래로 나온다
-            [2.1, { x: mob ? 0 : 15, y: 20, s: .78, o: 1, r: -6 }],                                     // 책상 위로 미끄러지며
-            [2.3, { x: mob ? 0 : 14, y: 4, s: mob ? .9 : 1.0, o: 1, r: 0 }],                            // S2 화면 가득
-            [2.95, { x: mob ? 0 : 14, y: 4, s: mob ? .9 : 1.0, o: 1 }],
+            [1.4, { x: 25, y: 20, s: .28, o: 1, r: -8 }],                                                   // 사진 속 프린터에서 나온 종이 자리로 되감김
+            [1.85, { x: 25, y: 20, s: .28, o: 1, r: -8 }],
+            [2.1, { x: 8, y: -2, s: .55, o: .8, r: -18 }],                                                 // 학생 책상 위 종이 자리로 날아가
+            [2.25, { x: 2, y: -6, s: .62, o: 0, r: -22 }],                                                  // 사진의 실물 답안지로 바뀐다
+            [3.0, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 0 }],
             [3.35, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 1 }],                                      // S3 폰 화면 안으로
             [3.95, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 1 }], [4.15, { x: 0, y: 30, s: .5, o: 0 }]],
     pen:   [[3.4, { x: 30, y: -40, s: 1, o: 0, r: 30 }], [3.5, { x: mob ? 10 : -8, y: mob ? -26 : -10, s: 1, o: 1, r: 30 }], [3.92, { x: mob ? -6 : -26, y: mob ? 4 : 24, s: 1, o: 1, r: 30 }], [4.05, { x: -40, y: 40, s: 1, o: 0, r: 30 }]],
     phone: [[2.85, { x: mob ? 0 : -18, y: -80, s: 1, o: 0 }], [3.25, { x: mob ? 0 : -18, y: mob ? -14 : 0, s: mob ? .9 : 1, o: 1 }], [3.95, { x: mob ? 0 : -18, y: mob ? -14 : 0, s: mob ? .9 : 1, o: 1 }], [4.15, { x: mob ? 0 : -18, y: 40, s: .8, o: 0 }]],
     zero:  [[3.5, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: .6, o: 0 }], [3.62, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: mob ? .8 : 1, o: 1 }], [3.95, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: mob ? .8 : 1, o: 1 }], [4.12, { x: mob ? 0 : -30, y: -30, s: .9, o: 0 }]],
-    stamp: [[4.45, { x: mob ? 14 : 38, y: mob ? -2 : 24, s: 2.2, o: 0, r: -18 }], [4.6, { x: mob ? 14 : 38, y: mob ? -2 : 24, s: mob ? .8 : 1, o: 1, r: -8 }], [4.95, { x: mob ? 14 : 38, y: mob ? -2 : 24, s: mob ? .8 : 1, o: 1, r: -8 }], [5.15, { x: 26, y: 0, s: .8, o: 0, r: -8 }]],
-    phoneB:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.35, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }]],
-    phoneC:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.45, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }]],
-    desk:  [[1.9, { s: 1.1, o: 0 }], [2.25, { s: 1.1, o: .45 }], [2.9, { s: 1.16, o: .45 }], [3.2, { s: 1.2, o: 0 }]],
+    stamp: [[4.45, { x: 8, y: 2, s: 2.2, o: 0, r: -18 }], [4.6, { x: 8, y: 2, s: 1, o: 1, r: -8 }], [4.95, { x: 8, y: 2, s: 1, o: 1, r: -8 }], [5.15, { x: 26, y: 0, s: .8, o: 0, r: -8 }]],
+    phoneB:[[0, { o: 0 }]], phoneBOLD:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.35, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }]],
+    phoneC:[[0, { o: 0 }]], phoneCOLD:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.45, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }]],
+    desk:  [[0, { o: 0 }]],
+    // 실사 배경: 장면마다 교차 · 느린 카메라(켄 번즈)
+    bg1: [[.9, { s: 1.1, o: 0 }], [1.1, { s: 1.08, o: 1 }], [1.9, { s: 1.0, o: 1 }], [2.12, { s: 1.0, o: 0 }]],
+    bg2: [[1.95, { s: 1.0, o: 0, x: 0, y: 0 }], [2.15, { s: 1.02, o: 1 }], [2.95, { s: 1.12, o: 1, x: -3, y: -4 }], [3.15, { s: 1.14, o: 0 }]],
+    bg4: [[4.05, { s: 1.08, o: 0 }], [4.3, { s: 1.05, o: 1 }], [4.95, { s: 1.0, o: 1 }], [5.15, { s: 1.0, o: 0 }]],
+    bg5: [[4.95, { s: 1.08, o: 0 }], [5.3, { s: 1.04, o: 1 }], [6, { s: 1.0, o: 1 }]],
     tags:  [[.0, { o: 1 }], [.4, { o: 0 }]]
   };
   // 배경색: 장면마다 화면 전체가 바뀐다(먹 ↔ 미색)
@@ -90,7 +95,9 @@
     var scene = Math.min(N - 1, Math.floor(t)), p = t - scene;
     stage.style.setProperty('--t', t.toFixed(4)); stage.style.setProperty('--p', p.toFixed(4));
     stage.dataset.scene = scene;
-    for (var k in K) apply(A[k], interp(K[k], t));
+    var cover = Math.max(stage.clientWidth / 1264, stage.clientHeight / 848);
+    for (var k in K) apply(A[k], interp(K[k], t), k.indexOf('bg') === 0 ? cover : 1);
+    if (A.bg2) A.bg2.style.setProperty('--fill', (clamp((t - 2.2) / .7, 0, 1) * 10.5).toFixed(2));
     if (A.bg) A.bg.style.background = bgAt(t);
     // S2 학생 연필: 스크롤한 만큼 행이 채워진다(10행)
     if (A.sheet) A.sheet.style.setProperty('--fill', (clamp((t - 2.15) / .75, 0, 1) * 10.5).toFixed(2));

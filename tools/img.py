@@ -95,7 +95,7 @@ def cmd_paper(a):
     Om = np.asarray(O.filter(ImageFilter.GaussianBlur(a.feather))).astype(np.float32) / 255
     M = Pm * (1 - Om)
     M = np.asarray(Image.fromarray((M * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(a.feather))).astype(np.float32) / 255
-    L = np.asarray(base.convert("L").filter(ImageFilter.GaussianBlur(10))).astype(np.float32)
+    L = np.asarray(base.convert("L").filter(ImageFilter.GaussianBlur(a.shade_blur))).astype(np.float32)
     ref_px = L[(M > 0.9)]; ref = float(np.percentile(ref_px, 92)) if ref_px.size else 235.0
     shade = np.clip(L / ref, 0.5, 1.04)[..., None] if a.keep_shade else 1.0
     out = np.asarray(base).astype(np.float32) * (1 - M[..., None]) + np.asarray(warped).astype(np.float32) * shade * M[..., None]
@@ -131,7 +131,7 @@ s = sp.add_parser("fit"); s.add_argument("inp"); s.add_argument("out"); s.add_ar
 s = sp.add_parser("crop"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--box", required=True); s.set_defaults(f=cmd_crop)
 s = sp.add_parser("adjust"); s.add_argument("inp"); s.add_argument("out"); [s.add_argument(k, type=float, default=1.0) for k in ("--bright", "--contrast", "--sat", "--sharp")]; s.add_argument("--warm", type=float, default=0); s.set_defaults(f=cmd_adjust)
 s = sp.add_parser("screen"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--shot", required=True); s.add_argument("--quad", required=True); s.add_argument("--radius", type=float, default=24); s.add_argument("--shade", type=float, default=0.12); s.set_defaults(f=cmd_screen)
-s = sp.add_parser("paper"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--sheet", required=True); s.add_argument("--quad", required=True); s.add_argument("--feather", type=float, default=2.0); s.add_argument("--keep-shade", type=int, default=1); s.add_argument("--mask", default=None); s.add_argument("--warped", default=None); s.add_argument("--skin-sat", type=float, default=0.30); s.add_argument("--skin-hue", type=float, default=28); s.set_defaults(f=cmd_paper)
+s = sp.add_parser("paper"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--sheet", required=True); s.add_argument("--quad", required=True); s.add_argument("--feather", type=float, default=2.0); s.add_argument("--keep-shade", type=int, default=1); s.add_argument("--mask", default=None); s.add_argument("--warped", default=None); s.add_argument("--skin-sat", type=float, default=0.30); s.add_argument("--skin-hue", type=float, default=28); s.add_argument("--shade-blur", type=float, default=10); s.set_defaults(f=cmd_paper)
 s = sp.add_parser("dark"); s.add_argument("inp"); s.add_argument("--box", required=True); s.set_defaults(f=cmd_dark)
 s = sp.add_parser("tile"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--size", type=int, default=512); s.set_defaults(f=cmd_tile)
 s = sp.add_parser("webp"); s.add_argument("inp"); s.add_argument("out"); s.add_argument("--quality", type=int, default=82); s.add_argument("--width", type=int, default=1600); s.set_defaults(f=cmd_webp)

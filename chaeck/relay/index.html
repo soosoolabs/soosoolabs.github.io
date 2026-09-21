@@ -188,6 +188,16 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
 /* 모바일 글: 3·5 장면은 아래, 2 장면은 위 */
 @media(max-width:720px){.s3 .txt,.s5 .txt{margin-left:0}.step .txt{padding-bottom:22px}.s2 .txt{padding-top:9vh}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── 실사 장면 배경(9/21 사장님 생성 · 화면·답안지는 실물 합성) ── */
+.ph{width:1264px;height:848px;z-index:1;opacity:0;transform-origin:50% 50%}
+.ph img{width:100%;height:100%;display:block}
+.ph .ov{position:absolute;left:0;top:0;width:1842px;height:2700px;transform-origin:0 0;overflow:visible}
+.ph .ov .f{fill:#1B1A16;opacity:clamp(0,calc(var(--fill) - var(--i)),1);transform-box:fill-box;transform-origin:center;transform:scale(clamp(.2,calc(var(--fill) - var(--i)),1))}
+.a-bg4 img{filter:brightness(.92)}
+.s1 .txt{margin-left:auto}.s2 .txt{margin-left:auto;align-self:flex-start;padding-top:10vh}.s5 .txt{margin-left:0}
+.s1 .txt,.s2 .txt,.s5 .txt{background:linear-gradient(90deg,rgba(241,236,224,.0),rgba(241,236,224,.72) 18%,rgba(241,236,224,.72) 82%,rgba(241,236,224,0));padding-left:28px;padding-right:28px;border-radius:18px}
+.s4 .txt{background:linear-gradient(90deg,rgba(27,26,22,0),rgba(27,26,22,.55) 18%,rgba(27,26,22,.55) 82%,rgba(27,26,22,0));padding-left:28px;padding-right:28px;border-radius:18px}
 </style>
 </head>
 <body>
@@ -208,6 +218,10 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
     <div class="a-bg"></div>
     <div class="a-photo actor"><img src="/chaeck/img/ai/H1.webp" alt="학생이 QR 답안지를 폰으로 찍는 순간"></div>
     <div class="a-desk actor" aria-hidden="true"><img src="/chaeck/img/ai/H1.webp" alt=""></div>
+    <div class="a-bg1 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S1.webp" alt=""></div>
+    <div class="a-bg2 actor ph" aria-hidden="true" style="--fill:0"><img src="/chaeck/img/ai/S2.webp" alt=""><svg class="ov" viewBox="0 0 1842 2700" style="transform:matrix3d(0.318268,0.0725958,0,1.98109e-05,-0.164956,0.169501,0,-7.50801e-05,0,0,1,0,557,114,0,1)"><circle class="f" style="--i:0" cx="529" cy="1157" r="19"/><circle class="f" style="--i:1" cx="410" cy="1241" r="19"/><circle class="f" style="--i:2" cx="649" cy="1325" r="19"/><circle class="f" style="--i:3" cx="290" cy="1409" r="19"/><circle class="f" style="--i:4" cx="767" cy="1493" r="19"/><circle class="f" style="--i:5" cx="529" cy="1576" r="19"/><circle class="f" style="--i:6" cx="410" cy="1660" r="19"/><circle class="f" style="--i:7" cx="649" cy="1744" r="19"/><circle class="f" style="--i:8" cx="767" cy="1828" r="19"/><circle class="f" style="--i:9" cx="290" cy="1912" r="19"/></svg></div>
+    <div class="a-bg4 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S4.webp" alt=""></div>
+    <div class="a-bg5 actor ph" aria-hidden="true"><img src="/chaeck/img/ai/S5.webp" alt=""></div>
     <div class="a-pc actor"><div class="scr"><img class="img1" src="/chaeck/img/teacher-exam-new.jpg" alt="강사 웹 — 시험 만들기"><img class="img2" src="/chaeck/img/teacher-results.jpg" alt="강사 웹 — 유형별·문항별 정답률"></div></div>
     <svg class="a-sheet actor" viewBox="0 0 320 500" aria-hidden="true" style="--fill:0;--grade:0">
   <rect x="1" y="1" width="318" height="498" rx="6" class="paper"/>
