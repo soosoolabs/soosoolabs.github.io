@@ -9,8 +9,8 @@
   if (!story || !stage) return;
   var N = 6;                                  // 장면 수
   var $ = function (s) { return stage.querySelector(s); };
-  var A = { photo: $('.a-photo'), pc: $('.a-pc'), sheet: $('.a-sheet'), pen: $('.a-pen'), phone: $('.a-phone'),
-            phoneB: $('.a-phone-b'), phoneC: $('.a-phone-c'), zero: $('.a-zero'), stamp: $('.a-stamp'), flash: $('.a-flash'),
+  var A = { photo: $('.a-photo'), sheet: $('.a-sheet'), pen: $('.a-pen'),
+            zero: $('.a-zero'), stamp: $('.a-stamp'), flash: $('.a-flash'),
             bg: $('.a-bg'), tags: $('.a-tags'), desk: $('.a-desk'), bg1: $('.a-bg1'), bg2: $('.a-bg2'), bg4: $('.a-bg4'), bg5: $('.a-bg5') };
   var steps = Array.prototype.slice.call(d.querySelectorAll('.step'));
   // 프레임 연속 미리 받기(1 장면 · 약 1MB)
@@ -50,11 +50,6 @@
   var K = {
     // S0 히어로: 실사가 화면을 채우고 → 카메라가 사진 속 폰 화면으로 들어간다(배율 1 → 3.2 · 원점은 CSS transform-origin = 폰 화면)
     photo: [[0, { s: 1, o: 1 }], [.55, { s: 1.35, o: 1 }], [.9, { s: 3.4, o: 1 }], [1.0, { s: 3.8, o: 0 }]],
-    // S1 강사: PC 가 아래에서 올라와 가운데 → 답안지가 PC 아래에서 「인쇄」되어 나옴 → PC 는 왼쪽 뒤로
-    pc:    [[0, { o: 0 }]], pcOLD: [[1.0, { x: mob ? 0 : 16, y: 60, s: .9, o: 0 }], [1.15, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }], [1.85, { x: mob ? 0 : 16, y: mob ? -24 : -6, s: mob ? .86 : .82, o: 1 }],
-            [2.15, { x: mob ? 0 : -30, y: -30, s: .6, o: .3 }], [2.35, { x: -50, y: -60, s: .5, o: 0 }],
-            // S4 강사 결과: 다시 앞으로
-            [4.05, { x: mob ? 0 : 14, y: 40, s: .8, o: 0 }], [4.3, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: mob ? .95 : .76, o: 1 }], [5.15, { x: 14, y: -30, s: .7, o: 0 }]],
     sheet: [[.86, { x: 0, y: 2, s: 1.25, o: 0, r: 0 }], [.96, { x: 0, y: 2, s: 1.15, o: 1, r: 0 }],                  // 폰 화면을 통과 → 답안지가 화면 가득
             [1.4, { x: 21.5, y: -27, s: .17, o: 1, r: -22 }],                                              // 선생님 손에 든 종이 자리로 되감김
             [1.85, { x: 21.5, y: -27, s: .17, o: 1, r: -22 }],
@@ -64,11 +59,8 @@
             [3.35, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 1 }],                                      // S3 폰 화면 안으로
             [3.95, { x: mob ? 0 : -18, y: mob ? -12 : 6, s: mob ? .56 : .66, o: 1 }], [4.15, { x: 0, y: 30, s: .5, o: 0 }]],
     pen:   [[3.4, { x: 30, y: -40, s: 1, o: 0, r: 30 }], [3.5, { x: mob ? 10 : -8, y: mob ? -26 : -10, s: 1, o: 1, r: 30 }], [3.92, { x: mob ? -6 : -26, y: mob ? 4 : 24, s: 1, o: 1, r: 30 }], [4.05, { x: -40, y: 40, s: 1, o: 0, r: 30 }]],
-    phone: [[2.85, { x: mob ? 0 : -18, y: -80, s: 1, o: 0 }], [3.25, { x: mob ? 0 : -18, y: mob ? -14 : 0, s: mob ? .9 : 1, o: 1 }], [3.95, { x: mob ? 0 : -18, y: mob ? -14 : 0, s: mob ? .9 : 1, o: 1 }], [4.15, { x: mob ? 0 : -18, y: 40, s: .8, o: 0 }]],
     zero:  [[3.5, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: .6, o: 0 }], [3.62, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: mob ? .8 : 1, o: 1 }], [3.95, { x: mob ? 0 : -33, y: mob ? -34 : -8, s: mob ? .8 : 1, o: 1 }], [4.12, { x: mob ? 0 : -30, y: -30, s: .9, o: 0 }]],
     stamp: [[4.45, { x: 8, y: 2, s: 2.2, o: 0, r: -18 }], [4.6, { x: 8, y: 2, s: 1, o: 1, r: -8 }], [4.95, { x: 8, y: 2, s: 1, o: 1, r: -8 }], [5.15, { x: 26, y: 0, s: .8, o: 0, r: -8 }]],
-    phoneB:[[0, { o: 0 }]], phoneBOLD:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.35, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? -22 : -34, y: mob ? -12 : 2, s: mob ? .78 : 1, o: 1 }]],
-    phoneC:[[0, { o: 0 }]], phoneCOLD:[[4.95, { x: mob ? 0 : 20, y: mob ? -16 : 2, s: .3, o: 0 }], [5.45, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }], [6, { x: mob ? 22 : -10, y: mob ? -6 : -2, s: mob ? .78 : 1, o: 1 }]],
     desk:  [[0, { o: 0 }]],
     // 실사 배경: 장면마다 교차 · 느린 카메라(켄 번즈)
     bg1: [[.9, { s: 1.1, o: 0 }], [1.1, { s: 1.08, o: 1 }], [1.9, { s: 1.0, o: 1 }], [2.12, { s: 1.0, o: 0 }]],
@@ -108,7 +100,7 @@
     // S2 학생 연필: 스크롤한 만큼 행이 채워진다(10행)
     if (A.sheet) A.sheet.style.setProperty('--fill', (clamp((t - 2.15) / .75, 0, 1) * 10.5).toFixed(2));
     // S3: 셔터(p .38~.5) → O·X 채점(p .5~.92)
-    if (A.flash) { var f = scene === 3 ? clamp(1 - Math.abs(p - .42) * 14, 0, 1) : 0; A.flash.style.opacity = f.toFixed(3); if (A.phone && f > 0) A.phone.style.transform += ' scale(' + (1 + f * .025).toFixed(4) + ')'; }
+    if (A.flash) { var f = scene === 3 ? clamp(1 - Math.abs(p - .42) * 14, 0, 1) : 0; A.flash.style.opacity = f.toFixed(3); }
     if (A.sheet) A.sheet.style.setProperty('--grade', (clamp((t - 3.5) / .45, 0, 1) * 10.5).toFixed(2));
     // 펜촉 추적: 채점 진행률(--grade) 에 따라 지금 그리는 행의 O 위 점으로 펜 끝을 놓는다
     if (A.pen && A.sheet && scene === 3) {
@@ -132,11 +124,6 @@
       var ti = t - i, vis = i === 0 ? 1 - clamp((t - .3) * 2.2, 0, 1) : clamp(1 - Math.abs(ti - .55) * 2.6 + .3, 0, 1);
       steps[i].style.opacity = vis.toFixed(3);
       steps[i].style.transform = 'translateY(' + ((1 - vis) * 24).toFixed(1) + 'px)';
-    }
-    // 장면이 바뀌는 순간: 그 장면의 영상은 처음부터
-    if (scene !== lastScene) {
-      lastScene = scene;
-      stage.querySelectorAll('[data-scene-video="' + scene + '"] video').forEach(function (v) { try { v.currentTime = 0; v.play().catch(function () {}); } catch (_) {} });
     }
   }
   function onScroll() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
