@@ -203,6 +203,34 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
 .s4 .txt{background:linear-gradient(90deg,rgba(27,26,22,0),rgba(27,26,22,.55) 18%,rgba(27,26,22,.55) 82%,rgba(27,26,22,0));padding-left:28px;padding-right:28px;border-radius:18px}
 .ph .vscr{position:absolute;left:0;top:0;width:390px;height:936px;transform-origin:0 0;overflow:hidden;border-radius:26px;background:#FBF9F3}
 .ph .vscr video{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+/* ── 10/4 화질 · 스토어 톤 맞춤(채크 스토어 v9 · 대표 이미지와 같은 문법) ── */
+/* 화질: will-change:transform 은 처음 크기 비트맵을 늘려 쓴다(히어로 3.8배 줌에서 뭉개짐) → 사진 배우만 해제 */
+.a-photo,.a-desk,.ph{will-change:opacity}
+/* 앱 아이콘 = 스토어와 같은 것 */
+.mark{background:none;width:32px;height:32px;border-radius:8px;overflow:hidden}.mark img{width:100%;height:100%;display:block}
+/* 강조 낱말 하나 = 초록 + 빨간펜 손그림 밑줄 */
+.k{position:relative;display:inline-block;color:#168A63}
+.k svg{position:absolute;left:-1%;width:102%;bottom:-.06em;height:.2em;overflow:visible}
+.k path{fill:none;stroke:var(--coral-500);stroke-width:5.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough)}
+.step.dark .k{color:#5FD3A6}.step.dark .k path{stroke:#F07A5A}
+.hero h1 .g,.s0 h1 .g{color:#168A63}.s0 .g path{stroke:var(--coral-500)}
+/* 번호 칩 */
+.step .no,.s0 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-body);font-weight:700;font-size:.95rem;letter-spacing:0;opacity:1;color:#15805E;background:rgba(255,255,255,.86);border:1.5px solid rgba(29,158,117,.28);border-radius:999px;padding:5px 14px 5px 5px}
+.step .no b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--green-500);color:#fff;font-size:.8rem;font-weight:700}
+.s0 .eyebrow{padding-left:12px}.s0 .eyebrow::before{width:10px;height:10px;border-width:2.4px}
+.step.dark .no{color:#5FD3A6;background:rgba(27,26,22,.55);border-color:rgba(95,211,166,.35)}.step.dark .no{color:#5FD3A6}
+/* 글 뒤 상자 대신 미색 번짐(스토어: 글자 뒤 글로우) */
+.s1 .txt,.s2 .txt,.s5 .txt{background:radial-gradient(closest-side,rgba(246,242,233,.78),rgba(246,242,233,.5) 60%,rgba(246,242,233,0));padding:48px 56px;border-radius:0}
+.s1 .txt{background:radial-gradient(closest-side,rgba(246,242,233,.9),rgba(246,242,233,.72) 65%,rgba(246,242,233,0))}
+.s4 .txt{background:radial-gradient(closest-side,rgba(27,26,22,.62),rgba(27,26,22,.35) 60%,rgba(27,26,22,0));padding:48px 56px;border-radius:0}
+.step h2,.step .l,.s0 h1,.s0 .l{text-shadow:0 0 22px rgba(250,247,240,.95),0 0 4px rgba(250,247,240,.6)}
+.step.dark h2,.step.dark .l{text-shadow:0 0 22px rgba(20,19,17,.8)}
+.step h2{letter-spacing:-.035em;line-height:1.15}
+.step .l{color:rgba(27,26,22,.82)}
+/* 줄 끝 외톨이 낱말 금지(「…5명 / 중」) — 데스크톱은 줄을 안 끊고 글 폭을 넓힌다 */
+@media(min-width:721px){.step .txt,.s4 .txt{max-width:min(40em,48vw)}.step h2,.s1 h2,.s4 h2{font-size:clamp(2.2rem,4.6vw,4.6rem);white-space:nowrap}}
+/* 3 장면 바탕: 회백 → 종이 */
+.a-desk::after{background:linear-gradient(180deg,rgba(241,236,224,.62),rgba(241,236,224,.45))}
 </style>
 </head>
 <body>
@@ -211,7 +239,7 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
   <div class="wrap">
     <span class="tag">학원 영어 시험 자동채점</span>
     <a class="wm" href="/chaeck/" aria-label="채크">
-      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="5" rx="1.2" fill="#1D9E75"/><path d="M4.2 6.6l1.5 1.4 2.4-2.6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="6" width="11" height="1.6" rx=".8" fill="#D8D3C7"/><rect x="3" y="11" width="5" height="5" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="13" width="8" height="1.6" rx=".8" fill="#5C5950"/><rect x="3" y="18" width="5" height="4" rx="1.2" stroke="#8A867C" stroke-width="1.3"/><rect x="10" y="19" width="9" height="1.6" rx=".8" fill="#5C5950"/></svg></span>
+      <span class="mark" aria-hidden="true"><img src="/chaeck/img/icon.webp" width="32" height="32" alt=""></span>
       채크
     </a>
     <div class="right"><a class="btn w sm" href="https://chaeck.soosoo.kr/login">로그인</a></div>
@@ -250,11 +278,11 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
       <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight" data-jump="5">학부모라면</a></div>
       <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 확인만.</p>
     </div></div></div>
-    <div class="step s1"><div class="wrap"><div class="txt"><p class="no">1 · 선생님</p><h2>바뀌는 건<br>종이 한 장.</h2><p class="l">QR 답안지 한 장만 새로 뽑으세요. 정답은 답안지에 실리지 않아요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설까지 채워져요.</p></div></div></div>
-    <div class="step s2"><div class="wrap"><div class="txt"><p class="no">2 · 학생</p><h2>답은 종이에,<br>늘 하던 대로.</h2></div></div></div>
-    <div class="step s3"><div class="wrap"><div class="txt"><p class="no">3 · 자동채점</p><h2><span class="sr">0 — </span>선생님이 채점하는<br>문항 수.</h2><p class="l">찍는 순간 채점. 읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
-    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no">4 · 선생님 · 공개</p><h2>틀린 학생 5명 중<br>5명이 2번.</h2><p class="l">오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요. 공개는 선생님이 한 번 보고.</p></div></div></div>
-    <div class="step s5" id="insight"><div class="wrap"><div class="txt"><p class="no">5 · 학생 · 학부모</p><h2>어디서 막히는지,<br><span class="c" style="color:var(--coral-500)">시험마다.</span></h2><p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만. 다른 아이와 비교하지 않아요.</p></div></div></div>
+    <div class="step s1"><div class="wrap"><div class="txt"><p class="no"><b>1</b>선생님</p><h2>바뀌는 건<br><span class="k">종이 한 장<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">QR 답안지 한 장만 새로 뽑으세요. 정답은 답안지에 실리지 않아요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설까지 채워져요.</p></div></div></div>
+    <div class="step s2"><div class="wrap"><div class="txt"><p class="no"><b>2</b>학생</p><h2>답은 종이에,<br><span class="k">늘 하던 대로<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2></div></div></div>
+    <div class="step s3"><div class="wrap"><div class="txt"><p class="no"><b>3</b>자동채점</p><h2><span class="sr">0 — </span>선생님이 채점하는<br>문항 수.</h2><p class="l">찍는 순간 채점. 읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
+    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no"><b>4</b>선생님 · 공개</p><h2>틀린 학생 5명 중<br>5명이 <span class="k">2번<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요. 공개는 선생님이 한 번 보고.</p></div></div></div>
+    <div class="step s5" id="insight"><div class="wrap"><div class="txt"><p class="no"><b>5</b>학생 · 학부모</p><h2>어디서 막히는지,<br><span class="k">시험마다<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만. 다른 아이와 비교하지 않아요.</p></div></div></div>
   </div>
   </div>
 </section>
