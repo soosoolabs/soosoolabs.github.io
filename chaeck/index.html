@@ -163,8 +163,8 @@ html{scroll-behavior:auto}
 .step a{pointer-events:auto}
 .step.dark,.step.dark h2,.step.dark .no{color:#F4EFE3}.step.dark .l{color:#CFC9BB}
 .s0 h1{font-size:clamp(3.6rem,10vw,8.4rem);line-height:.96}
-.s0 .g{position:relative;display:inline-block}.s0 .g svg{position:absolute;left:-1%;right:-1%;bottom:-.02em;height:.2em;overflow:visible}
-.s0 .g path{fill:none;stroke:var(--green-500);stroke-width:6.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough);stroke-dasharray:1000;stroke-dashoffset:calc(1000 - 1000*clamp(0,calc(.15 + var(--t)*8),1))}
+.s0 h1 .g{position:relative;display:inline-block}.s0 h1 .g svg{position:absolute;left:-1%;right:-1%;bottom:-.02em;height:.2em;overflow:visible}
+.s0 h1 .g path{fill:none;stroke:var(--green-500);stroke-width:6.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough);stroke-dasharray:1000;stroke-dashoffset:calc(1000 - 1000*clamp(0,calc(.15 + var(--t)*8),1))}
 .s3 .txt,.s5 .txt{margin-left:auto}.s4 h2{font-size:clamp(2.2rem,5.4vw,4.3rem)}.s4 .txt{max-width:min(28em,36vw)}.s2 .txt{align-self:flex-start;padding-top:12vh}
 @media(max-width:720px){.step{align-items:flex-end}.step .txt{padding-bottom:26px;background:linear-gradient(180deg,transparent,rgba(241,236,224,.85) 30%);margin:0 -16px;padding-left:16px;padding-right:16px;max-width:none}.step.dark .txt{background:linear-gradient(180deg,transparent,rgba(27,26,22,.85) 30%)}.s3 .txt,.s5 .txt{margin-left:0}.s0 h1{font-size:clamp(3rem,15vw,4.6rem)}}
 /* 마무리 · 푸터 */
@@ -213,7 +213,8 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
 .k svg{position:absolute;left:-1%;width:102%;bottom:-.06em;height:.2em;overflow:visible}
 .k path{fill:none;stroke:var(--coral-500);stroke-width:5.5;stroke-linecap:round;vector-effect:non-scaling-stroke;filter:url(#rough)}
 .step.dark .k{color:#5FD3A6}.step.dark .k path{stroke:#F07A5A}
-.hero h1 .g,.s0 h1 .g{color:#168A63}.s0 .g path{stroke:var(--coral-500)}
+.hero h1 .g,.s0 h1 .g{color:#168A63}.s0 h1 .g path{stroke:var(--coral-500)}
+.s0 .note{margin-top:26px;display:flex;align-items:center;gap:10px 12px;flex-wrap:wrap}
 /* 번호 칩 */
 .step .no,.s0 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-body);font-weight:700;font-size:.95rem;letter-spacing:0;opacity:1;color:#15805E;background:rgba(255,255,255,.86);border:1.5px solid rgba(29,158,117,.28);border-radius:999px;padding:5px 14px 5px 5px}
 .step .no b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:var(--green-500);color:#fff;font-size:.8rem;font-weight:700}

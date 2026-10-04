@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 장면별 뷰포트 스크린샷 — 릴레이는 sticky 무대라 fullPage 로는 못 본다. t(0~6) 지점마다 한 장씩.
-//   node tools/scenes.mjs [폭=1920] [dpr=1] [접두=now]   → doc/shots/scenes/<접두>-t<값>.png
+//   node tools/scenes.mjs [폭=1920] [dpr=1] [접두=now] [높이=폭×9/16]   → doc/shots/scenes/<접두>-t<값>.png
+//   폰: node tools/scenes.mjs 375 2 phone 812
 import { existsSync, mkdirSync, createReadStream, statSync } from "node:fs";
 import { join, dirname, extname } from "node:path";
 import { homedir } from "node:os";
@@ -11,7 +12,7 @@ import { createRequire } from "node:module";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
 const OUT = join(ROOT, "doc/shots/scenes");
-const [W = "1920", DPR = "1", PRE = "now"] = process.argv.slice(2);
+const [W = "1920", DPR = "1", PRE = "now", H] = process.argv.slice(2);
 if (!existsSync(DIST)) { console.log("⬜ dist/ 가 없다 — 먼저 build"); process.exit(2); }
 mkdirSync(OUT, { recursive: true });
 const LIBDIR = `${homedir()}/.cache/chaeck/browserlibs`;
@@ -31,7 +32,7 @@ await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
 try {
-  const w = +W, h = Math.round(w * 9 / 16);
+  const w = +W, h = H ? +H : Math.round(w * 9 / 16);
   const page = await (await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: +DPR })).newPage();
   await page.goto(base + "/chaeck/", { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
