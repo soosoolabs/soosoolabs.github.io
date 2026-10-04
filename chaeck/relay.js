@@ -121,6 +121,8 @@
       var ti = t - i, vis = i === 0 ? 1 - clamp((t - .3) * 2.2, 0, 1) : clamp(1 - Math.abs(ti - .55) * 2.6 + .3, 0, 1);
       steps[i].style.opacity = vis.toFixed(3);
       steps[i].style.transform = 'translateY(' + ((1 - vis) * 24).toFixed(1) + 'px)';
+      // 들어오는 진행(0→1): 칩 → 제목 → 설명 순으로 뜨고, 빨간펜 밑줄은 제목이 앉은 뒤 그어진다(CSS --in)
+      steps[i].style.setProperty('--in', i === 0 ? '1' : clamp((ti - .05) / .45, 0, 1).toFixed(3));
     }
   }
   function onScroll() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
