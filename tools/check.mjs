@@ -13,9 +13,12 @@
 //   F. 페이지 규칙(site.json page_rules) — 있어야 할 문장 · 금지어 (채크: 정체성 금지어·방침 문장)
 //   G. 폰트 서브셋(assets/fonts)이 지금 페이지 글자와 같은가(manifest 해시)
 //   H. 로컬 이미지·폰트 참조가 dist 에 실제로 있나
+//   I. 채크 요금 안내 가격 = site.json pricing = 채크 원본 plan.ts(origin/main) · 무료 범위 문장 (2026-10-20 R-803)
+//   (C-2) 통신판매업 신고번호가 mail_order_pages 의 보이는 본문에 (2026-10-20 R-803)
 import { readFileSync, readdirSync, statSync, existsSync, cpSync, rmSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join, dirname, relative } from "node:path";
 import { tmpdir } from "node:os";
+import { execFileSync } from "node:child_process";
 import { pageChars, charsHash } from "./fonts-lib.mjs";
 import { fileURLToPath } from "node:url";
 
@@ -70,6 +73,14 @@ export function run(dist) {
       if (!val) { v.push(`C site.json 의 ${k} 가 비어 있다`); continue; }
       if (!body.includes(val)) v.push(`C ${k}(${val}) 가 보이는 본문에 없음: ${p}`);
     }
+  }
+  // C-2 통신판매업 신고번호(2026-10-20 · R-803 PG 심사) — mail_order_pages 의 보이는 본문에
+  for (const p of site.mail_order_pages || []) {
+    targets++;
+    const f = join(dist, p.replace(/\/$/, "/index.html").replace(/^\//, ""));
+    if (!existsSync(f)) { v.push(`C 신고번호 페이지 없음: ${p}`); continue; }
+    if (!biz.mail_order_no) { v.push("C site.json 의 통신판매업 신고번호가 비어 있다"); continue; }
+    if (!visible(readFileSync(f, "utf8")).includes(biz.mail_order_no)) v.push(`C 통신판매업 신고번호(${biz.mail_order_no}) 가 보이는 본문에 없음: ${p}`);
   }
   // D
   const ext = [
@@ -132,6 +143,48 @@ export function run(dist) {
     }
     for (const m of html.matchAll(/url\(['"]?(\/[^'")]+)['"]?\)/gi)) { targets++; if (!existsSync(join(dist, m[1]))) v.push(`H 없는 파일 참조 ${m[1]}: ${rel}`); }
   }
+  // I 요금 안내 가격(2026-10-20 · R-803) — ① 페이지 표(<tr data-seat>) = site.json pricing ② site.json = 채크 원본(plan.ts)
+  if (site.pricing) {
+    const pr = site.pricing;
+    const f = join(dist, pr.path.replace(/\/$/, "/index.html").replace(/^\//, ""));
+    if (!existsSync(f)) { targets++; v.push(`I 요금 페이지 없음: ${pr.path}`); }
+    else {
+      const vis = visible(readFileSync(f, "utf8"));
+      const won = (n) => n.toLocaleString("en-US") + "원";
+      const rows = [...vis.matchAll(/<tr data-seat="(p\d+)">([\s\S]*?)<\/tr>/g)];
+      targets++;
+      if (rows.length !== Object.keys(pr.seats).length) v.push(`I 요금 표 칸 수 ${rows.length} ≠ site.json ${Object.keys(pr.seats).length}`);
+      for (const [seat, [basic, pro]] of Object.entries(pr.seats)) {
+        targets++;
+        const row = rows.find((r) => r[1] === seat);
+        if (!row) { v.push(`I 요금 표에 칸 없음: ${seat}`); continue; }
+        const cells = [...row[2].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").trim());
+        if (cells[1] !== won(basic)) v.push(`I ${seat} 기본 가격 「${cells[1]}」 ≠ ${won(basic)}`);
+        if (cells[2] !== won(pro)) v.push(`I ${seat} 프로 가격 「${cells[2]}」 ≠ ${won(pro)}`);
+      }
+      targets++;
+      const freeText = `학생 ${pr.free_students}명까지 무료`;
+      if (!vis.replace(/<[^>]+>/g, " ").includes(freeText)) v.push(`I 무료 범위 문장 「${freeText}」 없음`);
+    }
+    // ② 채크 원본과 대조 — 못 읽으면 통과가 아니라 위반(「확인 못 함」을 초록으로 두지 않는다)
+    if (!process.env.SKIP_CHAECK_SOURCE) {
+      targets++;
+      let src = "";
+      try { src = execFileSync("git", ["-C", "/mnt/d/App/chaeck", "show", "origin/main:src/lib/plan.ts"], { stdio: ["ignore", "pipe", "ignore"] }).toString(); } catch {}
+      if (!src) v.push("I 채크 요금 원본(origin/main:src/lib/plan.ts)을 못 읽음 — 확인 못 함");
+      else {
+        const proBlock = (src.match(/export const PRO_PRICE[^=]*=\s*\{([\s\S]*?)\}/) || [])[1] || "";
+        for (const [seat, [basic, pro]] of Object.entries(pr.seats)) {
+          const b = (src.match(new RegExp(`\\b${seat}:\\s*\\{[^}]*price:\\s*(\\d+)`)) || [])[1];
+          const q = (proBlock.match(new RegExp(`\\b${seat}:\\s*(\\d+)`)) || [])[1];
+          if (+b !== basic) v.push(`I site.json ${seat} 기본 ${basic} ≠ 채크 원본 ${b ?? "없음"}`);
+          if (+q !== pro) v.push(`I site.json ${seat} 프로 ${pro} ≠ 채크 원본 ${q ?? "없음"}`);
+        }
+        const fs = (src.match(/free:\s*\{[^}]*students:\s*(\d+)/) || [])[1];
+        if (+fs !== pr.free_students) v.push(`I site.json 무료 학생 수 ${pr.free_students} ≠ 채크 원본 ${fs ?? "없음"}`);
+      }
+    }
+  }
   return { targets, violations: v };
 }
 
@@ -168,6 +221,19 @@ function selftest() {
       { const t = fresh(); writeFileSync(rf(t), readFileSync(rf(t), "utf8").split(rule.must[0]).join("")); cases.push(["필수 문장 삭제(" + rule.must[0] + ")", run(t).violations.some((x) => x.startsWith("F 있어야 할 문장")), t]); }
       { const t = fresh(); writeFileSync(rf(t), readFileSync(rf(t), "utf8").replace("</main>", "<!-- " + rule.forbid[0] + " --></main>")); cases.push(["금지어가 주석 안(통과해야 한다)", !run(t).violations.some((x) => x.startsWith("F 금지어")), t]); }
     } }
+  // 5-d 통신판매업 신고번호 삭제(R-803) — 채크 소개 푸터에서 지우면 빨간불
+  if (site.business.mail_order_no) { const t = fresh(); const cf = join(t, "chaeck/index.html");
+    writeFileSync(cf, readFileSync(cf, "utf8").split(site.business.mail_order_no).join(""));
+    cases.push(["신고번호 삭제(/chaeck/)", run(t).violations.some((x) => x.startsWith("C 통신판매업 신고번호") && x.endsWith("/chaeck/")), t]); }
+  // 5-e 요금 숫자 조작 — 페이지 표의 기본 가격 하나를 바꾸면 빨간불 / 5-f site.json 값이 채크 원본과 다르면 빨간불
+  if (site.pricing) { const pf = (t) => join(t, site.pricing.path.replace(/\/$/, "/index.html").replace(/^\//, ""));
+    const [seat, [basic]] = Object.entries(site.pricing.seats)[0]; const won = basic.toLocaleString("en-US") + "원";
+    { const t = fresh(); writeFileSync(pf(t), readFileSync(pf(t), "utf8").replace(won, (basic + 1000).toLocaleString("en-US") + "원")); cases.push([`요금 숫자 조작(${seat} 기본)`, run(t).violations.some((x) => x.startsWith(`I ${seat} 기본 가격`)), t]); }
+    { const t = fresh(); const saved = site.pricing.seats[seat][0]; site.pricing.seats[seat][0] = saved + 1000;
+      const r = run(t); site.pricing.seats[seat][0] = saved;
+      cases.push([`site.json ↔ 채크 원본 불일치(${seat})`, r.violations.some((x) => x.startsWith(`I site.json ${seat} 기본`)), t]); }
+    { const t = fresh(); writeFileSync(pf(t), readFileSync(pf(t), "utf8").replace(/<tr data-seat="p200">[\s\S]*?<\/tr>/, "")); cases.push(["요금 칸 삭제(p200)", run(t).violations.some((x) => x.startsWith("I 요금 표에 칸 없음: p200")), t]); }
+  }
   // 6 기한 지난 예외 → 위반이어야 한다
   { const t = fresh(); const saved = site.legacy_exceptions.map((e) => ({ ...e }));
     site.legacy_exceptions.forEach((e) => (e.until = "2000-01-01"));

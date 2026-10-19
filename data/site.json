@@ -11,23 +11,49 @@
     "_phone": "채크 약관·방침(chaeck/src/pages/auth/Legal.tsx footer)에 이미 공개된 값과 같다 — 2026-09-20 사장님 「추천대로」(채크 소개 푸터 = 약관과 같은 값). 수수 홈(/)엔 아직 안 띄운다",
     "address": "경기도 안산시 상록구 이호로4길 14, 503호",
     "_address": "채크 약관·방침(chaeck/src/pages/auth/Legal.tsx footer)에 이미 공개된 값과 같다 — 2026-09-20 사장님 「추천대로」(채크 소개 푸터 = 약관과 같은 값). 수수 홈(/)엔 아직 안 띄운다",
-    "mail_order_no": null,
-    "_mail_order_no": "통신판매업 신고번호 — 지금은 해당 없음(결제 없음). 결제·후원이 붙고 연 50회를 넘으면 신고 대상(일반과세자라 면제 ②가 안 된다 · refs 출시_법정표시의무와_신고포상)"
+    "mail_order_no": "제2026-경기안산-2007호",
+    "_mail_order_no": "통신판매업 신고번호 — 2026-10-16 안산시 발급(채크 R-803 · 사장님 10/20). 토스페이먼츠 PG 심사 때 사이트 하단 표시를 본다(국민카드 심사 조건). (구) null — 「결제 없음이라 해당 없음」. 표시하는 곳 = mail_order_pages(하루한톨 문서는 daily-verse 정본이라 여기서 안 넣는다)"
   },
   "fixed_paths": [
     "/",
     "/hantol/privacy/",
     "/hantol/terms/",
     "/hantol/support/",
-    "/chaeck/"
+    "/chaeck/",
+    "/chaeck/pricing/"
   ],
   "_fixed_paths": "스토어·앱·약관 본문에 박히는 주소. 디자인을 갈아끼워도 이 경로는 옮기지 않는다(절대규칙 §1)",
   "business_info_pages": [
     "/",
     "/hantol/privacy/",
     "/hantol/terms/",
-    "/chaeck/"
+    "/chaeck/",
+    "/chaeck/pricing/"
   ],
+  "mail_order_pages": [
+    "/",
+    "/chaeck/",
+    "/chaeck/pricing/"
+  ],
+  "_mail_order_pages": "통신판매업 신고번호가 보이는 본문에 있어야 하는 페이지(검수기 C). 2026-10-20 PG 심사 준비(R-803)",
+  "pricing": {
+    "_설명": "채크 요금 안내(/chaeck/pricing/) 의 가격 — 원본은 채크 src/lib/plan.ts(origin/main) PLANS[칸].price(기본)·PRO_PRICE(프로) · 부가세 포함(R-572). 검수기 I 가 ①페이지 표 = 이 값 ②이 값 = 채크 원본 을 둘 다 대조한다. 값이 바뀌면 채크가 먼저 바뀌고 여기를 따라 고친다",
+    "path": "/chaeck/pricing/",
+    "source": "/mnt/d/App/chaeck@origin/main:src/lib/plan.ts",
+    "free_students": 5,
+    "seats": {
+      "p10": [21800, 131800],
+      "p15": [37800, 186800],
+      "p20": [54800, 241800],
+      "p25": [70800, 296800],
+      "p30": [87800, 351800],
+      "p50": [164800, 582800],
+      "p75": [274800, 868800],
+      "p100": [384800, 1154800],
+      "p150": [549800, 1704800],
+      "p200": [714800, 2199800]
+    }
+  },
   "legacy_hosts": [
     "soosoolabs.github.io"
   ],
@@ -217,6 +243,20 @@
         "chaeck.soosoo.kr/privacy",
         "chaeck.soosoo.kr/terms",
         "chaeck.soosoo.kr/signup"
+      ]
+    },
+    {
+      "path": "/chaeck/pricing/",
+      "_왜": "PG(토스페이먼츠) 심사용 요금 안내(R-803 · 2026-10-20). 채크 정체성 금지어 + 결제 유도 단추 문구 금지(앱 밖 페이지지만 애플 3.1.1 안전 쪽) + 약관 제5조의3·제5조의4 와 같은 말이어야 할 것",
+      "forbid": ["등수를","석차를","백분위","반 평균을","1등","순위","최고의","혁신","AI 가","학원으로 연결","저희 팀","영어 특화","즉시 삭제","채점 직후 지워","무제한","연필","결제하기","지금 구매"],
+      "must": [
+        "부가가치세 포함",
+        "자동으로 결제하지 않",
+        "카드",
+        "제5조의4",
+        "chaeck.soosoo.kr/terms",
+        "chaeck.soosoo.kr/privacy",
+        "준비 중"
       ]
     }
   ]
