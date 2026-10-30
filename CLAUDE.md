@@ -78,6 +78,7 @@ doc/                  ⚠️ .gitignore 로 제외 — 공개 저장소에 안 �
 | 하루한톨 방침·약관 파일을 **바꾸는 커밋** | `privacy-auditor`(전역) — 단, 정본은 `daily-verse` 라 **그쪽 세션에서 초안 → 여기 게시** 순서 |
 | 결제·후원·전화·주소를 **사이트에 넣자**는 말 | 전역 refs `출시_법정표시의무와_신고포상` · `data/site.json` 의 `_` 사유 줄 먼저 |
 | 페이지 문구·소재·마케팅 판단이 필요하다 | 직접 정하지 않는다 → 마케팅 연구소 `handoff/soosoo-site/ASK.md` 에 `## ASK-NNN`(틀 · 슬롯 · 기본값 · 기한) |
+| 홈·채크 소개 문구가 정리됐다(ASK-003 답·ML-013 반영 뒤) · 페이지 구조가 바뀌었다 · 늦어도 **11/12** · 이후 문구 열 줄 넘게 바뀌는 배포마다 | 마케팅 연구소에 ASK 「전체 문구 검수」 — 양식 `marketing-lab/handoff/soosoo-site/ML-015_*` §2 · 빌드 뒤 `dist/` 그대로 두고 `tools/shots.mjs`·`scenes.mjs` 를 같은 커밋으로 |
 | 디자인 HTML 을 받아왔다 | `DesignSync` 로 읽고 이식 → `npm run deploy` → `deploy:check` → 스크린샷 375/1280 을 사장님께 |
 | 앱이 하나 더 나온다 | 홈 카드 1개 추가 + 그 앱의 법적 문서 경로를 `fixed_paths` 에 + **gh-pages 껍데기는 안 만든다**(옛 주소로 나간 적 없는 경로) |
 
