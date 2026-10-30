@@ -192,9 +192,11 @@ export function run(dist) {
     const hidden = new Set(site.search.noindex || []);
     const toPath = (f) => "/" + relative(dist, f).replace(/\\/g, "/").replace(/index\.html$/, "");
     const smf = join(dist, "sitemap.xml");
+    const smOn = site.search.sitemap !== false;
     targets++;
-    const locs = existsSync(smf) ? [...readFileSync(smf, "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]) : null;
-    if (!locs) v.push("J sitemap.xml 없음(W1)");
+    const locs = smOn && existsSync(smf) ? [...readFileSync(smf, "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]) : null;
+    if (smOn && !locs) v.push("J sitemap.xml 없음(W1)");
+    if (!smOn && existsSync(smf)) v.push("J sitemap 이 꺼짐인데 sitemap.xml 이 있음");
     const inMap = new Set((locs || []).map((u) => u.replace(`https://${site.domain}`, "")));
     for (const u of locs || []) {
       targets++;
@@ -217,7 +219,8 @@ export function run(dist) {
     if (!existsSync(rf)) v.push("J robots.txt 없음(W2)");
     else {
       const rb = readFileSync(rf, "utf8");
-      if (!rb.includes(`Sitemap: https://${site.domain}/sitemap.xml`)) v.push("J robots.txt 에 Sitemap 줄 없음(W2)");
+      if (smOn && !rb.includes(`Sitemap: https://${site.domain}/sitemap.xml`)) v.push("J robots.txt 에 Sitemap 줄 없음(W2)");
+      if (!smOn && /^Sitemap:/im.test(rb)) v.push("J sitemap 이 꺼짐인데 robots.txt 에 Sitemap 줄이 있음");
       if (/^\s*Disallow:\s*\/\s*$/im.test(rb)) v.push("J robots.txt 에 전체 차단(Disallow: /) — 검색 로봇까지 막는다(W2)");
       const ge = site.search.google_extended;
       if (ge?.allow) {
@@ -279,8 +282,8 @@ function selftest() {
   // 5-g 검색 노출(J) — sitemap 삭제 · 숨김 페이지를 sitemap 에 · noindex 제거 · 정본에 noindex · robots 전체 차단 · 설명문 삭제
   if (site.search) {
     const sm = (t) => join(t, "sitemap.xml"), hid = site.search.noindex[0], hf = (t) => join(t, hid.slice(1), "index.html");
-    { const t = fresh(); rmSync(sm(t)); cases.push(["sitemap.xml 삭제", run(t).violations.some((x) => x.startsWith("J sitemap.xml 없음")), t]); }
-    { const t = fresh(); writeFileSync(sm(t), readFileSync(sm(t), "utf8").replace("</urlset>", `<url><loc>https://${site.domain}${hid}</loc></url></urlset>`)); cases.push([`숨김 페이지를 sitemap 에(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 페이지가 sitemap")), t]); }
+    if (site.search.sitemap !== false) { const t = fresh(); rmSync(sm(t)); cases.push(["sitemap.xml 삭제", run(t).violations.some((x) => x.startsWith("J sitemap.xml 없음")), t]); }
+    if (site.search.sitemap !== false) { const t = fresh(); writeFileSync(sm(t), readFileSync(sm(t), "utf8").replace("</urlset>", `<url><loc>https://${site.domain}${hid}</loc></url></urlset>`)); cases.push([`숨김 페이지를 sitemap 에(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 페이지가 sitemap")), t]); }
     { const t = fresh(); writeFileSync(hf(t), readFileSync(hf(t), "utf8").replace(/<meta name="robots"[^>]*>/i, "")); cases.push([`noindex 제거(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 목록인데 noindex 없음")), t]); }
     { const t = fresh(); const cf = join(t, "chaeck/index.html"); writeFileSync(cf, readFileSync(cf, "utf8").replace("</head>", '<meta name="robots" content="noindex"></head>')); cases.push(["정본(/chaeck/)에 noindex 주입", run(t).violations.some((x) => x === "J noindex 인데 숨김 목록에 없음: /chaeck/"), t]); }
     { const t = fresh(); writeFileSync(join(t, "robots.txt"), "User-agent: *\nDisallow: /\n" + readFileSync(join(t, "robots.txt"), "utf8")); cases.push(["robots 전체 차단 주입", run(t).violations.some((x) => x.startsWith("J robots.txt 에 전체 차단")), t]); }

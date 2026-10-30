@@ -55,11 +55,11 @@ const toPath = (f) => "/" + f.slice(DIST.length + 1).replace(/\\/g, "/").replace
 const hidden = new Set(site.search?.noindex || []);
 const listed = walk(DIST).map(toPath).filter((p) => !hidden.has(p)).sort();
 const lastmod = (p) => git(`log -1 --format=%cs -- "${(p === "/" ? "index.html" : p.slice(1) + "index.html")}"`);
-writeFileSync(join(DIST, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
+if (site.search?.sitemap !== false) writeFileSync(join(DIST, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
   listed.map((p) => { const d = lastmod(p); return `  <url><loc>https://${site.domain}${p}</loc>${d ? `<lastmod>${d}</lastmod>` : ""}</url>`; }).join("\n")
 }\n</urlset>\n`);
 const ge = site.search?.google_extended;
 const geLines = ge?.allow ? `\n# Gemini 앱 답변 근거·학습 허용(site.json search.google_extended) — 아래 경로는 뺀다\nUser-agent: Google-Extended\nAllow: /\n${(ge.disallow || []).map((p) => `Disallow: ${p}\n`).join("")}` : "";
-writeFileSync(join(DIST, "robots.txt"), `# 수수 soosoo.kr — 검색 로봇 규칙은 Cloudflare 자동 관리분(위)을 따른다\nSitemap: https://${site.domain}/sitemap.xml\n${geLines}`);
+writeFileSync(join(DIST, "robots.txt"), `# 수수 soosoo.kr — 검색 로봇 규칙은 Cloudflare 자동 관리분(위)을 따른다\n${site.search?.sitemap !== false ? `Sitemap: https://${site.domain}/sitemap.xml\n` : ""}${geLines}`);
 writeFileSync(join(DIST, "build.json"), JSON.stringify(build, null, 2) + "\n");
-console.log(`✅ build → dist/ · HTML ${stamped}개 · sitemap ${listed.length}개(숨김 ${hidden.size}) · build=${build.sha}`);
+console.log(`✅ build → dist/ · HTML ${stamped}개 · sitemap ${site.search?.sitemap === false ? "꺼짐" : listed.length + "개"}(숨김 ${hidden.size}) · build=${build.sha}`);
