@@ -264,7 +264,7 @@ function selftest() {
   // 4 외부 요청 주입
   { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace("</head>", `<script src="https://example.com/x.js"></script></head>`)); cases.push(["외부 script 주입", run(t).violations.some((x) => x.startsWith("D 외부 요청 script")), t]); }
   // 5 고정 경로 삭제
-  { const t = fresh(); rmSync(join(t, "hantol/privacy"), { recursive: true, force: true }); cases.push(["고정 경로 삭제(/hantol/privacy/)", run(t).violations.some((x) => x.startsWith("A 고정 경로 없음: /hantol/privacy/")), t]); }
+  { const t = fresh(); rmSync(join(t, "chaeck/pricing"), { recursive: true, force: true }); cases.push(["고정 경로 삭제(/chaeck/pricing/)", run(t).violations.some((x) => x.startsWith("A 고정 경로 없음: /chaeck/pricing/")), t]); }
   // 5-b 금지어 주입 / 5-c 필수 문장 삭제 (page_rules 가 있을 때)
   { const rule = (site.page_rules || [])[0];
     if (rule) { const rf = (t) => join(t, rule.path.replace(/\/$/, "/index.html").replace(/^\//, ""));

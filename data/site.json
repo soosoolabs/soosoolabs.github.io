@@ -16,17 +16,12 @@
   },
   "fixed_paths": [
     "/",
-    "/hantol/privacy/",
-    "/hantol/terms/",
-    "/hantol/support/",
     "/chaeck/",
     "/chaeck/pricing/"
   ],
   "_fixed_paths": "스토어·앱·약관 본문에 박히는 주소. 디자인을 갈아끼워도 이 경로는 옮기지 않는다(절대규칙 §1)",
   "business_info_pages": [
     "/",
-    "/hantol/privacy/",
-    "/hantol/terms/",
     "/chaeck/",
     "/chaeck/pricing/"
   ],
@@ -56,31 +51,25 @@
   },
   "search": {
     "_설명": "검색 노출 · AI 검색 노출(전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30). build 가 dist/sitemap.xml(noindex 를 뺀 모든 페이지)·dist/robots.txt(Sitemap 줄 하나 — Cloudflare 가 AI 학습 로봇 규칙을 앞에 붙인다)를 만들고, 검수기 J 가 「숨김 목록 ↔ sitemap ↔ meta robots」 3자를 대조한다",
-    "noindex": ["/chaeck/_old/", "/chaeck/a/", "/chaeck/b/", "/chaeck/ink/", "/chaeck/relay/", "/chaeck/pricing/", "/hantol/privacy/", "/hantol/terms/", "/hantol/support/"],
-    "_noindex": "검색에 안 나와야 하는 페이지 — 시안·이전 판·넘김 페이지는 정본(/chaeck/)과 내용이 겹친다(네이버 가이드 「중복 콘텐츠 불이익」). 여기 적은 페이지는 <meta name=\"robots\" content=\"noindex\"> 가 있어야 하고 sitemap 에 없어야 한다. /chaeck/pricing/ = 2026-10-30 사장님 「요금 안내는 숨겨줘」 — 요금제가 열리면 뺀다(주소·채크 소개 푸터 링크는 토스 PG 환불 정책 URL 이라 유지). /hantol/* = 2026-10-30 사장님 「하루한톨은 하지 않을 서비스」 — 홈에서 카드를 빼고 검색에서 숨긴다(주소 자체는 지울지 사장님 결정 전까지 그대로)",
+    "noindex": ["/chaeck/_old/", "/chaeck/a/", "/chaeck/b/", "/chaeck/ink/", "/chaeck/relay/", "/chaeck/pricing/"],
+    "_noindex": "검색에 안 나와야 하는 페이지 — 시안·이전 판·넘김 페이지는 정본(/chaeck/)과 내용이 겹친다(네이버 가이드 「중복 콘텐츠 불이익」). 여기 적은 페이지는 <meta name=\"robots\" content=\"noindex\"> 가 있어야 하고 sitemap 에 없어야 한다. /chaeck/pricing/ = 2026-10-30 사장님 「요금 안내는 숨겨줘」 — 요금제가 열리면 뺀다(주소·채크 소개 푸터 링크는 토스 PG 환불 정책 URL 이라 유지). /hantol/* = 2026-10-30 사장님 「하루한톨은 하지 않을 서비스」 → 같은 날 「지워」로 문서 3장 삭제(미출시라 스토어에 나간 적 없음 · git 기록에 남음)",
     "sitemap": true,
     "_sitemap": "false 면 build 가 sitemap.xml·Sitemap 줄을 안 만들고 검수기 J 도 sitemap 대조를 건너뛴다. 10/30 「구글만 일단 켜봐」 동안 꺼 뒀다가 같은 날 요금 안내 숨김 결정 뒤 켬",
     "google_extended": { "allow": true, "disallow": ["/hantol/"] },
     "_google_extended": "구글 Gemini 앱 답변 근거(grounding)+학습을 한 스위치로 묶은 로봇 이름. Cloudflare 자동 관리가 막아 둔 것을 우리 robots.txt 의 Allow 로 푼다(구글 원문: 같은 로봇 규칙은 합치고, 부딪히면 덜 막는 쪽) — 2026-10-30 사장님 「켜자 · 하루한톨은 빼, 오픈 안 할거야」. disallow 경로는 더 길어서 Allow / 를 이긴다. 검수기 J 가 두 줄을 확인한다",
     "verification": { "naver-site-verification": "3455003e16c7df789d5cc3bf31ab27e6f931bf0d" },
     "_verification": "검색엔진 소유 확인 메타 — build 가 홈(/) 머리에 끼워 넣고 검수기 J 가 확인한다(홈 디자인을 갈아끼워도 안 빠진다). 네이버 서치어드바이저 2026-10-30 사장님 계정 발급. 소유 확인 값은 공개 페이지에 원래 보이는 값이라 비밀 아님",
-    "description_skip": ["/hantol/privacy/", "/hantol/terms/", "/hantol/support/"],
-    "_description_skip": "meta description 이 없어도 되는 페이지 — 하루한톨 법적 문서는 daily-verse 정본이라 여기서 안 고친다(그쪽에서 넣으면 이 목록에서 뺀다)"
+    "description_skip": [],
+    "_description_skip": "meta description 이 없어도 되는 페이지(지금 없음 — 하루한톨 문서 3장이 있던 자리 · 2026-10-30 삭제)"
   },
   "legacy_hosts": [
     "soosoolabs.github.io"
   ],
-  "legacy_exceptions": [
-    {
-      "path": "/hantol/terms/",
-      "until": "2026-11-30",
-      "why": "약관 본문 §에 적힌 「이 약관은 …에서 보실 수 있습니다」 자기 주소. 하루한톨(daily-verse) 소유 문서라 그 프로젝트가 소식 형식으로 고친다(옛 주소는 리다이렉트로 살아 있다). 2026-10-30 연장(첫 기한 10/20) — daily-verse 가 아직 안 고쳤다 → 의뢰 /mnt/d/App/daily-verse/handoff/soosoo-site/ASK.md ASK-001. 또 지나면 연장하지 말고 사장님께 올린다"
-    }
-  ],
+  "legacy_exceptions": [],
+  "_legacy_exceptions": "옛 주소를 본문에 적어도 되는 페이지와 기한. 2026-10-30 하루한톨 약관(/hantol/terms/) 삭제로 비었다",
   "build": {
     "include": [
       "index.html",
-      "hantol",
       "chaeck",
       "assets"
     ],
@@ -91,12 +80,11 @@
   "urls": {
     "check": [
       "https://soosoo.kr/",
-      "https://soosoo.kr/hantol/privacy/"
+      "https://soosoo.kr/chaeck/"
     ],
     "redirects": {
       "https://www.soosoo.kr/": "https://soosoo.kr/",
-      "https://soosoolabs.github.io/": "https://soosoo.kr/",
-      "https://soosoolabs.github.io/hantol/privacy/": "https://soosoo.kr/hantol/privacy/"
+      "https://soosoolabs.github.io/": "https://soosoo.kr/"
     }
   },
   "fonts": {
