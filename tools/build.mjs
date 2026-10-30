@@ -55,6 +55,16 @@ if (verif.length) {
   const hf = join(DIST, "index.html");
   writeFileSync(hf, readFileSync(hf, "utf8").replace(/(<meta name="build"[^>]*>)/i, `$1\n${verif.map(([n, c]) => `<meta name="${n}" content="${c}">`).join("\n")}`));
 }
+// ⑤-c 구조화 데이터(site.json search.structured_data) — 「채크(Chaeck) · 강사 PC 웹 + 학생·학부모 앱 · 만든 곳 수수」를 검색엔진이 기계로 읽게
+//     (2026-10-31 구글 AI 개요 오요약 · 데이터 블록이라 실행 안 됨 → CSP script-src 'self' 와 무관)
+const sd = site.search?.structured_data;
+if (sd) {
+  const ld = `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": sd.graph }).replace(/</g, "\\u003c")}</script>`;
+  for (const p of sd.pages) {
+    const f = join(DIST, p.slice(1), "index.html");
+    writeFileSync(f, readFileSync(f, "utf8").replace(/<\/head>/i, `${ld}\n</head>`));
+  }
+}
 // ⑥ 검색 노출(site.json search · 검수기 J) — sitemap = noindex 를 뺀 모든 페이지 · robots = Sitemap 줄 하나
 //    (Cloudflare 자동 관리 robots 가 AI 학습 로봇 규칙을 이 파일 앞에 붙인다 — 2026-10-30 실측·공식 문서)
 const toPath = (f) => "/" + f.slice(DIST.length + 1).replace(/\\/g, "/").replace(/index\.html$/, "");

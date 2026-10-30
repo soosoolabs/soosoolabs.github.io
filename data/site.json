@@ -59,6 +59,19 @@
     "_google_extended": "구글 Gemini 앱 답변 근거(grounding)+학습을 한 스위치로 묶은 로봇 이름. Cloudflare 자동 관리가 막아 둔 것을 우리 robots.txt 의 Allow 로 푼다(구글 원문: 같은 로봇 규칙은 합치고, 부딪히면 덜 막는 쪽) — 2026-10-30 사장님 「켜자 · 하루한톨은 빼, 오픈 안 할거야」. disallow 경로는 더 길어서 Allow / 를 이긴다. 검수기 J 가 두 줄을 확인한다",
     "verification": { "naver-site-verification": "3455003e16c7df789d5cc3bf31ab27e6f931bf0d" },
     "_verification": "검색엔진 소유 확인 메타 — build 가 홈(/) 머리에 끼워 넣고 검수기 J 가 확인한다(홈 디자인을 갈아끼워도 안 빠진다). 네이버 서치어드바이저 2026-10-30 사장님 계정 발급. 소유 확인 값은 공개 페이지에 원래 보이는 값이라 비밀 아님",
+    "structured_data": {
+      "pages": ["/", "/chaeck/"],
+      "graph": [
+        { "@type": "Organization", "@id": "https://soosoo.kr/#org", "name": "수수", "alternateName": "SooSoo", "url": "https://soosoo.kr/", "email": "soosoo.labs@gmail.com" },
+        { "@type": "SoftwareApplication", "@id": "https://soosoo.kr/#chaeck", "name": "채크", "alternateName": "Chaeck",
+          "applicationCategory": "EducationalApplication", "operatingSystem": "Web, Android, iOS",
+          "availableOnDevice": "강사: PC 웹(시험지 올리기·채점 확인) · 학생·학부모: 안드로이드·아이폰 앱",
+          "url": "https://chaeck.soosoo.kr/",
+          "sameAs": ["https://soosoo.kr/", "https://play.google.com/store/apps/details?id=com.chaeck.app", "https://apps.apple.com/kr/app/id6788668772"],
+          "publisher": { "@id": "https://soosoo.kr/#org" } }
+      ]
+    },
+    "_structured_data": "구조화 데이터(schema.org JSON-LD) — 검색엔진·AI 검색이 「이름 = 채크(Chaeck) · 강사는 PC 웹, 학생·학부모는 폰 앱 · 만든 곳 = 수수」를 기계로 읽게 한다. 2026-10-31 구글 AI 개요가 「채크(Chek) … 모바일 앱 서비스」로 잘못 요약한 것을 보고 넣음(사장님 「셋팅 잘못한 거 아니야」). build 가 pages 머리에 넣고 검수기 J 가 확인한다(디자인 교체에도 안 빠진다). 값은 사실표(marketing-lab facts/chaeck.md)·페이지에 이미 공개된 것만 · 가격(offers)은 넣지 않는다(「무료」 표현 금지 · 결제 닫힘). 데이터 블록이라 실행되지 않아 CSP script-src 'self' 와 부딪히지 않는다",
     "description_skip": [],
     "_description_skip": "meta description 이 없어도 되는 페이지(지금 없음 — 하루한톨 문서 3장이 있던 자리 · 2026-10-30 삭제)"
   },

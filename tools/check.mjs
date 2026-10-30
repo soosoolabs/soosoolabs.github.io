@@ -215,6 +215,14 @@ export function run(dist) {
       if (!hidden.has(p) && locs && !inMap.has(p)) v.push(`J 공개 페이지가 sitemap 에 없음: ${p}`);
       if (!hidden.has(p) && !(site.search.description_skip || []).includes(p) && !/<meta name="description" content="[^"]+"/i.test(html)) v.push(`J 설명문(meta description) 없음: ${p}`);
     }
+    for (const p of site.search.structured_data?.pages || []) {
+      targets++;
+      const f = join(dist, p.slice(1), "index.html");
+      const m = existsSync(f) && readFileSync(f, "utf8").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
+      let g = null; try { g = m && JSON.parse(m[1])["@graph"]; } catch { /* 깨진 JSON */ }
+      const app = (g || []).find((x) => x["@type"] === "SoftwareApplication");
+      if (!app || app.name !== "채크" || app.alternateName !== "Chaeck") v.push(`J 구조화 데이터 없음·깨짐(채크/Chaeck): ${p}`);
+    }
     const home = join(dist, "index.html");
     for (const [n, c] of Object.entries(site.search.verification || {})) {
       targets++;
@@ -296,6 +304,10 @@ function selftest() {
     for (const n of Object.keys(site.search.verification || {})) { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(new RegExp(`<meta name="${n}"[^>]*>`), "")); cases.push([`소유 확인 메타 삭제(${n})`, run(t).violations.some((x) => x.startsWith(`J 홈에 소유 확인 메타 없음: ${n}`)), t]); }
     if (site.search.google_extended?.disallow?.length) { const t = fresh(); const d = site.search.google_extended.disallow[0]; writeFileSync(join(t, "robots.txt"), readFileSync(join(t, "robots.txt"), "utf8").replace(`Disallow: ${d}\n`, "")); cases.push([`Gemini 제외 경로 삭제(${d})`, run(t).violations.some((x) => x.startsWith("J Google-Extended 에서 빼기로 한 경로가 안 막힘")), t]); }
     { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<meta name="description"[^>]*>/i, "")); cases.push(["설명문 삭제(/)", run(t).violations.some((x) => x === "J 설명문(meta description) 없음: /"), t]); }
+    if (site.search.structured_data) {
+      { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/i, "")); cases.push(["구조화 데이터 삭제(/)", run(t).violations.some((x) => x === "J 구조화 데이터 없음·깨짐(채크/Chaeck): /"), t]); }
+      { const t = fresh(); const cf = join(t, "chaeck/index.html"); writeFileSync(cf, readFileSync(cf, "utf8").replace('"alternateName":"Chaeck"', '"alternateName":"Chek"')); cases.push(["구조화 데이터 이름 오타(/chaeck/ Chek)", run(t).violations.some((x) => x === "J 구조화 데이터 없음·깨짐(채크/Chaeck): /chaeck/"), t]); }
+    }
   }
   // 5-h W3(IL-040) — 배포 robots 를 흉내 낸 글(Cloudflare 자동분 모양 + 우리 dist/robots.txt)을 깨뜨려 본다 · 실물 판정은 deploy:check
   { const ours = existsSync(join(ROOT, dirArg, "robots.txt")) ? readFileSync(join(ROOT, dirArg, "robots.txt"), "utf8") : "";
