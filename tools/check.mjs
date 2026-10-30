@@ -15,7 +15,7 @@
 //   H. 로컬 이미지·폰트 참조가 dist 에 실제로 있나
 //   I. 채크 요금 안내 가격 = site.json pricing = 채크 원본 plan.ts(origin/main) · 무료 범위 문장 (2026-10-20 R-803)
 //   (C-2) 통신판매업 신고번호가 mail_order_pages 의 보이는 본문에 (2026-10-20 R-803)
-//   J. 검색 노출(site.json search · 전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30)
+//   J. 검색 노출(site.json search · 전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30) · W3(AI 검색 열림·학습 닫힘)은 실물 robots 라 deploy:check 가 본다(tools/robots-w3.mjs · IL-040)
 //      sitemap.xml = noindex 를 뺀 모든 페이지 · 숨김 목록 ↔ meta robots noindex 양방향 · robots.txt 에 Sitemap 줄·전체 차단 없음 · 설명문
 import { readFileSync, readdirSync, statSync, existsSync, cpSync, rmSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join, dirname, relative } from "node:path";
@@ -23,6 +23,7 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 import { pageChars, charsHash } from "./fonts-lib.mjs";
 import { fileURLToPath } from "node:url";
+import { checkW3, SEARCH, TRAIN } from "./robots-w3.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const site = JSON.parse(readFileSync(join(ROOT, "data/site.json"), "utf8"));
@@ -296,6 +297,13 @@ function selftest() {
     if (site.search.google_extended?.disallow?.length) { const t = fresh(); const d = site.search.google_extended.disallow[0]; writeFileSync(join(t, "robots.txt"), readFileSync(join(t, "robots.txt"), "utf8").replace(`Disallow: ${d}\n`, "")); cases.push([`Gemini 제외 경로 삭제(${d})`, run(t).violations.some((x) => x.startsWith("J Google-Extended 에서 빼기로 한 경로가 안 막힘")), t]); }
     { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<meta name="description"[^>]*>/i, "")); cases.push(["설명문 삭제(/)", run(t).violations.some((x) => x === "J 설명문(meta description) 없음: /"), t]); }
   }
+  // 5-h W3(IL-040) — 배포 robots 를 흉내 낸 글(Cloudflare 자동분 모양 + 우리 dist/robots.txt)을 깨뜨려 본다 · 실물 판정은 deploy:check
+  { const ours = existsSync(join(ROOT, dirArg, "robots.txt")) ? readFileSync(join(ROOT, dirArg, "robots.txt"), "utf8") : "";
+    const cf = "User-agent: *\nContent-Signal: search=yes,ai-train=no\nAllow: /\n\n" + TRAIN.map((a) => `User-agent: ${a}\nDisallow: /\n`).join("\n") + "\n";
+    cases.push(["W3 정상 모양은 통과", checkW3(cf + ours).ok, null]);
+    cases.push(["W3 검색 로봇 막음(OAI-SearchBot)", checkW3("User-agent: OAI-SearchBot\nDisallow: /\n\n" + cf + ours).searchBlocked.includes("OAI-SearchBot"), null]);
+    cases.push(["W3 학습 로봇 줄 지움(GPTBot)", checkW3(cf.replace("User-agent: GPTBot\nDisallow: /\n", "") + ours).trainOpen.includes("GPTBot"), null]);
+    cases.push(["W3 * 전체 차단", checkW3(cf.replace("Allow: /", "Disallow: /") + ours).searchBlocked.length === SEARCH.length, null]); }
   // 6 기한 지난 예외 → 위반이어야 한다
   { const t = fresh(); const saved = site.legacy_exceptions.map((e) => ({ ...e }));
     site.legacy_exceptions.forEach((e) => (e.until = "2000-01-01"));
@@ -307,7 +315,7 @@ function selftest() {
   for (const [name, ok, t] of cases) {
     console.log(`${ok === null ? "⬜" : ok ? "🔴→✅" : "❌"} ${name}${ok === null ? " (대상 없음 — 옛 주소 언급이 0건이라 시험 못 함)" : ""}`);
     if (ok === false) bad++;
-    rmSync(t, { recursive: true, force: true });
+    if (t) rmSync(t, { recursive: true, force: true });
   }
   console.log(bad ? `❌ selftest 실패 ${bad}건 — 이 검수기는 믿으면 안 된다` : "✅ selftest — 깨뜨린 만큼 빨간불이 떴다");
   process.exit(bad ? 1 : 0);

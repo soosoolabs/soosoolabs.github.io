@@ -6,6 +6,7 @@ import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { checkW3 } from "./robots-w3.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const site = JSON.parse(readFileSync(join(ROOT, "data/site.json"), "utf8"));
@@ -40,5 +41,16 @@ for (const [from, to] of Object.entries(site.urls.redirects)) {
   const viaMeta = r.status === 200 && new RegExp(`http-equiv="refresh"[^>]*url=${to.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(r.text);
   if (viaHeader || viaMeta) say("✅", `${from} → ${to} (${viaHeader ? "HTTP " + r.status : "meta refresh"})`);
   else { say("❌", `${from} — ${to} 로 안 넘어간다 (HTTP ${r.status}${r.location ? " → " + r.location : ""})`); exit = 1; }
+}
+// 3) W3 — 배포된 robots.txt(Cloudflare 자동분 + 우리 파일)에서 AI 검색 로봇은 열리고 학습 로봇은 닫혔나(IL-040)
+//    Cloudflare 가 우리 모르게 막는 목록을 바꿀 수 있어서 실물에 대고 본다 · ⚠️ 방화벽 차단(403)은 여기서 안 보인다
+{
+  const u = `https://${site.domain}/robots.txt`, r = await probe(u);
+  if (!r.ok || r.status !== 200) { say("⬜", `${u} — 확인 못 함 (${r.ok ? "HTTP " + r.status : r.error})`); exit = exit || 2; }
+  else {
+    const w = checkW3(r.text);
+    if (w.ok) say("✅", `${u} — W3 검색 로봇 열림 · 학습 로봇(GPTBot·ClaudeBot·CCBot) 닫힘`);
+    else { say("❌", `${u} — W3 ${w.searchBlocked.length ? "검색 로봇 막힘: " + w.searchBlocked.join(",") : ""}${w.searchBlocked.length && w.trainOpen.length ? " · " : ""}${w.trainOpen.length ? "학습 로봇 안 막힘: " + w.trainOpen.join(",") : ""}`); exit = 1; }
+  }
 }
 process.exit(exit);
