@@ -10,16 +10,17 @@
 <link rel="preload" href="/assets/fonts/Paperlogy-8-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/Pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
 <!-- 앱 화면 캡처 = 채크 리얼 웹 a6ebb56c(1.2.0) 개발 빌드 · 개발 DB 데모 계정 · 2026-10-30 · 데모 이름표(반·시험 이름)만 화면에서 정리해 찍음 -->
-<!-- 홈 v3(2026-10-30 · doc/디자인_방향.md §6-5) = 채크 홍보 랜딩. 문구는 라이브 /chaeck/ 마케팅 승인 문구 그대로(ASK-003 답이 오면 교체) · 사진은 사장님 원본(합성 0) · 스크립트 0 -->
+<!-- 홈 v4(2026-10-30) = 채크 홍보 랜딩. 문구 = ML-016(← ASK-003) · 사진 = ML-017(← ASK-004) A~F 사장님 magnific 생성(이미지 안 합성 0 · 원본은 doc/사진원본 로컬) · 화면 자리 = 채크 실제 녹화를 사진 위 층에 · 스크립트 = /assets/home.js(화면 밖 녹화 정지) 하나 -->
 <style>
 @font-face{font-family:'Pretendard';font-weight:100 900;font-display:swap;src:url('/assets/fonts/Pretendard-sub.woff2') format('woff2')}
 @font-face{font-family:'Paperlogy';font-weight:800;font-display:swap;src:url('/assets/fonts/Paperlogy-8-sub.woff2') format('woff2')}
 @font-face{font-family:'Paperlogy';font-weight:700;font-display:swap;src:url('/assets/fonts/Paperlogy-7-sub.woff2') format('woff2')}
 :root{
   --paper:#F6F3EC; --card:#FFFFFF; --ink:#1B1A16; --ink-2:#5C5950; --ink-3:#8A867C; --line:rgba(27,26,22,.10);
-  --g7:#0E6B50; --g1:#DEF3EB; --mint:#5EE0B0; --c7:#9A3B1C; --c05:#FBEFE9;
+  --g7:#0E6B50; --g5:#1D9E75; --g1:#DEF3EB; --mint:#5EE0B0; --c7:#9A3B1C; --c5:#D8542B; --c05:#FBEFE9;
   --display:"Paperlogy","Pretendard",sans-serif;
   --body:"Pretendard",-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
@@ -28,43 +29,82 @@ a{color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 40px}
 .disp{font-family:var(--display);font-weight:800;letter-spacing:-.035em;margin:0}
 
-.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand img{width:32px;height:32px;border-radius:8px}
 .brand b{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em}
 .nav{display:flex;align-items:center;gap:22px;font-size:15px}
 .nav a{text-decoration:none;color:var(--ink-2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:12px;font-weight:700;font-size:16px;text-decoration:none;white-space:nowrap}
-.btn.pri{background:var(--g7);color:#fff}
-.btn.pri:hover{background:#0b5a43}
+.nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 26px;border-radius:14px;font-weight:700;font-size:16px;text-decoration:none;white-space:nowrap;transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s}
+.btn.pri{background:var(--g7);color:#fff;box-shadow:0 10px 24px -12px rgba(14,107,80,.7),inset 0 1px 0 rgba(255,255,255,.14)}
+.btn.pri:hover{background:#0b5a43;transform:translateY(-1px);box-shadow:0 16px 30px -14px rgba(14,107,80,.8),inset 0 1px 0 rgba(255,255,255,.14)}
 .btn.alt{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
-.nav .btn{min-height:40px;padding:0 16px;font-size:14.5px;color:#fff}
+.btn.alt:hover{transform:translateY(-1px)}
+.btn .ar{display:inline-block;transition:transform .2s var(--ease)}
+.btn:hover .ar{transform:translateX(4px)}
+.nav .btn{min-height:40px;padding:0 16px;font-size:14.5px;color:#fff;border-radius:11px}
 
-.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:center;padding:72px 0 80px}
-.eyebrow{display:inline-block;font-size:14px;font-weight:700;color:var(--g7);background:var(--g1);padding:5px 12px;border-radius:99px}
-.hero h1{font-size:76px;line-height:1.08;margin:20px 0 22px}
-.hero h1 em{font-style:normal;color:var(--g7)}
-.lede{font-size:19px;color:var(--ink-2);margin:0 0 30px;max-width:30em}
+/* 공식 배지 = 애플·구글이 내려 준 파일 그대로 · 높이만 맞춘다 */
+.stores{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px;font-size:13.5px;font-weight:600;color:var(--ink-3)}
+.stores span{margin-right:4px}
+.badge{display:block;border-radius:9px;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.badge img{display:block;height:44px;width:auto}
+.badge:hover{transform:translateY(-2px);box-shadow:0 10px 20px -12px rgba(27,26,22,.55)}
+
+/* ── 첫 화면 ── */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:44px;align-items:center;padding:64px 0 88px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--g7);background:var(--g1);padding:6px 14px 6px 12px;border-radius:99px}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--g5);box-shadow:0 0 0 0 rgba(29,158,117,.5)}
+.hero h1{font-size:80px;line-height:1.08;margin:22px 0 24px}
+.hero h1 em{font-style:normal;color:var(--g7);position:relative;display:inline-block}
+.ul{position:absolute;left:-2%;bottom:-.16em;width:104%;height:.3em;overflow:visible}
+.ul path{fill:none;stroke:var(--g5);stroke-width:7;stroke-linecap:round;stroke-dasharray:320;stroke-dashoffset:0}
+.lede{font-size:19px;color:var(--ink-2);margin:0 0 32px;max-width:30em}
 .ctas{display:flex;gap:10px;flex-wrap:wrap}
-.stores{display:flex;align-items:center;gap:14px;margin-top:22px;font-size:14px;color:var(--ink-3)}
-.stores a{color:var(--ink-2);font-weight:600}
-.stage{position:relative;padding:0 0 40px}
-.win{border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 30px 70px -24px rgba(27,26,22,.30),0 0 0 1px var(--line)}
-.bar{display:flex;align-items:center;gap:7px;height:32px;padding:0 14px;background:#F1EDE4;border-bottom:1px solid var(--line)}
-.bar i{width:10px;height:10px;border-radius:50%;background:#DCD6C9}
-.bar span{margin-left:12px;font-size:11px;color:var(--ink-3);background:#fff;border-radius:6px;padding:1px 10px}
-.win img{display:block;width:100%;height:auto;aspect-ratio:1280/820;object-fit:cover;object-position:top left}
-.phone{position:absolute;right:-18px;bottom:0;width:31%;border-radius:26px;padding:7px;background:#1B1A16;box-shadow:0 24px 50px -16px rgba(27,26,22,.45)}
-.phone img{display:block;width:100%;height:auto;border-radius:20px;aspect-ratio:390/700;object-fit:cover;object-position:top}
 
-/* 선생님 구역 = 검은 무대 · 아래로 스크롤하면 고정되고 장면이 옆으로 지나간다(CSS 스크롤 연동 · 스크립트 0) */
+/* 첫 화면 = 사진 A(화면 폭 전체 · 16:9) · 노트북 화면 자리에 실제 녹화 · 왼쪽 글자는 옅은 크림 그라데이션 위 */
+.hero.ph{position:relative;display:block;margin:0 calc(50% - 50vw);padding:0;aspect-ratio:16/9;overflow:hidden}
+.scene{position:absolute;inset:0;z-index:0}
+.scene picture{display:block;height:100%}
+.scene img{display:block;width:100%;height:100%;object-fit:cover}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(247,244,237,.96) 0%,rgba(247,244,237,.9) 30%,rgba(247,244,237,.5) 41%,transparent 49%)}
+.scene .lcd{position:absolute;left:47.46%;top:33.43%;width:35.62%;height:40.71%;overflow:hidden;background:#000;border-radius:2px}
+.scene .lcd video{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.hero.ph .copy{--l:max(40px,calc((100vw - 1100px) / 2));position:relative;z-index:1;margin-left:var(--l);width:calc(47vw - var(--l) - 36px);height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+/* 스튜디오 = 밝은 원장실 책상 · 노트북·폰 안은 실제 녹화(사진 K-A 가 오면 이 무대를 사진으로 바꾼다) */
+.studio{position:relative;aspect-ratio:7/6;border-radius:30px;overflow:hidden;isolation:isolate;box-shadow:0 0 0 1px var(--line),0 50px 90px -50px rgba(27,26,22,.45)}
+.set{position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(42% 36% at 14% 8%,rgba(255,255,255,.95),transparent 70%),
+    linear-gradient(104deg,transparent 18%,rgba(255,255,255,.34) 18.2%,rgba(255,255,255,.34) 30%,transparent 30.2%,transparent 34%,rgba(255,255,255,.26) 34.2%,rgba(255,255,255,.26) 44%,transparent 44.2%),
+    radial-gradient(24% 26% at 92% 30%,rgba(29,158,117,.32),transparent 72%),
+    radial-gradient(14% 16% at 84% 18%,rgba(29,158,117,.22),transparent 72%),
+    linear-gradient(180deg,#EDE6D7 0%,#E6DCC8 66%,transparent 66%),
+    linear-gradient(180deg,#D8C19C 66%,#CDB389 80%,#BFA47A 100%)}
+.set::before{content:"";position:absolute;left:0;right:0;top:66%;height:2px;background:rgba(255,255,255,.55)}
+.set::after{content:"";position:absolute;left:6%;right:6%;top:74%;height:22%;background:radial-gradient(50% 50% at 50% 30%,rgba(255,255,255,.22),transparent 70%)}
+.laptop{position:absolute;left:6%;bottom:21%;width:72%}
+.lid{position:relative;padding:2.6% 2.6% 3.2%;border-radius:16px 16px 6px 6px;background:#18181A;box-shadow:0 0 0 2px #C8C8CC,0 0 0 3px #A9A9AE}
+.scr{position:relative;overflow:hidden;background:#000;border-radius:4px}
+.scr::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.10),transparent 38%)}
+.scr video,.scr img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.lid .scr{aspect-ratio:16/10}
+.base{position:relative;margin:0 -9%;height:clamp(10px,1.6vw,18px);border-radius:2px 2px 18px 18px/2px 2px 12px 12px;background:linear-gradient(180deg,#F2F2F4 0%,#C9C9CD 55%,#9E9EA3 100%)}
+.base::before{content:"";position:absolute;left:41%;right:41%;top:0;height:42%;border-radius:0 0 8px 8px;background:#B4B4B9}
+.base::after{content:"";position:absolute;left:4%;right:4%;top:100%;height:26px;background:radial-gradient(50% 50% at 50% 0,rgba(60,40,15,.38),transparent 75%);filter:blur(3px)}
+.dev{position:relative;padding:7px;border-radius:30px;background:#141416;box-shadow:0 0 0 1.5px #3A3A3E,0 30px 50px -18px rgba(27,26,22,.55)}
+.dev .scr{border-radius:24px;aspect-ratio:586/1268}
+.studio .dev{position:absolute;right:5%;bottom:12%;width:21%}
+.studio .dev::after{content:"";position:absolute;left:-10%;right:-10%;top:100%;height:24px;background:radial-gradient(50% 50% at 50% 0,rgba(60,40,15,.34),transparent 75%);filter:blur(3px)}
+
+/* ── 선생님 = 검은 가로 무대(v3 그대로) ── */
 .hs{position:relative;height:360vh;background:var(--ink);color:var(--paper);view-timeline:--hs block}
 .hs .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center}
 .hs .pin::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60vw 50vh at 12% 18%,rgba(29,158,117,.34),transparent 70%),radial-gradient(50vw 50vh at 92% 90%,rgba(216,84,43,.18),transparent 70%)}
 .track{position:relative;display:flex;align-items:center;gap:3vw;width:max-content;padding:0 6vw;animation:slide linear both;animation-timeline:--hs;animation-range:contain 0% contain 100%}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(calc(-100% + 100vw))}}
-
 .intro{width:40vw;display:flex;flex-direction:column;gap:30px}
 .tagz{align-self:flex-start;font-family:var(--display);font-weight:800;font-size:16px;padding:7px 16px;border-radius:99px;background:var(--mint);color:var(--ink)}
 .intro p{font-family:var(--display);font-weight:800;font-size:clamp(40px,4.4vw,70px);line-height:1.14;letter-spacing:-.035em;margin:0;color:#fff}
@@ -72,26 +112,32 @@ a{color:inherit}
 .arrow{font-family:var(--display);font-size:44px;color:var(--mint);line-height:1}
 @media (prefers-reduced-motion: no-preference){.arrow{animation:nudge 1.4s ease-in-out infinite}}
 @keyframes nudge{50%{transform:translateX(14px)}}
-
-/* 장면 = 왼쪽 글 · 오른쪽 실사 사진 · 실제 앱 화면은 사진 안이 아니라 옆 층에 뜬 카드 */
 .panel{position:relative;width:min(86vw,1280px);height:min(80vh,740px);border-radius:32px;overflow:hidden;background:#1F1E1A;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 40px 80px -30px rgba(0,0,0,.6);display:grid;grid-template-columns:minmax(0,38fr) minmax(0,62fr)}
 .panel .t{position:relative;z-index:2;padding:48px 40px 52px 48px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
 .cnt{font-family:var(--display);font-weight:700;font-size:15px;color:var(--mint);letter-spacing:.06em}
-.cnt .k{margin-left:10px;padding:4px 12px;border-radius:99px;background:rgba(94,224,176,.14);letter-spacing:0}
 .cnt b{font-size:64px;line-height:1;display:block;margin-bottom:6px;color:transparent;-webkit-text-stroke:1.5px rgba(94,224,176,.55);letter-spacing:-.02em}
+.cnt .k{margin-left:10px;padding:4px 12px;border-radius:99px;background:rgba(94,224,176,.14);letter-spacing:0}
 .panel h3{font-size:clamp(34px,3.3vw,50px);line-height:1.16;color:#fff}
 .panel h3 em{font-style:normal;color:var(--mint)}
 .panel .t p{margin:14px 0 0;font-size:18px;line-height:1.7;color:#C9C4B8;max-width:24em}
 .panel .m{position:relative}
-.panel .m .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(to right,transparent,#000 20%);mask-image:linear-gradient(to right,transparent,#000 20%)}
-.p1 .photo{object-position:72% 50%}
-.p2 .photo{object-position:50% 50%}
-.p3 .photo{object-position:58% 50%}
-.float{position:absolute;z-index:2;top:6%;right:4%;width:46%}
-.float .win{box-shadow:0 30px 60px -18px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.18)}
-.float .win img{aspect-ratio:1280/900}
 .panel .m.bare{background:radial-gradient(70% 70% at 55% 50%,rgba(94,224,176,.16),transparent 70%)}
 .panel .m.bare .float{top:50%;bottom:auto;left:50%;right:auto;width:86%;translate:-50% -50%}
+.panel .m .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(to right,transparent,#000 20%);mask-image:linear-gradient(to right,transparent,#000 20%)}
+.p1 .photo{object-position:72% 50%}
+.p2 .photo{object-position:100% 50%}
+.p3 .photo{object-position:58% 50%}
+.win{border-radius:14px;background:#fff;overflow:hidden}
+.bar{display:flex;align-items:center;gap:7px;height:32px;padding:0 14px;background:#F1EDE4;border-bottom:1px solid var(--line)}
+.bar i{width:10px;height:10px;border-radius:50%;background:#DCD6C9}
+.bar span{margin-left:12px;font-size:11px;color:var(--ink-3);background:#fff;border-radius:6px;padding:1px 10px}
+.win img{display:block;width:100%;height:auto;aspect-ratio:1280/900;object-fit:cover;object-position:top left}
+.win video{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+.float{position:absolute;z-index:2;top:6%;right:4%;width:46%}
+.float.wide{width:54%}
+.float.low{top:auto;bottom:6%}
+.float.left{right:auto;left:4%}
+.float .win{box-shadow:0 30px 60px -18px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.18)}
 .pop{animation:pop linear both;animation-timeline:--hs}
 .p1 .pop{animation-range:contain 0% contain 22%}
 .p2 .pop{animation-range:contain 30% contain 62%}
@@ -106,43 +152,128 @@ a{color:inherit}
 .prog i{display:block;height:100%;background:var(--mint);transform-origin:left;animation:grow linear both;animation-timeline:--hs;animation-range:contain 0% contain 100%}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
+/* ── 학생·학부모 = 밝은 세로 무대 · 화면이 서고, 폰 두 대가 차례로 앞에 선다 ── */
+.duo{position:relative;height:300vh;view-timeline:--duo block;background:linear-gradient(180deg,var(--paper),#EFE8DA 50%,var(--paper))}
+.duo .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px;align-items:center;padding:0 max(40px,calc((100vw - 1100px)/2))}
+.glow{position:absolute;border-radius:50%;filter:blur(10px);pointer-events:none}
+.g1{width:56vw;height:56vw;left:-18vw;top:-22vw;background:radial-gradient(closest-side,rgba(216,84,43,.16),transparent)}
+.g2{width:60vw;height:60vw;right:-20vw;bottom:-26vw;background:radial-gradient(closest-side,rgba(29,158,117,.20),transparent)}
+.bigword{position:absolute;inset:0;pointer-events:none;display:grid;place-items:center end;padding-right:2vw}
+.bigword span{grid-area:1/1;font-family:var(--display);font-weight:800;font-size:min(30vw,420px);line-height:1;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(27,26,22,.07);white-space:nowrap}
+.bigword .w2{opacity:0}
+.side{position:relative;z-index:3}
+.duo-h{font-size:clamp(24px,2.3vw,32px);line-height:1.2;margin:0 0 22px;color:var(--ink-2)}
+.rail{display:block;width:120px;height:4px;border-radius:4px;background:rgba(27,26,22,.10);overflow:hidden;margin-bottom:34px}
+.rail i{display:block;height:100%;background:linear-gradient(90deg,var(--c5),var(--g5));transform-origin:left;transform:scaleX(.5)}
+.swap{display:grid}
+.swap .c{grid-area:1/1}
+.tag{display:inline-block;font-family:var(--display);font-weight:800;font-size:15px;padding:6px 14px;border-radius:99px;margin-bottom:22px}
+.c1 .tag{background:var(--c7);color:#fff}
+.c2 .tag{background:var(--g7);color:#fff}
+.swap h3{font-size:clamp(40px,4.2vw,62px);line-height:1.14}
+.c1 h3 em{font-style:normal;color:var(--c7)}
+.c2 h3 em{font-style:normal;color:var(--g7)}
+.swap p{margin:20px 0 0;font-size:19px;line-height:1.7;color:var(--ink-2);max-width:22em}
+.c2{opacity:0}
+
+.devices{position:relative;z-index:2;height:min(84vh,780px);--ph:min(70vh,640px)}
+.paper{position:absolute;left:0;top:12%;width:min(52%,330px);padding:26px 26px 30px;background:#FBF9F3;border-radius:8px;transform:rotate(-7deg);box-shadow:0 0 0 1px var(--line),0 30px 50px -24px rgba(27,26,22,.45);display:flex;flex-direction:column;gap:14px}
+.paper::before{content:"";display:block;height:10px;width:46%;border-radius:3px;background:#E7E1D4;margin-bottom:6px}
+.paper .q{display:flex;align-items:center;gap:12px}
+.paper .q b{width:18px;font-family:var(--display);font-size:15px;color:var(--ink)}
+.paper .q i{position:relative;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #B9B3A6}
+.paper .q i.on::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--ink);transform:scale(1)}
+.pen{position:absolute;left:-30%;top:14%;width:64%;height:auto;transform:rotate(22deg);filter:drop-shadow(0 10px 8px rgba(27,26,22,.25))}
+.duo .shot{position:absolute;top:50%;width:min(100%,calc(var(--ph) * .8));aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:#D8C6A8;box-shadow:0 0 0 1px rgba(27,26,22,.08),0 40px 70px -30px rgba(27,26,22,.5)}
+.shot>img{display:block;width:100%;height:100%;object-fit:cover}
+.shot .lcd{position:absolute;overflow:hidden;background:#000}
+.shot .lcd video{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.lcd.ld{left:33.94%;top:20.53%;width:32.01%;height:58.93%;border-radius:14.8%/6.4%}
+.lcd.lf{left:33.73%;top:21.77%;width:32.46%;height:56.46%;border-radius:11.5%/5.3%}
+.ph-s{right:10%;transform:translateY(-50%) rotate(3deg);z-index:2}
+.ph-p{right:0;transform:translateY(-50%) translateY(120vh);z-index:3}
+
+@supports (animation-timeline: view()){
+@media (prefers-reduced-motion: no-preference) and (min-width:861px){
+  .rail i{animation:rail linear both;animation-timeline:--duo;animation-range:contain 0% contain 100%}
+  @keyframes rail{from{transform:scaleX(.04)}to{transform:scaleX(1)}}
+  /* 학생 단계(0~40%) — 펜이 내려가며 동그라미가 칠해진다 */
+  .paper .q i.on::after{animation:fill linear both;animation-timeline:--duo}
+  .paper .q:nth-child(1) i.on::after{animation-range:contain 2% contain 6%}
+  .paper .q:nth-child(2) i.on::after{animation-range:contain 6% contain 10%}
+  .paper .q:nth-child(3) i.on::after{animation-range:contain 10% contain 14%}
+  .paper .q:nth-child(4) i.on::after{animation-range:contain 14% contain 18%}
+  .paper .q:nth-child(5) i.on::after{animation-range:contain 18% contain 22%}
+  .paper .q:nth-child(6) i.on::after{animation-range:contain 22% contain 26%}
+  .paper .q:nth-child(7) i.on::after{animation-range:contain 26% contain 30%}
+  .paper .q:nth-child(8) i.on::after{animation-range:contain 30% contain 34%}
+  @keyframes fill{from{transform:scale(0)}to{transform:scale(1)}}
+  .pen{animation:pen linear both;animation-timeline:--duo;animation-range:contain 0% contain 36%}
+  @keyframes pen{from{transform:translateY(-20px) rotate(22deg)}to{transform:translateY(270px) rotate(16deg)}}
+  /* 넘어가기(44~62%) — 학부모 폰이 아래에서 올라와 앞에 서고, 학생 폰·답안지는 뒤로 */
+  .ph-p{animation:upP linear both;animation-timeline:--duo;animation-range:contain 44% contain 64%}
+  @keyframes upP{from{transform:translateY(-50%) translateY(120vh) rotate(6deg)}to{transform:translateY(-50%) rotate(-2deg)}}
+  .ph-s{animation:backS linear both;animation-timeline:--duo;animation-range:contain 44% contain 64%}
+  @keyframes backS{from{transform:translateY(-50%) rotate(3deg)}to{transform:translateY(-50%) translateX(-30%) scale(.86) rotate(-5deg);filter:saturate(.7) brightness(.97)}}
+  .paper{animation:backPaper linear both;animation-timeline:--duo;animation-range:contain 40% contain 60%}
+  @keyframes backPaper{from{transform:rotate(-7deg)}to{transform:translateX(-40%) translateY(10%) rotate(-12deg) scale(.86);opacity:.0}}
+  .c1{animation:out linear both;animation-timeline:--duo;animation-range:contain 42% contain 54%}
+  .c2{animation:in linear both;animation-timeline:--duo;animation-range:contain 52% contain 64%}
+  .w1{animation:fadeOut linear both;animation-timeline:--duo;animation-range:contain 42% contain 56%}
+  .w2{animation:fadeIn linear both;animation-timeline:--duo;animation-range:contain 50% contain 64%}
+  @keyframes out{to{opacity:0;transform:translateY(-36px)}}
+  @keyframes in{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+  @keyframes fadeOut{to{opacity:0;transform:translateY(-4vh)}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4vh)}to{opacity:1;transform:none}}
+  .g1{animation:drift linear both;animation-timeline:--duo;animation-range:contain 0% contain 100%}
+  @keyframes drift{to{transform:translate(20vw,30vh);opacity:.4}}
+}
+}
+
+/* 스크롤 연동 못 씀 · 움직임 줄이기 · 좁은 화면 = 글과 폰을 차례로 쌓는다 */
+@supports not (animation-timeline: view()){
+  .duo{height:auto}
+  .duo .pin{position:static;height:auto;padding-top:96px;padding-bottom:40px}
+  .bigword,.rail,.pen{display:none}
+  .swap{gap:48px}.swap .c{grid-area:auto}.c2{opacity:1}
+  .ph-p{transform:translateY(-50%) rotate(-2deg)}
+  .ph-s{transform:translateY(-50%) translateX(-30%) rotate(-4deg) scale(.9)}
+  .paper{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .duo{height:auto}
+  .duo .pin{position:static;height:auto;padding-top:96px;padding-bottom:40px}
+  .bigword,.rail,.pen{display:none}
+  .swap{gap:48px}.swap .c{grid-area:auto}.c2{opacity:1}
+  .ph-p{transform:translateY(-50%) rotate(-2deg)}
+  .ph-s{transform:translateY(-50%) translateX(-30%) rotate(-4deg) scale(.9)}
+  .paper{display:none}
+}
+
+/* ── 사실 3칸 · 시작 ── */
 .zone{padding:96px 0 0}
-.zone-h{display:flex;align-items:center;gap:12px;margin:0 0 26px}
-.zone-h b{font-family:var(--display);font-weight:800;font-size:15px;padding:6px 14px;border-radius:99px}
-.zone-h h2{margin:0;font-size:clamp(28px,3vw,40px);line-height:1.2}
-.ck{align-self:flex-start;font-family:var(--display);font-weight:800;font-size:13px;padding:4px 12px;border-radius:99px;background:var(--c7);color:#fff}
-.zone-h span{flex:1;height:1px;background:var(--line)}
-
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.card{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column}
-.card .pic{height:260px;overflow:hidden;background:var(--c05);display:grid;place-items:center;position:relative}
-.card .txt{padding:24px 26px 28px;display:flex;flex-direction:column;gap:10px}
-.card h3{font-size:28px;line-height:1.28}
-.card p{margin:0;font-size:15.5px;color:var(--ink-2)}
-.sheet{width:66%;background:#FBF9F3;border-radius:6px;box-shadow:0 10px 24px -12px rgba(27,26,22,.35),0 0 0 1px var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:9px}
-.q{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-3)}
-.q b{width:16px;font-family:var(--display);color:var(--ink)}
-.q i{width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #b9b3a6}
-.q i.on{background:var(--ink);box-shadow:none}
-.ph{align-self:end;width:46%;border-radius:22px 22px 0 0;padding:6px 6px 0;background:#1B1A16;margin-top:26px}
-.ph img{display:block;width:100%;height:auto;border-radius:16px 16px 0 0;aspect-ratio:585/645;object-fit:cover;object-position:top}
-
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.fact{display:flex;gap:14px;align-items:flex-start;padding:24px 24px;border-radius:18px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:16px;font-weight:600;line-height:1.5}
-.fact i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--g1);display:grid;place-items:center}
-.fact i::after{content:"";width:9px;height:5px;border-left:2px solid var(--g7);border-bottom:2px solid var(--g7);transform:rotate(-45deg) translate(1px,-1px)}
+.fact{display:flex;flex-direction:column;gap:18px;padding:28px 26px 30px;border-radius:22px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:17px;font-weight:600;line-height:1.5}
+.ic{width:48px;height:48px;border-radius:14px;background:var(--g1);display:grid;place-items:center}
+.ic svg{width:26px;height:26px;fill:none;stroke:var(--g7);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
-.go{margin-top:96px;background:var(--g7);color:#fff;border-radius:28px;padding:72px 64px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center}
-.go h2{font-size:52px;line-height:1.15}
-.go .sub{margin:14px 0 0;color:#CDEBDF;font-size:15px}
-.go .ctas .btn.pri{background:#fff;color:var(--g7)}
+.go{position:relative;overflow:hidden;isolation:isolate;margin-top:96px;background:linear-gradient(135deg,#0F7255,#0A5640);color:#fff;border-radius:30px;padding:76px 64px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;box-shadow:0 40px 80px -40px rgba(14,107,80,.7)}
+.dots{position:absolute;inset:0;z-index:-1;background-image:radial-gradient(circle at 50% 50%,transparent 6px,rgba(255,255,255,.13) 6.6px,rgba(255,255,255,.13) 7.8px,transparent 8.4px);background-size:30px 30px;-webkit-mask-image:linear-gradient(100deg,transparent 30%,#000 90%);mask-image:linear-gradient(100deg,transparent 30%,#000 90%)}
+.dots::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(94,224,176,.8) 6.4px,transparent 7px);background-size:30px 30px;-webkit-mask-image:radial-gradient(16% 34% at 84% 34%,#000,transparent),radial-gradient(10% 22% at 70% 80%,rgba(0,0,0,.7),transparent);mask-image:radial-gradient(16% 34% at 84% 34%,#000,transparent),radial-gradient(10% 22% at 70% 80%,rgba(0,0,0,.7),transparent)}
+.go h2{font-size:54px;line-height:1.15}
+.go .sub{margin:16px 0 0;color:#CDEBDF;font-size:15px}
+.go-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.go .ctas .btn.pri{background:#fff;color:var(--g7);box-shadow:0 14px 30px -14px rgba(0,0,0,.45)}
 .go .ctas .btn.alt{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
 .go .stores{color:#CDEBDF;justify-content:flex-end}
-.go .stores a{color:#fff}
 
 .foot{margin-top:72px;padding:32px 0 48px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:22px}
+.foot-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot .brand b{font-size:18px}
+.foot .brand img{width:26px;height:26px;border-radius:7px}
 .links{display:flex;gap:8px 22px;flex-wrap:wrap}
 .links a{text-decoration:none;color:var(--ink)}
+.ai-note{margin:0;font-size:12px;color:var(--ink-3)}
 .biz{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:10px 32px;margin:0}
 .biz div{display:flex;flex-direction:column}
 .biz dt{font-size:12px;color:var(--ink-3)}
@@ -150,15 +281,19 @@ a{color:inherit}
 .cr{margin:0;color:var(--ink-3)}
 
 @media (prefers-reduced-motion: no-preference){
-  .rise{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .rise{animation:rise .7s var(--ease) both}
   .d1{animation-delay:.06s}.d2{animation-delay:.14s}.d3{animation-delay:.22s}.d4{animation-delay:.32s}
-  .stage .win{animation:up .9s cubic-bezier(.2,.7,.2,1) .2s both}
-  .stage .phone{animation:up .9s cubic-bezier(.2,.7,.2,1) .45s both}
+  .ul path{stroke-dashoffset:320;animation:draw .9s var(--ease) .65s forwards}
+  .eyebrow i{animation:ping 2.4s ease-out 1s infinite}
+  .studio .laptop{animation:up 1s var(--ease) .2s both}
+  .studio .dev{animation:up 1s var(--ease) .5s both}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  @keyframes up{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+  @keyframes up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes ping{0%{box-shadow:0 0 0 0 rgba(29,158,117,.5)}70%,100%{box-shadow:0 0 0 8px rgba(29,158,117,0)}}
 }
 
-/* 스크롤 연동을 못 쓰는 브라우저 · 움직임 줄이기 = 손가락으로 넘기는 가로 카드 */
+/* 선생님 무대 = 스크롤 연동 못 씀 · 움직임 줄이기 → 손가락으로 넘기는 가로 카드 */
 @supports not (animation-timeline: view()){
   .hs{height:auto;padding:80px 0}
   .hs .pin{position:static;height:auto;overflow:visible}
@@ -177,14 +312,24 @@ a{color:inherit}
 }
 
 @media (max-width:860px){
+  .hero.ph{margin:0;aspect-ratio:auto;overflow:visible;padding:36px 0 44px}
+  .hero.ph .copy{margin:0;width:auto;height:auto}
+  .scene{position:relative;aspect-ratio:4/5;margin-top:30px;border-radius:22px;overflow:hidden}
+  .scene::after{display:none}
+  .scene .lcd{left:22.38%;top:46.91%;width:55.23%;height:28.40%}
   .wrap{padding:0 18px}
   .top .wrap{height:58px}
   .nav a:not(.btn){display:none}
-  .hero{grid-template-columns:minmax(0,1fr);padding:40px 0 48px;gap:36px}
-  .hero h1{font-size:46px}
+  .hero{grid-template-columns:minmax(0,1fr);padding:36px 0 52px;gap:34px}
+  .hero h1{font-size:50px}
   .lede{font-size:16.5px}
   .ctas .btn{flex:1 1 140px}
-  .phone{right:-6px;width:36%}
+  .badge img{height:40px}
+  .studio{aspect-ratio:1/1;border-radius:22px}
+  .laptop{left:5%;width:80%;bottom:24%}
+  .lid{border-radius:10px 10px 4px 4px}
+  .studio .dev{width:25%;right:4%;padding:4px;border-radius:16px}
+  .studio .dev .scr{border-radius:12px}
 
   .hs{height:auto;padding:56px 0 48px}
   .hs .pin{position:static;height:auto;overflow:visible;display:block}
@@ -196,7 +341,7 @@ a{color:inherit}
   .panel{width:86vw;height:auto;grid-template-columns:minmax(0,1fr);border-radius:24px}
   .panel .m{order:-1;height:300px}
   .panel .m .photo{-webkit-mask-image:linear-gradient(to bottom,#000 75%,transparent);mask-image:linear-gradient(to bottom,#000 75%,transparent)}
-  .float{top:auto;bottom:10px;right:10px;width:62%}
+  .float,.float.wide{top:auto;bottom:10px;right:10px;width:66%}
   .panel .t{padding:18px 22px 26px;gap:12px}
   .cnt b{font-size:40px}
   .panel h3{font-size:27px}
@@ -204,19 +349,31 @@ a{color:inherit}
   .pop,.zoom{animation:none}
   .prog{display:none}
 
+  .duo{height:auto}
+  .duo .pin{position:static;height:auto;display:block;padding:72px 18px 24px}
+  .duo{overflow:clip}
+  .bigword,.rail,.pen,.paper{display:none}
+  .swap{gap:40px}.swap .c{grid-area:auto}.c2{opacity:1}
+  .swap h3{font-size:32px}
+  .swap p{font-size:16px;margin-top:12px}
+  .tag{margin-bottom:14px}
+  .devices{height:auto;display:flex;justify-content:center;gap:5%;margin-top:40px;--ph:auto}
+  .duo .shot{position:relative;top:auto;right:auto;width:47%;transform:none;border-radius:16px}
+  .ph-p{transform:translateY(28px)}
+
   .zone{padding-top:64px}
-  .cards,.facts{grid-template-columns:minmax(0,1fr)}
-  .card .pic{height:220px}
-  .card h3{font-size:23px}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .fact{flex-direction:row;align-items:center;padding:20px 20px}
+  .ic{flex:none}
   .go{grid-template-columns:minmax(0,1fr);padding:44px 24px;margin-top:64px}
   .go h2{font-size:34px}
+  .go-r{align-items:stretch}
   .go .stores{justify-content:flex-start}
   .biz{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
 <body>
-
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="채크"><img src="/chaeck/img/icon.webp" alt=""><b>채크</b></a>
@@ -229,20 +386,20 @@ a{color:inherit}
 </header>
 
 <main class="wrap">
-  <section class="hero">
-    <div>
-      <span class="eyebrow rise">학원 시험지 자동채점</span>
-      <h1 class="disp rise d1">채점은,<br><em>채크가.</em></h1>
+  <section class="hero ph">
+    <div class="copy">
+      <span class="eyebrow rise"><i></i>학원 시험지 자동채점</span>
+      <h1 class="disp rise d1">채점은,<br><em>채크가.<svg class="ul" viewBox="0 0 300 26" aria-hidden="true"><path d="M5 17 C 70 7, 170 3, 295 13"/></svg></em></h1>
       <p class="lede rise d2">시험지 파일을 올리면 채크 시험지로 바꿔 드려요. 학생은 문제 옆 번호에 펜으로 마킹해요.</p>
       <div class="ctas rise d3">
-        <a class="btn pri" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
+        <a class="btn pri" href="https://chaeck.soosoo.kr/signup">강사로 시작하기<span class="ar" aria-hidden="true">→</span></a>
         <a class="btn alt" href="#family">학부모라면</a>
       </div>
-      <div class="stores rise d4">앱 받기 <a href="https://apps.apple.com/kr/app/id6788668772">App Store</a><a href="https://play.google.com/store/apps/details?id=com.chaeck.app">Google Play</a></div>
+      <div class="stores rise d4"><span>앱 받기</span><a class="badge" href="https://apps.apple.com/kr/app/id6788668772"><img src="/assets/badges/app-store-ko.svg" alt="App Store에서 다운로드" width="130" height="40"></a><a class="badge" href="https://play.google.com/store/apps/details?id=com.chaeck.app"><img src="/assets/badges/google-play-ko.png" alt="Google Play에서 다운로드" width="135" height="40"></a></div>
     </div>
-    <div class="stage">
-      <div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-results.jpg" alt="강사 화면 — 유형별·문항별 정답률" width="1280" height="900"></div>
-      <div class="phone"><img src="/chaeck/img/student-result.jpg" alt="학생 화면 — 채점 결과"></div>
+    <div class="scene" aria-label="학원 책상 위 노트북 — 화면은 채크 실제 녹화(강사 PC 채점 결과)">
+      <picture><source media="(max-width:860px)" srcset="/chaeck/img/ai/A-m.webp"><img src="/chaeck/img/ai/A.webp" alt=""></picture>
+      <div class="lcd"><video src="/chaeck/rec/teacher-results.mp4" poster="/chaeck/rec/teacher-results.webp" autoplay muted loop playsinline preload="metadata"></video></div>
     </div>
   </section>
 </main>
@@ -265,8 +422,8 @@ a{color:inherit}
           </div>
         </div>
         <div class="m">
-          <img class="photo zoom" src="/chaeck/img/ai/S1.webp" alt="노트북과 프린터 — 채크 시험지가 인쇄되어 나온다" loading="lazy">
-          <div class="float pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-exam-new.jpg" alt="강사 화면 — 새 시험 만들기" loading="lazy"></div></div>
+          <img class="photo zoom" src="/chaeck/img/ai/B.webp" alt="학원 복합기 — 인쇄된 시험지가 나와 있다" loading="lazy">
+          <div class="float wide left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><video src="/chaeck/rec/teacher-upload.mp4" poster="/chaeck/rec/teacher-upload.webp" autoplay muted loop playsinline preload="none" aria-label="강사 화면 녹화 — 시험지 파일을 올리면 정답이 채워진다"></video></div></div>
         </div>
       </article>
 
@@ -278,8 +435,9 @@ a{color:inherit}
             <p>채크에서 인쇄한 시험지를 복합기로 스캔해, PDF 로 PC 웹에 올리면 채점돼요. 읽힌 답은 선생님이 확인한 뒤에 확정돼요.</p>
           </div>
         </div>
-        <div class="m bare">
-          <div class="float pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div>
+        <div class="m">
+          <img class="photo zoom" src="/chaeck/img/ai/C.webp" alt="걷은 시험지 묶음을 복합기 급지대에 넣는 손" loading="lazy">
+          <div class="float left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div>
         </div>
       </article>
 
@@ -292,8 +450,8 @@ a{color:inherit}
           </div>
         </div>
         <div class="m">
-          <img class="photo zoom" src="/chaeck/img/ai/S4.webp" alt="저녁 사무실 — 노트북으로 채점 결과를 본다" loading="lazy">
-          <div class="float pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-results.jpg" alt="강사 화면 — 채점 결과" loading="lazy"></div></div>
+          <img class="photo zoom" src="/chaeck/img/ai/E.webp" alt="오후 학원 — 책상 위 노트북" loading="lazy">
+          <div class="float left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-results.jpg" alt="강사 화면 — 채점 결과" loading="lazy"></div></div>
         </div>
       </article>
     </div>
@@ -301,58 +459,63 @@ a{color:inherit}
   </div>
 </section>
 
-<main class="wrap">
-  <section class="zone z-s" id="family">
-    <div class="zone-h"><h2 class="disp">결과는 학생·학부모 앱으로.</h2><span></span></div>
-    <div class="cards">
-      <article class="card">
-        <div class="pic"><div class="sheet" aria-hidden="true">
-          <div class="q"><b>1</b><i></i><i class="on"></i><i></i><i></i><i></i></div>
-          <div class="q"><b>2</b><i></i><i></i><i></i><i class="on"></i><i></i></div>
-          <div class="q"><b>3</b><i class="on"></i><i></i><i></i><i></i><i></i></div>
-          <div class="q"><b>4</b><i></i><i></i><i class="on"></i><i></i><i></i></div>
-          <div class="q"><b>5</b><i></i><i></i><i></i><i></i><i></i></div>
-        </div></div>
-        <div class="txt"><span class="ck">학생</span><h3 class="disp">답은 문제 옆 번호에, 펜으로.</h3><p>앱으로 찍어 직접 내는 시험도 있어요. 읽힌 답은 학생이 확인하고 내요.</p></div>
-      </article>
-      <article class="card">
-        <div class="pic"><div class="ph"><img src="/chaeck/img/parent-flow.jpg" alt="학부모 화면 — 점수 흐름" loading="lazy"></div></div>
-        <div class="txt"><span class="ck">학부모</span><h3 class="disp">어디서 막히는지, 시험마다.</h3><p>유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만.</p></div>
-      </article>
+<!-- 학생·학부모 = 밝은 세로 무대 · 화면이 고정되고 폰 두 대가 차례로 앞에 선다(선생님 구역의 검은 가로 무대와 다른 구조) -->
+<section class="duo" id="family" aria-label="학생 · 학부모">
+  <div class="pin">
+    <div class="glow g1" aria-hidden="true"></div><div class="glow g2" aria-hidden="true"></div>
+    <div class="bigword" aria-hidden="true"><span class="w1">학생</span><span class="w2">학부모</span></div>
+    <div class="side">
+      <h2 class="disp duo-h">결과는 학생·학부모 앱으로.</h2>
+      <i class="rail" aria-hidden="true"><i></i></i>
+      <div class="swap">
+        <div class="c c1"><span class="tag">학생</span><h3 class="disp">답은 문제 옆 번호에, <em>펜으로.</em></h3><p>앱으로 찍어 직접 내는 시험도 있어요. 읽힌 답은 학생이 확인하고 내요.</p></div>
+        <div class="c c2"><span class="tag">학부모</span><h3 class="disp">어디서 막히는지, <em>시험마다.</em></h3><p>유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만.</p></div>
+      </div>
     </div>
-  </section>
+    <div class="devices">
+      <div class="shot ph-s"><img src="/chaeck/img/ai/D.webp" alt="저녁 공부를 마친 학생 책상 위의 폰" loading="lazy"><div class="lcd ld"><video src="/chaeck/rec/student.mp4" poster="/chaeck/rec/student.webp" autoplay muted loop playsinline preload="none" aria-label="학생 화면 녹화 — 채점 결과"></video></div></div>
+      <div class="shot ph-p"><img src="/chaeck/img/ai/F.webp" alt="저녁 식탁 위의 폰" loading="lazy"><div class="lcd lf"><video src="/chaeck/rec/parent.mp4" poster="/chaeck/rec/parent.webp" autoplay muted loop playsinline preload="none" aria-label="학부모 화면 녹화 — 점수 흐름과 유형별 정답률"></video></div></div>
+    </div>
+  </div>
+</section>
 
+<main class="wrap">
   <section class="zone">
     <div class="facts">
-      <div class="fact"><i></i>학생에게 나가는 시험지엔 정답이 실리지 않아요.</div>
-      <div class="fact"><i></i>시험지를 만들려고 올린 워드·한글 파일은 저장하지 않아요.</div>
-      <div class="fact"><i></i>다른 아이와 비교하지 않아요.</div>
+      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><rect x="9.5" y="12" width="6" height="5" rx="1"/><path d="M10.8 12v-1.4a1.7 1.7 0 0 1 3.4 0V12"/></svg></span>학생에게 나가는 시험지엔 정답이 실리지 않아요.</div>
+      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12.5l5 5M15 12.5l-5 5"/></svg></span>시험지를 만들려고 올린 워드·한글 파일은 저장하지 않아요.</div>
+      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/></svg></span>다른 아이와 비교하지 않아요.</div>
     </div>
   </section>
 
   <section class="go">
+    <div class="dots" aria-hidden="true"></div>
     <div>
       <h2 class="disp">쓰던 문제 그대로,<br>채점만 넘기세요.</h2>
       <p class="sub">시험지 올리기는 PC 웹에서 · 만 14세 이상 · 학생·학부모는 앱을 깔고 선생님께 받은 코드로</p>
     </div>
-    <div>
+    <div class="go-r">
       <div class="ctas">
-        <a class="btn pri" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a>
+        <a class="btn pri" href="https://chaeck.soosoo.kr/signup">강사로 시작하기<span class="ar" aria-hidden="true">→</span></a>
         <a class="btn alt" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a>
       </div>
-      <div class="stores">앱 받기 <a href="https://apps.apple.com/kr/app/id6788668772">App Store</a><a href="https://play.google.com/store/apps/details?id=com.chaeck.app">Google Play</a></div>
+      <div class="stores"><span>앱 받기</span><a class="badge" href="https://apps.apple.com/kr/app/id6788668772"><img src="/assets/badges/app-store-ko.svg" alt="App Store에서 다운로드" width="130" height="40"></a><a class="badge" href="https://play.google.com/store/apps/details?id=com.chaeck.app"><img src="/assets/badges/google-play-ko.png" alt="Google Play에서 다운로드" width="135" height="40"></a></div>
     </div>
   </section>
 
   <footer class="foot">
-    <nav class="links">
-      <a href="/chaeck/">채크 소개</a>
-      <a href="https://chaeck.soosoo.kr/terms">이용약관</a>
-      <a href="https://chaeck.soosoo.kr/privacy"><b>개인정보처리방침</b></a>
-      <a href="https://chaeck.soosoo.kr/notices">공지사항</a>
-      <a href="/chaeck/pricing/">요금 안내</a>
-      <a href="mailto:soosoo.labs@gmail.com">문의 soosoo.labs@gmail.com</a>
-    </nav>
+    <div class="foot-top">
+      <a class="brand" href="/" aria-label="채크"><img src="/chaeck/img/icon.webp" alt=""><b>채크</b></a>
+      <nav class="links">
+        <a href="/chaeck/">채크 소개</a>
+        <a href="https://chaeck.soosoo.kr/terms">이용약관</a>
+        <a href="https://chaeck.soosoo.kr/privacy"><b>개인정보처리방침</b></a>
+        <a href="https://chaeck.soosoo.kr/notices">공지사항</a>
+        <a href="/chaeck/pricing/">요금 안내</a>
+        <a href="mailto:soosoo.labs@gmail.com">문의 soosoo.labs@gmail.com</a>
+      </nav>
+    </div>
+    <p class="ai-note">배경 사진은 AI 로 만든 연출 장면이며, 화면은 채크 실제 녹화입니다.</p>
     <dl class="biz">
       <div><dt>상호</dt><dd>수수 (SooSoo)</dd></div>
       <div><dt>대표</dt><dd>이상훈</dd></div>
@@ -366,5 +529,6 @@ a{color:inherit}
   </footer>
 </main>
 
+<script src="/assets/home.js" defer></script>
 </body>
 </html>
