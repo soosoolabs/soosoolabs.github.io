@@ -273,19 +273,20 @@ a{color:inherit}
   .vows li:nth-child(3){animation-range:entry 35% cover 54%}
 }}
 @keyframes rise{from{opacity:0;transform:translateY(48px)}}
-/* 반복 글자 띠(R-051) — 받은 세 문장의 「~지 않아요」만 크게 · 위 줄 채움은 왼쪽으로, 아래 줄 테두리는 오른쪽으로 · 스크롤에 묶임(지원 안 하는 브라우저·움직임 줄이기 = 멈춘 띠) */
+/* 반복 글자 띠(R-051) — 받은 세 문장의 「~지 않아요」만 크게 · 늘 흐른다(위 줄 채움 ← · 아래 줄 테두리 →) · 같은 묶음 3벌이라 1/3 이동 뒤 처음으로 돌아가도 이음매가 안 보인다 · 화면 밖이면 home.js 가 멈춘다 · 움직임 줄이기 = 멈춘 띠 */
 .marq{margin:0 calc(50% - 50vw) 104px;overflow:clip;pointer-events:none;user-select:none}
 .marq p{margin:0;width:max-content;white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(64px,9.4vw,156px);line-height:1.02;letter-spacing:-.035em}
 .marq i{font-style:normal;display:inline-block;margin:0 .32em;color:rgba(255,255,255,.28)}
-.marq .m1{color:var(--mint);transform:translateX(-4%)}
-.marq .m2{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.34);transform:translateX(-30%)}
+.marq .m1{color:var(--mint)}
+.marq .m2{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.34);transform:translateX(-33.3333%)}
 .marq .m2 i{color:transparent}
-@media (prefers-reduced-motion: no-preference){@supports (animation-timeline: view()){
-  .marq .m1{animation:mq1 linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
-  .marq .m2{animation:mq2 linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
-}}
-@keyframes mq1{from{transform:translateX(0)}to{transform:translateX(-26%)}}
-@keyframes mq2{from{transform:translateX(-34%)}to{transform:translateX(-8%)}}
+@media (prefers-reduced-motion: no-preference){
+  .marq .m1{animation:mq1 70s linear infinite}
+  .marq .m2{animation:mq2 90s linear infinite}
+  .marq.off p{animation-play-state:paused}
+}
+@keyframes mq1{to{transform:translateX(-33.3333%)}}
+@keyframes mq2{from{transform:translateX(-33.3333%)}to{transform:translateX(0)}}
 .ic{width:48px;height:48px;border-radius:14px;background:var(--g1);display:grid;place-items:center}
 .ic svg{width:26px;height:26px;fill:none;stroke:var(--g7);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
@@ -397,6 +398,8 @@ a{color:inherit}
   .marq{margin-bottom:56px}
   .marq p{font-size:58px}
   .marq .m2{-webkit-text-stroke-width:1px}
+  .marq .m1{animation-duration:36s}
+  .marq .m2{animation-duration:46s}
   .vows{grid-template-columns:minmax(0,1fr)}
   .vows li,.vows li:first-child,.vows li:last-child{flex-direction:row;align-items:center;gap:18px;padding:22px 0;border-left:0;border-top:1px solid rgba(255,255,255,.14)}
   .vows li:first-child{border-top:0;padding-top:0}

@@ -13,3 +13,9 @@ if (reduce) {
   }, { rootMargin: "200px 0px" });
   vids.forEach((v) => io.observe(v));
 }
+
+// 반복 글자 띠 — 화면 밖이면 흐름을 멈춘다(.off)
+const marq = document.querySelector(".marq");
+if (marq && "IntersectionObserver" in window) {
+  new IntersectionObserver(([e]) => marq.classList.toggle("off", !e.isIntersecting)).observe(marq);
+}
