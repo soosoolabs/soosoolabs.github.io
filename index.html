@@ -257,7 +257,7 @@ a{color:inherit}
 }
 
 /* ── 하지 않는 것 3가지 = 채크의 차별점 → 화면 폭 검은 띠 · 큰 글자 · 「~지 않아요」 만 민트 ── */
-.vow{position:relative;isolation:isolate;overflow:hidden;margin:0 calc(50% - 50vw);padding:128px max(40px,calc((100vw - 1100px)/2));background:var(--ink);color:#fff}
+.vow{position:relative;isolation:isolate;overflow:clip;margin:0 calc(50% - 50vw);padding:128px max(40px,calc((100vw - 1100px)/2));background:var(--ink);color:#fff}
 .vow::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(50vw 60% at 8% 0,rgba(29,158,117,.30),transparent 70%),radial-gradient(40vw 60% at 100% 100%,rgba(94,224,176,.10),transparent 70%)}
 .vows{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
 .vows li{display:flex;flex-direction:column;gap:30px;padding:6px 40px;border-left:1px solid rgba(255,255,255,.14)}
@@ -273,6 +273,19 @@ a{color:inherit}
   .vows li:nth-child(3){animation-range:entry 35% cover 54%}
 }}
 @keyframes rise{from{opacity:0;transform:translateY(48px)}}
+/* 반복 글자 띠(R-051) — 받은 세 문장의 「~지 않아요」만 크게 · 위 줄 채움은 왼쪽으로, 아래 줄 테두리는 오른쪽으로 · 스크롤에 묶임(지원 안 하는 브라우저·움직임 줄이기 = 멈춘 띠) */
+.marq{margin:0 calc(50% - 50vw) 104px;overflow:clip;pointer-events:none;user-select:none}
+.marq p{margin:0;width:max-content;white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(64px,9.4vw,156px);line-height:1.02;letter-spacing:-.035em}
+.marq i{font-style:normal;display:inline-block;margin:0 .32em;color:rgba(255,255,255,.28)}
+.marq .m1{color:var(--mint);transform:translateX(-4%)}
+.marq .m2{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.34);transform:translateX(-30%)}
+.marq .m2 i{color:transparent}
+@media (prefers-reduced-motion: no-preference){@supports (animation-timeline: view()){
+  .marq .m1{animation:mq1 linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  .marq .m2{animation:mq2 linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+}}
+@keyframes mq1{from{transform:translateX(0)}to{transform:translateX(-26%)}}
+@keyframes mq2{from{transform:translateX(-34%)}to{transform:translateX(-8%)}}
 .ic{width:48px;height:48px;border-radius:14px;background:var(--g1);display:grid;place-items:center}
 .ic svg{width:26px;height:26px;fill:none;stroke:var(--g7);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
@@ -381,6 +394,9 @@ a{color:inherit}
   .ph-p{transform:translateY(28px)}
 
   .vow{padding:64px 22px}
+  .marq{margin-bottom:56px}
+  .marq p{font-size:58px}
+  .marq .m2{-webkit-text-stroke-width:1px}
   .vows{grid-template-columns:minmax(0,1fr)}
   .vows li,.vows li:first-child,.vows li:last-child{flex-direction:row;align-items:center;gap:18px;padding:22px 0;border-left:0;border-top:1px solid rgba(255,255,255,.14)}
   .vows li:first-child{border-top:0;padding-top:0}
@@ -503,6 +519,10 @@ a{color:inherit}
 
 <main class="wrap">
   <section class="vow" aria-label="채크가 하지 않는 것">
+    <div class="marq" aria-hidden="true">
+      <p class="m1"><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i></p>
+      <p class="m2"><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i><span>정답이 실리지 않아요</span><i>·</i><span>저장하지 않아요</span><i>·</i><span>비교하지 않아요</span><i>·</i></p>
+    </div>
     <ol class="vows">
       <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><rect x="9.5" y="12" width="6" height="5" rx="1"/><path d="M10.8 12v-1.4a1.7 1.7 0 0 1 3.4 0V12"/></svg></span><p>학생에게 나가는 시험지엔 <em>정답이 실리지 않아요.</em></p></li>
       <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12.5l5 5M15 12.5l-5 5"/></svg></span><p>시험지를 만들려고 올린 워드·한글 파일은 <em>저장하지 않아요.</em></p></li>
