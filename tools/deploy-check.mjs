@@ -53,4 +53,19 @@ for (const [from, to] of Object.entries(site.urls.redirects)) {
     else { say("❌", `${u} — W3 ${w.searchBlocked.length ? "검색 로봇 막힘: " + w.searchBlocked.join(",") : ""}${w.searchBlocked.length && w.trainOpen.length ? " · " : ""}${w.trainOpen.length ? "학습 로봇 안 막힘: " + w.trainOpen.join(",") : ""}`); exit = 1; }
   }
 }
+// 4) 외부 요청 0 — Cloudflare 가 **브라우저 요청에만** 응답 HTML 에 스크립트를 끼워 넣는다(방문 통계 자동 삽입 · 10/30 실측).
+//    dist/ 에는 없어 검수기 D 가 못 본다 → 브라우저처럼 받아서 외부 script src 를 센다. CSP 가 막으면 ⚠️(전송 0), 아니면 ❌
+{
+  const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
+  for (const u of site.urls.check) {
+    const r = await probe(u, { headers: { "user-agent": UA, accept: "text/html" } });
+    if (!r.ok || r.status !== 200) { say("⬜", `${u} — 외부 스크립트 확인 못 함 (${r.ok ? "HTTP " + r.status : r.error})`); exit = exit || 2; continue; }
+    const ext = [...r.text.matchAll(/<script[^>]*\ssrc="(https?:\/\/[^"]+)"/g)].map((m) => new URL(m[1]).host).filter((h) => h !== site.domain);
+    if (!ext.length) { say("✅", `${u} — 브라우저 응답에 외부 스크립트 0`); continue; }
+    const res = await fetch(u, { method: "HEAD", headers: { "user-agent": UA } }).catch(() => null);
+    const csp = res?.headers.get("content-security-policy") || "";
+    if (/script-src 'self'(;|$)/.test(csp)) say("⚠️", `${u} — Cloudflare 가 끼운 외부 스크립트 ${[...new Set(ext)].join(",")} · CSP script-src 'self' 가 막아 전송 0 (대시보드에서 끄는 것이 정답)`);
+    else { say("❌", `${u} — 외부 스크립트 ${[...new Set(ext)].join(",")} 가 실행될 수 있다(CSP 가 안 막음)`); exit = 1; }
+  }
+}
 process.exit(exit);

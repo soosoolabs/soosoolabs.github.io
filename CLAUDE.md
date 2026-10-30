@@ -10,7 +10,7 @@
 | 정체 | 아키타입 **D 정적 사이트**. 채크 홍보 홈 + 채크 소개 · 요금 안내(하루한톨 문서 3장은 10/30 사장님 「지워」로 삭제 — 하지 않을 서비스). 서버·DB·로그인 없음 |
 | 정본 주소 | **https://soosoo.kr** ✅ 살아 있음(Cloudflare Workers 정적 에셋 · `www` → 301) |
 | 옛 주소 | `soosoolabs.github.io` = **껍데기**(`gh-pages` 브랜치 · 같은 경로로 soosoo.kr 에 넘긴다). 스토어·약관 문서에 박혀 있어 **죽이면 안 된다** |
-| 디자인 | ✅ **홈 v3 라이브**(2026-10-30 · 채크 홍보 랜딩 · 선생님 가로 무대 · `doc/디자인_방향.md` §6-5) — 문구는 마케팅 연구소 ASK-003 답으로 교체 예정 |
+| 디자인 | ✅ **홈 v4 라이브**(2026-10-30 밤 `a5a9619` · 채크 홍보 랜딩 · 문구 ML-016 · 사진 ML-017 A~F(사장님 magnific · 이미지 안 합성 0 · 원본 PNG 는 `doc/사진원본/` 로컬 — ⛔`chaeck/img/ai/` 에 PNG 를 두면 빌드가 공개한다) · 사진 속 화면 자리에 채크 실제 녹화 · 푸터에 AI 사진 표시 한 줄 · `assets/home.js` = 화면 밖 녹화 정지) |
 | ★ **채크 앱 소개 페이지** | ✅ **https://soosoo.kr/chaeck/ = 「손넘김 릴레이」 정본**(9/21 사장님 「릴레이 정본으로 올려」). **화면 전체가 무대 · 스크롤이 카메라**(`chaeck/relay.js` 키프레임 보간 · 라이브러리 0): S0 실사 H1 줌인 → 답안지 통과 → S1 사무실·프린터 실사 → S2 학생 실사(실물 답안지 위 마킹 겹판 스크러빙) → S3 카메라 폰·셔터·초록 펜 O/X·「0」 → S4 저녁 사무실·「결과 공개」 도장 → S5 부엌 학부모 → 시작. 실사 5장(`chaeck/img/ai/src/` 원본 · `S*.webp` 합성본 — 화면은 실제 캡처, 종이는 실물 답안지) · 문안 = 9/21 확정 + 임팩트판(⛔「연필」 금지어). 이전 판 `/chaeck/_old/` · 잉크 판 `/chaeck/ink/` · `/chaeck/relay/` 는 정본으로 넘김. **웹(1280) 우선 · 폰 배치는 후순위**(사장님). 정본 문서 `doc/채크_소개_구성.md` §1-c·§H·§I·§J |
 | 사업자 표기 | 상호·영문·대표·등록번호·이메일 ✅ · 전화·주소 = 채크 소개 푸터에만(약관과 같은 값 · 9/20 사장님) · 통신판매업 신고번호 = **자리만** |
 
@@ -45,7 +45,7 @@ node tools/scenes.mjs [폭] [dpr] [접두]  # 채크 소개 릴레이를 장면(
 node tools/shots.mjs   # 375/1280 전체 스크린샷 → doc/shots/ + 네트워크 탭 외부 호스트 0건 확인(표준골격 ⑥)
 python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼: dark(화면이 검은가) · screen(실제 앱 캡처를 폰 화면에 투시 합성) · ★paper(사진 속 종이에 실물 답안지를 원근 합성 — 손·폰은 남기고 그림자·빛 유지 · 9/20 H1 실측) · fit · crop · adjust · tile · webp · rmbg(로컬 배경 제거)
 ```
-- 배포 뒤 **반드시** `deploy:check` — 「업로드 성공」과 「최신 코드가 나간다」는 다르다.
+- 배포 뒤 **반드시** `deploy:check` — 「업로드 성공」과 「최신 코드가 나간다」는 다르다. ⚠️ 4번째 줄 = 브라우저 응답의 외부 스크립트 — Cloudflare 방문 통계(Web Analytics) 자동 삽입이 켜져 있어 ⚠️(CSP 가 막아 전송 0 · 10/30 실측 · 대시보드에서 끄면 ✅).
 - 검수 축 A~J(`tools/check.mjs` 머리). **J 검색 노출**(`data/site.json` search · 2026-10-30)= build 가 만든 `sitemap.xml`(noindex 뺀 전부)·`robots.txt`(Sitemap 줄 하나) + 숨김 목록 ↔ meta robots ↔ sitemap 양방향 대조 — 검색에서 숨길 페이지는 `search.noindex` 에 한 줄(조사 `doc/네이버_검색노출_조사.md`). **F 페이지 규칙**(`data/site.json` page_rules)= 채크 정체성 금지어(등수·비교·최고·혁신·학원으로 연결·영어 특화·즉시 삭제) + 있어야 할 문장(30일·만 14세·학생 5명·10문항·방침 링크). 채크 방침·금지어가 바뀌면 여기부터 고친다.
 - 검수는 **dist/(빌드 결과)** 에 대고 돈다. 루트 소스에 대고 돌리지 않는다(윈도우 디스크 함정 · 전역 refs).
 - 🔒 헤더는 `deploy/_headers`(CSP **`script-src 'self'`** — 9/20 밤 결정 A: 우리 도메인 스크립트만 · 인라인·외부 스크립트는 여전히 막힌다). 검수기 D 는 외부 `script src` 를 잡는다(selftest 「외부 script 주입」).
@@ -54,7 +54,7 @@ python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼
 ## 4. 파일
 
 ```
-index.html            홈 = 채크 홍보 랜딩 v3(2026-10-30 · 스크립트 0 · 가로 무대는 CSS 스크롤 연동)
+index.html            홈 = 채크 홍보 랜딩 v4(2026-10-30 · 스크립트 assets/home.js 하나 · 가로 무대는 CSS 스크롤 연동 · 시안 원본 doc/시안/홈_v4/page.html)
 chaeck/index.html     ★채크 앱 소개 = 손넘김 릴레이(스크립트 chaeck/relay.js 하나) · chaeck/_old/ 이전 판 · chaeck/ink/ 잉크 시안(motion.js) · chaeck/img/ 실제 캡처 8장 · chaeck/img/ai/ 실사(사장님 생성 → 합성)(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
 assets/fonts/         Pretendard·Paperlogy 서브셋(OFL) + manifest.json(글자 해시)
 data/site.json        ★ 사람이 고치는 값은 여기뿐 (사업자 정보 · 고정 경로 · 옛 주소 예외(기한) · 검사 URL)
