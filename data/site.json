@@ -56,8 +56,8 @@
   },
   "search": {
     "_설명": "검색 노출 · AI 검색 노출(전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30). build 가 dist/sitemap.xml(noindex 를 뺀 모든 페이지)·dist/robots.txt(Sitemap 줄 하나 — Cloudflare 가 AI 학습 로봇 규칙을 앞에 붙인다)를 만들고, 검수기 J 가 「숨김 목록 ↔ sitemap ↔ meta robots」 3자를 대조한다",
-    "noindex": ["/chaeck/_old/", "/chaeck/a/", "/chaeck/b/", "/chaeck/ink/", "/chaeck/relay/", "/chaeck/pricing/"],
-    "_noindex": "검색에 안 나와야 하는 페이지 — 시안·이전 판·넘김 페이지는 정본(/chaeck/)과 내용이 겹친다(네이버 가이드 「중복 콘텐츠 불이익」). 여기 적은 페이지는 <meta name=\"robots\" content=\"noindex\"> 가 있어야 하고 sitemap 에 없어야 한다. /chaeck/pricing/ = 2026-10-30 사장님 「요금 안내는 숨겨줘」 — 요금제가 열리면 뺀다(주소·채크 소개 푸터 링크는 토스 PG 환불 정책 URL 이라 유지)",
+    "noindex": ["/chaeck/_old/", "/chaeck/a/", "/chaeck/b/", "/chaeck/ink/", "/chaeck/relay/", "/chaeck/pricing/", "/hantol/privacy/", "/hantol/terms/", "/hantol/support/"],
+    "_noindex": "검색에 안 나와야 하는 페이지 — 시안·이전 판·넘김 페이지는 정본(/chaeck/)과 내용이 겹친다(네이버 가이드 「중복 콘텐츠 불이익」). 여기 적은 페이지는 <meta name=\"robots\" content=\"noindex\"> 가 있어야 하고 sitemap 에 없어야 한다. /chaeck/pricing/ = 2026-10-30 사장님 「요금 안내는 숨겨줘」 — 요금제가 열리면 뺀다(주소·채크 소개 푸터 링크는 토스 PG 환불 정책 URL 이라 유지). /hantol/* = 2026-10-30 사장님 「하루한톨은 하지 않을 서비스」 — 홈에서 카드를 빼고 검색에서 숨긴다(주소 자체는 지울지 사장님 결정 전까지 그대로)",
     "sitemap": true,
     "_sitemap": "false 면 build 가 sitemap.xml·Sitemap 줄을 안 만들고 검수기 J 도 sitemap 대조를 건너뛴다. 10/30 「구글만 일단 켜봐」 동안 꺼 뒀다가 같은 날 요금 안내 숨김 결정 뒤 켬",
     "google_extended": { "allow": true, "disallow": ["/hantol/"] },
