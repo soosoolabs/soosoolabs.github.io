@@ -49,5 +49,15 @@ for (const f of walk(DIST)) {
   writeFileSync(f, html.replace(/(<meta charset[^>]*>)/i, `$1\n<meta name="build" content="${build.sha} ${build.date}">`));
   stamped++;
 }
+// ⑥ 검색 노출(site.json search · 검수기 J) — sitemap = noindex 를 뺀 모든 페이지 · robots = Sitemap 줄 하나
+//    (Cloudflare 자동 관리 robots 가 AI 학습 로봇 규칙을 이 파일 앞에 붙인다 — 2026-10-30 실측·공식 문서)
+const toPath = (f) => "/" + f.slice(DIST.length + 1).replace(/\\/g, "/").replace(/index\.html$/, "");
+const hidden = new Set(site.search?.noindex || []);
+const listed = walk(DIST).map(toPath).filter((p) => !hidden.has(p)).sort();
+const lastmod = (p) => git(`log -1 --format=%cs -- "${(p === "/" ? "index.html" : p.slice(1) + "index.html")}"`);
+writeFileSync(join(DIST, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
+  listed.map((p) => { const d = lastmod(p); return `  <url><loc>https://${site.domain}${p}</loc>${d ? `<lastmod>${d}</lastmod>` : ""}</url>`; }).join("\n")
+}\n</urlset>\n`);
+writeFileSync(join(DIST, "robots.txt"), `# 수수 soosoo.kr — 검색 로봇 규칙은 Cloudflare 자동 관리분(위)을 따른다\nSitemap: https://${site.domain}/sitemap.xml\n`);
 writeFileSync(join(DIST, "build.json"), JSON.stringify(build, null, 2) + "\n");
-console.log(`✅ build → dist/ · HTML ${stamped}개 · build=${build.sha}`);
+console.log(`✅ build → dist/ · HTML ${stamped}개 · sitemap ${listed.length}개(숨김 ${hidden.size}) · build=${build.sha}`);

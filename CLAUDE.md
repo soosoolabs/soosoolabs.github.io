@@ -46,7 +46,7 @@ node tools/shots.mjs   # 375/1280 전체 스크린샷 → doc/shots/ + 네트워
 python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼: dark(화면이 검은가) · screen(실제 앱 캡처를 폰 화면에 투시 합성) · ★paper(사진 속 종이에 실물 답안지를 원근 합성 — 손·폰은 남기고 그림자·빛 유지 · 9/20 H1 실측) · fit · crop · adjust · tile · webp · rmbg(로컬 배경 제거)
 ```
 - 배포 뒤 **반드시** `deploy:check` — 「업로드 성공」과 「최신 코드가 나간다」는 다르다.
-- 검수 축 A~H(`tools/check.mjs` 머리). **F 페이지 규칙**(`data/site.json` page_rules)= 채크 정체성 금지어(등수·비교·최고·혁신·학원으로 연결·영어 특화·즉시 삭제) + 있어야 할 문장(30일·만 14세·학생 5명·10문항·방침 링크). 채크 방침·금지어가 바뀌면 여기부터 고친다.
+- 검수 축 A~J(`tools/check.mjs` 머리). **J 검색 노출**(`data/site.json` search · 2026-10-30)= build 가 만든 `sitemap.xml`(noindex 뺀 전부)·`robots.txt`(Sitemap 줄 하나) + 숨김 목록 ↔ meta robots ↔ sitemap 양방향 대조 — 검색에서 숨길 페이지는 `search.noindex` 에 한 줄(조사 `doc/네이버_검색노출_조사.md`). **F 페이지 규칙**(`data/site.json` page_rules)= 채크 정체성 금지어(등수·비교·최고·혁신·학원으로 연결·영어 특화·즉시 삭제) + 있어야 할 문장(30일·만 14세·학생 5명·10문항·방침 링크). 채크 방침·금지어가 바뀌면 여기부터 고친다.
 - 검수는 **dist/(빌드 결과)** 에 대고 돈다. 루트 소스에 대고 돌리지 않는다(윈도우 디스크 함정 · 전역 refs).
 - 🔒 헤더는 `deploy/_headers`(CSP **`script-src 'self'`** — 9/20 밤 결정 A: 우리 도메인 스크립트만 · 인라인·외부 스크립트는 여전히 막힌다). 검수기 D 는 외부 `script src` 를 잡는다(selftest 「외부 script 주입」).
 - 📸 `tools/shots.mjs` 는 **즉시 스크롤로 끝까지 훑은 뒤** 찍는다 — 사이트가 `scroll-behavior:smooth` 라 예전 루프는 1/3 밖에 못 내려가 ①트리거형 층이 **빈 화면으로 찍혔다**(9/20 실측). 층이 비어 보이면 도구부터 의심.

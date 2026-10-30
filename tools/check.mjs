@@ -15,6 +15,8 @@
 //   H. 로컬 이미지·폰트 참조가 dist 에 실제로 있나
 //   I. 채크 요금 안내 가격 = site.json pricing = 채크 원본 plan.ts(origin/main) · 무료 범위 문장 (2026-10-20 R-803)
 //   (C-2) 통신판매업 신고번호가 mail_order_pages 의 보이는 본문에 (2026-10-20 R-803)
+//   J. 검색 노출(site.json search · 전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30)
+//      sitemap.xml = noindex 를 뺀 모든 페이지 · 숨김 목록 ↔ meta robots noindex 양방향 · robots.txt 에 Sitemap 줄·전체 차단 없음 · 설명문
 import { readFileSync, readdirSync, statSync, existsSync, cpSync, rmSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join, dirname, relative } from "node:path";
 import { tmpdir } from "node:os";
@@ -185,6 +187,40 @@ export function run(dist) {
       }
     }
   }
+  // J 검색 노출 — 「숨김 목록 ↔ sitemap ↔ meta robots」 3자 대조 + robots.txt + 설명문(W1·W2·W4·W5)
+  if (site.search) {
+    const hidden = new Set(site.search.noindex || []);
+    const toPath = (f) => "/" + relative(dist, f).replace(/\\/g, "/").replace(/index\.html$/, "");
+    const smf = join(dist, "sitemap.xml");
+    targets++;
+    const locs = existsSync(smf) ? [...readFileSync(smf, "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]) : null;
+    if (!locs) v.push("J sitemap.xml 없음(W1)");
+    const inMap = new Set((locs || []).map((u) => u.replace(`https://${site.domain}`, "")));
+    for (const u of locs || []) {
+      targets++;
+      const p = u.replace(`https://${site.domain}`, "");
+      if (!u.startsWith(`https://${site.domain}/`)) v.push(`J sitemap 주소가 우리 도메인이 아님: ${u}`);
+      else if (!existsSync(join(dist, p.replace(/\/$/, "/index.html").replace(/^\//, "")))) v.push(`J sitemap 에 없는 페이지: ${p}`);
+      if (hidden.has(p)) v.push(`J 숨김 페이지가 sitemap 에 있음: ${p}`);
+    }
+    for (const f of pages) {
+      targets++;
+      const html = readFileSync(f, "utf8"), p = toPath(f);
+      const noidx = /<meta name="robots" content="[^"]*noindex/i.test(html);
+      if (hidden.has(p) && !noidx) v.push(`J 숨김 목록인데 noindex 없음: ${p}`);
+      if (!hidden.has(p) && noidx) v.push(`J noindex 인데 숨김 목록에 없음: ${p}`);
+      if (!hidden.has(p) && locs && !inMap.has(p)) v.push(`J 공개 페이지가 sitemap 에 없음: ${p}`);
+      if (!hidden.has(p) && !(site.search.description_skip || []).includes(p) && !/<meta name="description" content="[^"]+"/i.test(html)) v.push(`J 설명문(meta description) 없음: ${p}`);
+    }
+    targets++;
+    const rf = join(dist, "robots.txt");
+    if (!existsSync(rf)) v.push("J robots.txt 없음(W2)");
+    else {
+      const rb = readFileSync(rf, "utf8");
+      if (!rb.includes(`Sitemap: https://${site.domain}/sitemap.xml`)) v.push("J robots.txt 에 Sitemap 줄 없음(W2)");
+      if (/^\s*Disallow:\s*\/\s*$/im.test(rb)) v.push("J robots.txt 에 전체 차단(Disallow: /) — 검색 로봇까지 막는다(W2)");
+    }
+  }
   return { targets, violations: v };
 }
 
@@ -233,6 +269,16 @@ function selftest() {
       const r = run(t); site.pricing.seats[seat][0] = saved;
       cases.push([`site.json ↔ 채크 원본 불일치(${seat})`, r.violations.some((x) => x.startsWith(`I site.json ${seat} 기본`)), t]); }
     { const t = fresh(); writeFileSync(pf(t), readFileSync(pf(t), "utf8").replace(/<tr data-seat="p200">[\s\S]*?<\/tr>/, "")); cases.push(["요금 칸 삭제(p200)", run(t).violations.some((x) => x.startsWith("I 요금 표에 칸 없음: p200")), t]); }
+  }
+  // 5-g 검색 노출(J) — sitemap 삭제 · 숨김 페이지를 sitemap 에 · noindex 제거 · 정본에 noindex · robots 전체 차단 · 설명문 삭제
+  if (site.search) {
+    const sm = (t) => join(t, "sitemap.xml"), hid = site.search.noindex[0], hf = (t) => join(t, hid.slice(1), "index.html");
+    { const t = fresh(); rmSync(sm(t)); cases.push(["sitemap.xml 삭제", run(t).violations.some((x) => x.startsWith("J sitemap.xml 없음")), t]); }
+    { const t = fresh(); writeFileSync(sm(t), readFileSync(sm(t), "utf8").replace("</urlset>", `<url><loc>https://${site.domain}${hid}</loc></url></urlset>`)); cases.push([`숨김 페이지를 sitemap 에(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 페이지가 sitemap")), t]); }
+    { const t = fresh(); writeFileSync(hf(t), readFileSync(hf(t), "utf8").replace(/<meta name="robots"[^>]*>/i, "")); cases.push([`noindex 제거(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 목록인데 noindex 없음")), t]); }
+    { const t = fresh(); const cf = join(t, "chaeck/index.html"); writeFileSync(cf, readFileSync(cf, "utf8").replace("</head>", '<meta name="robots" content="noindex"></head>')); cases.push(["정본(/chaeck/)에 noindex 주입", run(t).violations.some((x) => x === "J noindex 인데 숨김 목록에 없음: /chaeck/"), t]); }
+    { const t = fresh(); writeFileSync(join(t, "robots.txt"), "User-agent: *\nDisallow: /\n" + readFileSync(join(t, "robots.txt"), "utf8")); cases.push(["robots 전체 차단 주입", run(t).violations.some((x) => x.startsWith("J robots.txt 에 전체 차단")), t]); }
+    { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<meta name="description"[^>]*>/i, "")); cases.push(["설명문 삭제(/)", run(t).violations.some((x) => x === "J 설명문(meta description) 없음: /"), t]); }
   }
   // 6 기한 지난 예외 → 위반이어야 한다
   { const t = fresh(); const saved = site.legacy_exceptions.map((e) => ({ ...e }));
