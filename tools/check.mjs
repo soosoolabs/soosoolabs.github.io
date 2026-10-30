@@ -219,6 +219,12 @@ export function run(dist) {
       const rb = readFileSync(rf, "utf8");
       if (!rb.includes(`Sitemap: https://${site.domain}/sitemap.xml`)) v.push("J robots.txt 에 Sitemap 줄 없음(W2)");
       if (/^\s*Disallow:\s*\/\s*$/im.test(rb)) v.push("J robots.txt 에 전체 차단(Disallow: /) — 검색 로봇까지 막는다(W2)");
+      const ge = site.search.google_extended;
+      if (ge?.allow) {
+        const grp = (rb.split(/^User-agent:\s*Google-Extended\s*$/im)[1] || "").split(/^User-agent:/im)[0];
+        if (!/^Allow:\s*\/\s*$/im.test(grp)) v.push("J robots.txt 에 Google-Extended 허용 줄 없음(W3)");
+        for (const p of ge.disallow || []) { targets++; if (!grp.split("\n").some((l) => l.trim() === `Disallow: ${p}`)) v.push(`J Google-Extended 에서 빼기로 한 경로가 안 막힘: ${p}(W3)`); }
+      }
     }
   }
   return { targets, violations: v };
@@ -278,6 +284,7 @@ function selftest() {
     { const t = fresh(); writeFileSync(hf(t), readFileSync(hf(t), "utf8").replace(/<meta name="robots"[^>]*>/i, "")); cases.push([`noindex 제거(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 목록인데 noindex 없음")), t]); }
     { const t = fresh(); const cf = join(t, "chaeck/index.html"); writeFileSync(cf, readFileSync(cf, "utf8").replace("</head>", '<meta name="robots" content="noindex"></head>')); cases.push(["정본(/chaeck/)에 noindex 주입", run(t).violations.some((x) => x === "J noindex 인데 숨김 목록에 없음: /chaeck/"), t]); }
     { const t = fresh(); writeFileSync(join(t, "robots.txt"), "User-agent: *\nDisallow: /\n" + readFileSync(join(t, "robots.txt"), "utf8")); cases.push(["robots 전체 차단 주입", run(t).violations.some((x) => x.startsWith("J robots.txt 에 전체 차단")), t]); }
+    if (site.search.google_extended?.disallow?.length) { const t = fresh(); const d = site.search.google_extended.disallow[0]; writeFileSync(join(t, "robots.txt"), readFileSync(join(t, "robots.txt"), "utf8").replace(`Disallow: ${d}\n`, "")); cases.push([`Gemini 제외 경로 삭제(${d})`, run(t).violations.some((x) => x.startsWith("J Google-Extended 에서 빼기로 한 경로가 안 막힘")), t]); }
     { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<meta name="description"[^>]*>/i, "")); cases.push(["설명문 삭제(/)", run(t).violations.some((x) => x === "J 설명문(meta description) 없음: /"), t]); }
   }
   // 6 기한 지난 예외 → 위반이어야 한다

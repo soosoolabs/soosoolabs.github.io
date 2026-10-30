@@ -58,6 +58,8 @@
     "_설명": "검색 노출 · AI 검색 노출(전역 refs 웹_검색노출_AI검색_표준 W1·W2·W4·W5 · 2026-10-30). build 가 dist/sitemap.xml(noindex 를 뺀 모든 페이지)·dist/robots.txt(Sitemap 줄 하나 — Cloudflare 가 AI 학습 로봇 규칙을 앞에 붙인다)를 만들고, 검수기 J 가 「숨김 목록 ↔ sitemap ↔ meta robots」 3자를 대조한다",
     "noindex": ["/chaeck/_old/", "/chaeck/a/", "/chaeck/b/", "/chaeck/ink/", "/chaeck/relay/"],
     "_noindex": "검색에 안 나와야 하는 페이지 — 시안·이전 판·넘김 페이지는 정본(/chaeck/)과 내용이 겹친다(네이버 가이드 「중복 콘텐츠 불이익」). 여기 적은 페이지는 <meta name=\"robots\" content=\"noindex\"> 가 있어야 하고 sitemap 에 없어야 한다. /chaeck/pricing/ 은 사장님 답(요금 안내 검색 숨김) 뒤 여기에 넣는다",
+    "google_extended": { "allow": true, "disallow": ["/hantol/"] },
+    "_google_extended": "구글 Gemini 앱 답변 근거(grounding)+학습을 한 스위치로 묶은 로봇 이름. Cloudflare 자동 관리가 막아 둔 것을 우리 robots.txt 의 Allow 로 푼다(구글 원문: 같은 로봇 규칙은 합치고, 부딪히면 덜 막는 쪽) — 2026-10-30 사장님 「켜자 · 하루한톨은 빼, 오픈 안 할거야」. disallow 경로는 더 길어서 Allow / 를 이긴다. 검수기 J 가 두 줄을 확인한다",
     "description_skip": ["/hantol/privacy/", "/hantol/terms/", "/hantol/support/"],
     "_description_skip": "meta description 이 없어도 되는 페이지 — 하루한톨 법적 문서는 daily-verse 정본이라 여기서 안 고친다(그쪽에서 넣으면 이 목록에서 뺀다)"
   },
