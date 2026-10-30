@@ -77,11 +77,11 @@ a{color:inherit}
 .panel{position:relative;width:min(86vw,1280px);height:min(80vh,740px);border-radius:32px;overflow:hidden;background:#1F1E1A;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 40px 80px -30px rgba(0,0,0,.6);display:grid;grid-template-columns:minmax(0,38fr) minmax(0,62fr)}
 .panel .t{position:relative;z-index:2;padding:48px 40px 52px 48px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
 .cnt{font-family:var(--display);font-weight:700;font-size:15px;color:var(--mint);letter-spacing:.06em}
+.cnt .k{margin-left:10px;padding:4px 12px;border-radius:99px;background:rgba(94,224,176,.14);letter-spacing:0}
 .cnt b{font-size:64px;line-height:1;display:block;margin-bottom:6px;color:transparent;-webkit-text-stroke:1.5px rgba(94,224,176,.55);letter-spacing:-.02em}
 .panel h3{font-size:clamp(34px,3.3vw,50px);line-height:1.16;color:#fff}
 .panel h3 em{font-style:normal;color:var(--mint)}
 .panel .t p{margin:14px 0 0;font-size:18px;line-height:1.7;color:#C9C4B8;max-width:24em}
-.zero{display:block;font-size:clamp(150px,15vw,230px);line-height:.85;color:var(--mint);letter-spacing:-.05em;margin-bottom:10px;text-shadow:0 0 60px rgba(94,224,176,.35)}
 .panel .m{position:relative}
 .panel .m .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(to right,transparent,#000 20%);mask-image:linear-gradient(to right,transparent,#000 20%)}
 .p1 .photo{object-position:72% 50%}
@@ -90,6 +90,8 @@ a{color:inherit}
 .float{position:absolute;z-index:2;top:6%;right:4%;width:46%}
 .float .win{box-shadow:0 30px 60px -18px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.18)}
 .float .win img{aspect-ratio:1280/900}
+.panel .m.bare{background:radial-gradient(70% 70% at 55% 50%,rgba(94,224,176,.16),transparent 70%)}
+.panel .m.bare .float{top:50%;bottom:auto;left:50%;right:auto;width:86%;translate:-50% -50%}
 .pop{animation:pop linear both;animation-timeline:--hs}
 .p1 .pop{animation-range:contain 0% contain 22%}
 .p2 .pop{animation-range:contain 30% contain 62%}
@@ -107,8 +109,9 @@ a{color:inherit}
 .zone{padding:96px 0 0}
 .zone-h{display:flex;align-items:center;gap:12px;margin:0 0 26px}
 .zone-h b{font-family:var(--display);font-weight:800;font-size:15px;padding:6px 14px;border-radius:99px}
+.zone-h h2{margin:0;font-size:clamp(28px,3vw,40px);line-height:1.2}
+.ck{align-self:flex-start;font-family:var(--display);font-weight:800;font-size:13px;padding:4px 12px;border-radius:99px;background:var(--c7);color:#fff}
 .zone-h span{flex:1;height:1px;background:var(--line)}
-.z-s b{background:var(--c7);color:#fff}
 
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .card{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column}
@@ -198,7 +201,6 @@ a{color:inherit}
   .cnt b{font-size:40px}
   .panel h3{font-size:27px}
   .panel .t p{font-size:15.5px}
-  .zero{font-size:120px}
   .pop,.zoom{animation:none}
   .prog{display:none}
 
@@ -250,16 +252,16 @@ a{color:inherit}
     <div class="track">
       <div class="intro">
         <span class="tagz">선생님</span>
-        <p>찍거나 스캔하면,<br>채크가 읽고,<br><em>선생님은 확인만.</em></p>
+        <p>걷어서 스캔하면,<br>채점은 <em>채크가.</em></p>
         <span class="arrow" aria-hidden="true">→</span>
       </div>
 
       <article class="panel p1">
         <div class="t">
-          <div class="cnt"><b>01</b>/ 03</div>
+          <div class="cnt"><b>01</b>/ 03<span class="k">시험지 올리기</span></div>
           <div>
             <h3 class="disp">시험지가 곧, <em>답안지.</em></h3>
-            <p>워드·한글 파일을 올리면 채크 시험지로 바꿔 드려요. 파일에 적힌 정답·유형·해설을 문항마다 채워 드려요.</p>
+            <p>워드·한글 파일을 올리면 채크 시험지로 바꿔 드려요. 파일에 적힌 정답·유형·해설은 문항마다 채워 드려요.</p>
           </div>
         </div>
         <div class="m">
@@ -270,24 +272,23 @@ a{color:inherit}
 
       <article class="panel p2">
         <div class="t">
-          <div class="cnt"><b>02</b>/ 03</div>
+          <div class="cnt"><b>02</b>/ 03<span class="k">걷어서 스캔</span></div>
           <div>
-            <h3 class="disp"><b class="zero">0</b>— 선생님이 채점하는 문항 수.</h3>
-            <p>선생님이 걷어서 한 번에 스캔해도 돼요. 읽힌 답은 확인한 뒤에 확정돼요.</p>
+            <h3 class="disp">걷은 시험지, <em>한 번에 스캔.</em></h3>
+            <p>채크에서 인쇄한 시험지를 복합기로 스캔해, PDF 로 PC 웹에 올리면 채점돼요. 읽힌 답은 선생님이 확인한 뒤에 확정돼요.</p>
           </div>
         </div>
-        <div class="m">
-          <img class="photo zoom" src="/chaeck/img/ai/H1.webp" alt="마킹한 시험지를 폰으로 찍는 손" loading="lazy">
+        <div class="m bare">
           <div class="float pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div>
         </div>
       </article>
 
       <article class="panel p3">
         <div class="t">
-          <div class="cnt"><b>03</b>/ 03</div>
+          <div class="cnt"><b>03</b>/ 03<span class="k">결과 공개</span></div>
           <div>
-            <h3 class="disp">틀린 학생 <em>5명 중 5명이 2번.</em></h3>
-            <p>오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나면 보여요. 공개는 선생님이 한 번 보고.</p>
+            <h3 class="disp"><em>많이 틀린 문항</em>부터 보여요.</h3>
+            <p>오답이 몰린 문항과 다음 수업에 다시 볼 유형이 채점이 끝나면 보여요. 선생님이 확인하고 공개하면 학생·학부모 앱에 결과가 떠요.</p>
           </div>
         </div>
         <div class="m">
@@ -302,7 +303,7 @@ a{color:inherit}
 
 <main class="wrap">
   <section class="zone z-s" id="family">
-    <div class="zone-h"><b>학생 · 학부모</b><span></span></div>
+    <div class="zone-h"><h2 class="disp">결과는 학생·학부모 앱으로.</h2><span></span></div>
     <div class="cards">
       <article class="card">
         <div class="pic"><div class="sheet" aria-hidden="true">
@@ -312,11 +313,11 @@ a{color:inherit}
           <div class="q"><b>4</b><i></i><i></i><i class="on"></i><i></i><i></i></div>
           <div class="q"><b>5</b><i></i><i></i><i></i><i></i><i></i></div>
         </div></div>
-        <div class="txt"><h3 class="disp">답은 문제 옆 번호에, 펜으로.</h3><p>학생은 문제 옆 번호에 펜으로 마킹해요. 학생이 폰으로 찍어 내도 돼요.</p></div>
+        <div class="txt"><span class="ck">학생</span><h3 class="disp">답은 문제 옆 번호에, 펜으로.</h3><p>앱으로 찍어 직접 내는 시험도 있어요. 읽힌 답은 학생이 확인하고 내요.</p></div>
       </article>
       <article class="card">
         <div class="pic"><div class="ph"><img src="/chaeck/img/parent-flow.jpg" alt="학부모 화면 — 점수 흐름" loading="lazy"></div></div>
-        <div class="txt"><h3 class="disp">어디서 막히는지, 시험마다.</h3><p>유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만.</p></div>
+        <div class="txt"><span class="ck">학부모</span><h3 class="disp">어디서 막히는지, 시험마다.</h3><p>유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만.</p></div>
       </article>
     </div>
   </section>
