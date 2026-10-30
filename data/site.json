@@ -62,6 +62,8 @@
     "_sitemap": "false 면 build 가 sitemap.xml·Sitemap 줄을 안 만들고 검수기 J 도 sitemap 대조를 건너뛴다. 10/30 「구글만 일단 켜봐」 동안 꺼 뒀다가 같은 날 요금 안내 숨김 결정 뒤 켬",
     "google_extended": { "allow": true, "disallow": ["/hantol/"] },
     "_google_extended": "구글 Gemini 앱 답변 근거(grounding)+학습을 한 스위치로 묶은 로봇 이름. Cloudflare 자동 관리가 막아 둔 것을 우리 robots.txt 의 Allow 로 푼다(구글 원문: 같은 로봇 규칙은 합치고, 부딪히면 덜 막는 쪽) — 2026-10-30 사장님 「켜자 · 하루한톨은 빼, 오픈 안 할거야」. disallow 경로는 더 길어서 Allow / 를 이긴다. 검수기 J 가 두 줄을 확인한다",
+    "verification": { "naver-site-verification": "3455003e16c7df789d5cc3bf31ab27e6f931bf0d" },
+    "_verification": "검색엔진 소유 확인 메타 — build 가 홈(/) 머리에 끼워 넣고 검수기 J 가 확인한다(홈 디자인을 갈아끼워도 안 빠진다). 네이버 서치어드바이저 2026-10-30 사장님 계정 발급. 소유 확인 값은 공개 페이지에 원래 보이는 값이라 비밀 아님",
     "description_skip": ["/hantol/privacy/", "/hantol/terms/", "/hantol/support/"],
     "_description_skip": "meta description 이 없어도 되는 페이지 — 하루한톨 법적 문서는 daily-verse 정본이라 여기서 안 고친다(그쪽에서 넣으면 이 목록에서 뺀다)"
   },

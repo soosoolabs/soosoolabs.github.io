@@ -49,6 +49,12 @@ for (const f of walk(DIST)) {
   writeFileSync(f, html.replace(/(<meta charset[^>]*>)/i, `$1\n<meta name="build" content="${build.sha} ${build.date}">`));
   stamped++;
 }
+// ⑤-b 검색엔진 소유 확인 메타를 홈 머리에(site.json search.verification · 디자인 교체에도 살아남게 소스가 아니라 빌드가 넣는다)
+const verif = Object.entries(site.search?.verification || {});
+if (verif.length) {
+  const hf = join(DIST, "index.html");
+  writeFileSync(hf, readFileSync(hf, "utf8").replace(/(<meta name="build"[^>]*>)/i, `$1\n${verif.map(([n, c]) => `<meta name="${n}" content="${c}">`).join("\n")}`));
+}
 // ⑥ 검색 노출(site.json search · 검수기 J) — sitemap = noindex 를 뺀 모든 페이지 · robots = Sitemap 줄 하나
 //    (Cloudflare 자동 관리 robots 가 AI 학습 로봇 규칙을 이 파일 앞에 붙인다 — 2026-10-30 실측·공식 문서)
 const toPath = (f) => "/" + f.slice(DIST.length + 1).replace(/\\/g, "/").replace(/index\.html$/, "");

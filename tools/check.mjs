@@ -214,6 +214,11 @@ export function run(dist) {
       if (!hidden.has(p) && locs && !inMap.has(p)) v.push(`J 공개 페이지가 sitemap 에 없음: ${p}`);
       if (!hidden.has(p) && !(site.search.description_skip || []).includes(p) && !/<meta name="description" content="[^"]+"/i.test(html)) v.push(`J 설명문(meta description) 없음: ${p}`);
     }
+    const home = join(dist, "index.html");
+    for (const [n, c] of Object.entries(site.search.verification || {})) {
+      targets++;
+      if (!existsSync(home) || !readFileSync(home, "utf8").includes(`<meta name="${n}" content="${c}">`)) v.push(`J 홈에 소유 확인 메타 없음: ${n}(W6)`);
+    }
     targets++;
     const rf = join(dist, "robots.txt");
     if (!existsSync(rf)) v.push("J robots.txt 없음(W2)");
@@ -287,6 +292,7 @@ function selftest() {
     { const t = fresh(); writeFileSync(hf(t), readFileSync(hf(t), "utf8").replace(/<meta name="robots"[^>]*>/i, "")); cases.push([`noindex 제거(${hid})`, run(t).violations.some((x) => x.startsWith("J 숨김 목록인데 noindex 없음")), t]); }
     { const t = fresh(); const cf = join(t, "chaeck/index.html"); writeFileSync(cf, readFileSync(cf, "utf8").replace("</head>", '<meta name="robots" content="noindex"></head>')); cases.push(["정본(/chaeck/)에 noindex 주입", run(t).violations.some((x) => x === "J noindex 인데 숨김 목록에 없음: /chaeck/"), t]); }
     { const t = fresh(); writeFileSync(join(t, "robots.txt"), "User-agent: *\nDisallow: /\n" + readFileSync(join(t, "robots.txt"), "utf8")); cases.push(["robots 전체 차단 주입", run(t).violations.some((x) => x.startsWith("J robots.txt 에 전체 차단")), t]); }
+    for (const n of Object.keys(site.search.verification || {})) { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(new RegExp(`<meta name="${n}"[^>]*>`), "")); cases.push([`소유 확인 메타 삭제(${n})`, run(t).violations.some((x) => x.startsWith(`J 홈에 소유 확인 메타 없음: ${n}`)), t]); }
     if (site.search.google_extended?.disallow?.length) { const t = fresh(); const d = site.search.google_extended.disallow[0]; writeFileSync(join(t, "robots.txt"), readFileSync(join(t, "robots.txt"), "utf8").replace(`Disallow: ${d}\n`, "")); cases.push([`Gemini 제외 경로 삭제(${d})`, run(t).violations.some((x) => x.startsWith("J Google-Extended 에서 빼기로 한 경로가 안 막힘")), t]); }
     { const t = fresh(); writeFileSync(idx(t), readFileSync(idx(t), "utf8").replace(/<meta name="description"[^>]*>/i, "")); cases.push(["설명문 삭제(/)", run(t).violations.some((x) => x === "J 설명문(meta description) 없음: /"), t]); }
   }
