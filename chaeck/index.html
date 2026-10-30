@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>채크 — 채점은 채크가</title>
-<meta property="og:title" content="채크 — 채점은 채크가">
-<meta property="og:description" content="종이 시험 그대로. 채점은 채크가 해요. 등수 대신 우리 아이의 변화.">
+<title>채크 — 학원 시험지 자동채점</title>
+<meta property="og:title" content="채크 — 학원 시험지 자동채점">
+<meta property="og:description" content="채크(Chaeck)는 학원 시험 자동채점 앱이에요. 올린 시험지 파일을 전용 양식으로 바꿔 인쇄하면, 학생이 펜으로 마킹한 답을 읽어 유형별 결과까지 보여 줘요.">
 <meta property="og:url" content="https://soosoo.kr/chaeck/">
 <link rel="canonical" href="https://soosoo.kr/chaeck/">
-<meta name="description" content="학원 영어 시험은 종이로 그대로. 학생이 답안지를 찍으면 객관식이 자동으로 채점되고, 유형별로 어디서 막히는지 시험마다 보여요.">
+<meta name="description" content="채크(Chaeck)는 학원 시험 자동채점 앱이에요. 올린 시험지 파일을 전용 양식으로 바꿔 인쇄하면, 학생이 펜으로 마킹한 답을 읽어 유형별 결과까지 보여 줘요.">
 <meta name="theme-color" content="#F1ECE0">
 <link rel="preload" href="/assets/fonts/Paperlogy-8-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/Pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
@@ -160,6 +160,7 @@ html{scroll-behavior:auto}
 .step .no{font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7}
 .step h2{font-size:clamp(2.4rem,6.4vw,5rem);margin-top:12px;line-height:1.02}
 .step .l{font-size:clamp(1.05rem,1.9vw,1.3rem);margin-top:16px;font-weight:500;max-width:24em}
+.nw{white-space:nowrap}
 .step a{pointer-events:auto}
 .step.dark,.step.dark h2,.step.dark .no{color:#F4EFE3}.step.dark .l{color:#CFC9BB}
 .s0 h1{font-size:clamp(3.6rem,10vw,8.4rem);line-height:.96}
@@ -170,6 +171,7 @@ html{scroll-behavior:auto}
 /* 마무리 · 푸터 */
 .finish{position:relative;z-index:11;background:var(--paper-2);padding:96px 0 56px}
 .finish h2{font-size:clamp(2.4rem,6vw,4.6rem)}
+.finish .note{margin-top:30px}
 html:not(.js) .stage{position:static;height:auto;min-height:60svh}html:not(.js) .actor:not(.a-photo){display:none}html:not(.js) .steps{position:static}html:not(.js) .stage .step{position:static;display:block}html:not(.js) .step{position:static;height:auto;opacity:1;padding:48px 0}html:not(.js) .story{height:auto}
 html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{position:static;height:auto;opacity:1;padding:48px 0}
 .btn.g{background:var(--ink-900);color:#fff;box-shadow:4px 5px 0 rgba(27,26,22,.22)}.hero h1 .g,.s0 h1 .g{color:var(--ink-900)}.chips span{border-color:currentColor}
@@ -243,7 +245,7 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs></svg>
 <header class="top">
   <div class="wrap">
-    <span class="tag">학원 영어 시험 자동채점</span>
+    <span class="tag">학원 시험지 자동채점</span>
     <a class="wm" href="/chaeck/" aria-label="채크">
       <span class="mark" aria-hidden="true"><img src="/chaeck/img/icon.webp" width="32" height="32" alt=""></span>
       채크
@@ -278,16 +280,16 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
     <div class="a-flash"></div>
   <div class="steps">
     <div class="step s0"><div class="wrap"><div class="txt">
-      <p class="eyebrow">학원 영어 시험 자동채점</p>
+      <p class="eyebrow">학원 시험지 자동채점</p>
       <h1 style="margin-top:16px">채점은,<br><span class="g">채크가.<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span></h1>
-      <p class="l">시험은 종이 그대로. 채점만 사라집니다.</p>
+      <p class="l">시험지 파일을 올리면 채크 시험지로 바꿔 드려요. 학생은 문제 옆 번호에 펜으로 마킹해요.</p>
       <div class="cta"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="#insight" data-jump="5">학부모라면</a></div>
       <p class="note"><span class="stamp">채점 완료</span> 학생이 찍고, 채크가 읽고, 선생님은 확인만.</p>
     </div></div></div>
-    <div class="step s1"><div class="wrap"><div class="txt"><p class="no"><b>1</b>선생님</p><h2>바뀌는 건<br><span class="k">종이 한 장<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">QR 답안지 한 장만 새로 뽑으세요. 정답은 답안지에 실리지 않아요. 시험지 파일(워드·한글·PDF)을 올리면 문항·정답·유형·해설까지 채워져요.</p></div></div></div>
-    <div class="step s2"><div class="wrap"><div class="txt"><p class="no"><b>2</b>학생</p><h2>답은 종이에,<br><span class="k">늘 하던 대로<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2></div></div></div>
-    <div class="step s3"><div class="wrap"><div class="txt"><p class="no"><b>3</b>자동채점</p><h2><span class="sr">0 — </span>선생님이 채점하는<br>문항 수.</h2><p class="l">찍는 순간 채점. 읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
-    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no"><b>4</b>선생님 · 공개</p><h2>틀린 학생 5명 중<br>5명이 <span class="k">2번<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나는 순간 보여요. 공개는 선생님이 한 번 보고.</p></div></div></div>
+    <div class="step s1"><div class="wrap"><div class="txt"><p class="no"><b>1</b>선생님</p><h2>시험지가 곧,<br><span class="k">답안지<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l"><span class="nw">워드·한글</span> 파일을 올리면 채크 시험지로 바꿔 드려요. 학생에게 나가는 시험지엔 정답이 실리지 않아요. 파일에 적힌 <span class="nw">정답·유형·해설을</span> 문항마다 채워 드려요. 애매한 정답은 비워 두고 알려 드려요. 그 번호만 한 번 확인해 주세요.</p></div></div></div>
+    <div class="step s2"><div class="wrap"><div class="txt"><p class="no"><b>2</b>학생</p><h2>답은 문제 옆 번호에,<br><span class="k">펜으로<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2></div></div></div>
+    <div class="step s3"><div class="wrap"><div class="txt"><p class="no"><b>3</b>자동채점</p><h2><span class="sr">0 — </span>선생님이 채점하는<br>문항 수.</h2><p class="l">읽힌 답은 학생이 확인하고 제출해요.</p><div class="chips"><span>객관식</span><span>시험지 파일로 문항 자동 입력</span></div></div></div></div>
+    <div class="step s4 dark"><div class="wrap"><div class="txt"><p class="no"><b>4</b>선생님 · 공개</p><h2>틀린 학생 5명 중<br>5명이 <span class="k">2번<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">오답이 쏠린 문항, 다음 수업에 다시 볼 유형이 채점이 끝나면 보여요. 공개는 선생님이 한 번 보고.</p></div></div></div>
     <div class="step s5" id="insight"><div class="wrap"><div class="txt"><p class="no"><b>5</b>학생 · 학부모</p><h2>어디서 막히는지,<br><span class="k">시험마다<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6.5 C 22 2.5, 48 9, 98 4.5"/></svg></span>.</h2><p class="l">유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만. 다른 아이와 비교하지 않아요.</p></div></div></div>
   </div>
   </div>
@@ -297,9 +299,10 @@ html.nojs .story{height:auto}html.nojs .stage{position:static}html.nojs .step{po
     <p class="no" style="font-family:var(--ff-head);font-weight:800;font-size:.9rem;letter-spacing:.1em;opacity:.7">시작</p>
     <h2 style="margin-top:12px">시험은 그대로,<br>채점만 넘기세요.</h2>
     <div class="cta" style="margin-top:28px"><a class="btn g" href="https://chaeck.soosoo.kr/signup">강사로 시작하기</a><a class="btn w" href="https://chaeck.soosoo.kr/login">이미 계정이 있어요</a></div>
-    <p class="note"><span class="stamp">선생님 손 안 대도 돼요</span></p>
-    <p class="fine">웹에서 바로 · 만 14세 이상 · 학생·학부모는 선생님께 받은 코드로</p>
-    <p class="fine">추후 · 단어 공부 · 서술형(문장) 채점 · 유형 코칭</p>
+    <p class="note"><span class="stamp">채점은 채크가, 공개는 선생님이.</span></p>
+    <p class="fine">앱 받기 · <a href="https://apps.apple.com/kr/app/id6788668772">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.chaeck.app">Google Play</a></p>
+    <p class="fine">시험지 올리기는 PC 웹에서 · 만 14세 이상 · 학생·학부모는 앱을 깔고 선생님께 받은 코드로</p>
+    <p class="fine">시험지를 만들려고 올린 워드·한글 파일은 저장하지 않아요.</p>
   </div>
 </section>
 </main>
