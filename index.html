@@ -9,6 +9,7 @@
 <meta property="og:description" content="수수(SooSoo)는 학원 시험지 자동채점 앱 채크를 만듭니다. 앱 소개와 이용약관·개인정보처리방침, 사업자 정보를 한곳에 둡니다.">
 <link rel="preload" href="/assets/fonts/Paperlogy-8-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/Pretendard-sub.woff2" as="font" type="font/woff2" crossorigin>
+<!-- 앱 화면 캡처 = 채크 리얼 웹 a6ebb56c(1.2.0) 개발 빌드 · 개발 DB 데모 계정 · 2026-10-30 · 데모 이름표(반·시험 이름)만 화면에서 정리해 찍음 -->
 <!-- 홈 v3(2026-10-30 · doc/디자인_방향.md §6-5) = 채크 홍보 랜딩. 문구는 라이브 /chaeck/ 마케팅 승인 문구 그대로(ASK-003 답이 오면 교체) · 사진은 사장님 원본(합성 0) · 스크립트 0 -->
 <style>
 @font-face{font-family:'Pretendard';font-weight:100 900;font-display:swap;src:url('/assets/fonts/Pretendard-sub.woff2') format('woff2')}
@@ -121,7 +122,7 @@ a{color:inherit}
 .q i{width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1.5px #b9b3a6}
 .q i.on{background:var(--ink);box-shadow:none}
 .ph{align-self:end;width:46%;border-radius:22px 22px 0 0;padding:6px 6px 0;background:#1B1A16;margin-top:26px}
-.ph img{display:block;width:100%;height:auto;border-radius:16px 16px 0 0;aspect-ratio:390/420;object-fit:cover;object-position:top}
+.ph img{display:block;width:100%;height:auto;border-radius:16px 16px 0 0;aspect-ratio:585/645;object-fit:cover;object-position:top}
 
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .fact{display:flex;gap:14px;align-items:flex-start;padding:24px 24px;border-radius:18px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:16px;font-weight:600;line-height:1.5}
@@ -277,6 +278,7 @@ a{color:inherit}
         </div>
         <div class="m">
           <img class="photo zoom" src="/chaeck/img/ai/H1.webp" alt="마킹한 시험지를 폰으로 찍는 손" loading="lazy">
+          <div class="float pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div>
         </div>
       </article>
 
@@ -313,7 +315,7 @@ a{color:inherit}
         <div class="txt"><h3 class="disp">답은 문제 옆 번호에, 펜으로.</h3><p>학생은 문제 옆 번호에 펜으로 마킹해요. 학생이 폰으로 찍어 내도 돼요.</p></div>
       </article>
       <article class="card">
-        <div class="pic"><div class="ph"><img src="/chaeck/img/parent-result.jpg" alt="학부모 화면 — 자녀 결과" loading="lazy"></div></div>
+        <div class="pic"><div class="ph"><img src="/chaeck/img/parent-flow.jpg" alt="학부모 화면 — 점수 흐름" loading="lazy"></div></div>
         <div class="txt"><h3 class="disp">어디서 막히는지, 시험마다.</h3><p>유형별 정답률, 문항마다 낸 답, 점수 흐름. 우리 아이의 변화만.</p></div>
       </article>
     </div>
