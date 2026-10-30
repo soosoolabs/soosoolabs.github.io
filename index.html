@@ -127,6 +127,12 @@ a{color:inherit}
 .p1 .photo{object-position:72% 50%}
 .p2 .photo{object-position:100% 50%}
 .p3 .photo{object-position:58% 50%}
+/* 03 = 사진(E) 속 노트북 유리에 실제 녹화 — 사진이 칸을 덮는 크기·위치(cover · 58% 50%)를 상자로 똑같이 계산해 녹화가 유리를 따라간다 */
+.panel .m.fit{container-type:size;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 20%);mask-image:linear-gradient(to right,transparent,#000 20%)}
+.fit .stage{position:absolute;--w:max(100cqw,calc(100cqh * 1600 / 893));width:var(--w);aspect-ratio:1600/893;left:calc((100cqw - var(--w)) * .58);top:calc((100cqh - var(--w) * 893 / 1600) * .5)}
+.fit .stage>img{display:block;width:100%;height:100%}
+.fit .lcd{position:absolute;left:53.63%;top:47.03%;width:23.31%;height:26.54%;overflow:hidden;background:#000;border-radius:1px}
+.fit .lcd video{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
 .win{border-radius:14px;background:#fff;overflow:hidden}
 .bar{display:flex;align-items:center;gap:7px;height:32px;padding:0 14px;background:#F1EDE4;border-bottom:1px solid var(--line)}
 .bar i{width:10px;height:10px;border-radius:50%;background:#DCD6C9}
@@ -188,7 +194,7 @@ a{color:inherit}
 .shot>img{display:block;width:100%;height:100%;object-fit:cover}
 .shot .lcd{position:absolute;overflow:hidden;background:#000}
 .shot .lcd video{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
-.lcd.ld{left:33.94%;top:20.53%;width:32.01%;height:58.93%;border-radius:14.8%/6.4%}
+.lcd.ld{left:33.83%;top:20.36%;width:33.51%;height:58.33%;border-radius:14.8%/6.4%}
 .lcd.lf{left:33.73%;top:21.77%;width:32.46%;height:56.46%;border-radius:11.5%/5.3%}
 .ph-s{right:10%;transform:translateY(-50%) rotate(3deg);z-index:2}
 .ph-p{right:0;transform:translateY(-50%) translateY(120vh);z-index:3}
@@ -250,10 +256,23 @@ a{color:inherit}
   .paper{display:none}
 }
 
-/* ── 사실 3칸 · 시작 ── */
-.zone{padding:96px 0 0}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.fact{display:flex;flex-direction:column;gap:18px;padding:28px 26px 30px;border-radius:22px;background:var(--card);box-shadow:0 0 0 1px var(--line);font-size:17px;font-weight:600;line-height:1.5}
+/* ── 하지 않는 것 3가지 = 채크의 차별점 → 화면 폭 검은 띠 · 큰 글자 · 「~지 않아요」 만 민트 ── */
+.vow{position:relative;isolation:isolate;overflow:hidden;margin:0 calc(50% - 50vw);padding:128px max(40px,calc((100vw - 1100px)/2));background:var(--ink);color:#fff}
+.vow::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(50vw 60% at 8% 0,rgba(29,158,117,.30),transparent 70%),radial-gradient(40vw 60% at 100% 100%,rgba(94,224,176,.10),transparent 70%)}
+.vows{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.vows li{display:flex;flex-direction:column;gap:30px;padding:6px 40px;border-left:1px solid rgba(255,255,255,.14)}
+.vows li:first-child{padding-left:0;border-left:0}
+.vows li:last-child{padding-right:0}
+.vows .ic{width:76px;height:76px;border-radius:22px;background:rgba(94,224,176,.12);box-shadow:inset 0 0 0 1px rgba(94,224,176,.28)}
+.vows .ic svg{width:40px;height:40px;stroke:var(--mint);stroke-width:1.5}
+.vows p{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(26px,2.6vw,38px);line-height:1.28;letter-spacing:-.03em;word-break:keep-all}
+.vows em{font-style:normal;color:var(--mint)}
+@media (prefers-reduced-motion: no-preference){@supports (animation-timeline: view()){
+  .vows li{animation:rise linear both;animation-timeline:view();animation-range:entry 15% cover 38%}
+  .vows li:nth-child(2){animation-range:entry 25% cover 46%}
+  .vows li:nth-child(3){animation-range:entry 35% cover 54%}
+}}
+@keyframes rise{from{opacity:0;transform:translateY(48px)}}
 .ic{width:48px;height:48px;border-radius:14px;background:var(--g1);display:grid;place-items:center}
 .ic svg{width:26px;height:26px;fill:none;stroke:var(--g7);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
@@ -340,7 +359,7 @@ a{color:inherit}
   .arrow{font-size:32px}
   .panel{width:86vw;height:auto;grid-template-columns:minmax(0,1fr);border-radius:24px}
   .panel .m{order:-1;height:300px}
-  .panel .m .photo{-webkit-mask-image:linear-gradient(to bottom,#000 75%,transparent);mask-image:linear-gradient(to bottom,#000 75%,transparent)}
+  .panel .m .photo,.panel .m.fit{-webkit-mask-image:linear-gradient(to bottom,#000 75%,transparent);mask-image:linear-gradient(to bottom,#000 75%,transparent)}
   .float,.float.wide{top:auto;bottom:10px;right:10px;width:66%}
   .panel .t{padding:18px 22px 26px;gap:12px}
   .cnt b{font-size:40px}
@@ -361,9 +380,13 @@ a{color:inherit}
   .duo .shot{position:relative;top:auto;right:auto;width:47%;transform:none;border-radius:16px}
   .ph-p{transform:translateY(28px)}
 
-  .zone{padding-top:64px}
-  .facts{grid-template-columns:minmax(0,1fr)}
-  .fact{flex-direction:row;align-items:center;padding:20px 20px}
+  .vow{padding:64px 22px}
+  .vows{grid-template-columns:minmax(0,1fr)}
+  .vows li,.vows li:first-child,.vows li:last-child{flex-direction:row;align-items:center;gap:18px;padding:22px 0;border-left:0;border-top:1px solid rgba(255,255,255,.14)}
+  .vows li:first-child{border-top:0;padding-top:0}
+  .vows .ic{width:56px;height:56px;border-radius:16px}
+  .vows .ic svg{width:30px;height:30px}
+  .vows p{font-size:22px}
   .ic{flex:none}
   .go{grid-template-columns:minmax(0,1fr);padding:44px 24px;margin-top:64px}
   .go h2{font-size:34px}
@@ -449,9 +472,8 @@ a{color:inherit}
             <p>오답이 몰린 문항과 다음 수업에 다시 볼 유형이 채점이 끝나면 보여요. 선생님이 확인하고 공개하면 학생·학부모 앱에 결과가 떠요.</p>
           </div>
         </div>
-        <div class="m">
-          <img class="photo zoom" src="/chaeck/img/ai/E.webp" alt="오후 학원 — 책상 위 노트북" loading="lazy">
-          <div class="float left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-results.jpg" alt="강사 화면 — 채점 결과" loading="lazy"></div></div>
+        <div class="m fit">
+          <div class="stage zoom"><img src="/chaeck/img/ai/E.webp" alt="오후 학원 — 책상 위 노트북" loading="lazy"><div class="lcd"><video src="/chaeck/rec/teacher-results.mp4" poster="/chaeck/rec/teacher-results.webp" autoplay muted loop playsinline preload="none" aria-label="강사 화면 녹화 — 채점 결과"></video></div></div>
         </div>
       </article>
     </div>
@@ -480,12 +502,12 @@ a{color:inherit}
 </section>
 
 <main class="wrap">
-  <section class="zone">
-    <div class="facts">
-      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><rect x="9.5" y="12" width="6" height="5" rx="1"/><path d="M10.8 12v-1.4a1.7 1.7 0 0 1 3.4 0V12"/></svg></span>학생에게 나가는 시험지엔 정답이 실리지 않아요.</div>
-      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12.5l5 5M15 12.5l-5 5"/></svg></span>시험지를 만들려고 올린 워드·한글 파일은 저장하지 않아요.</div>
-      <div class="fact"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/></svg></span>다른 아이와 비교하지 않아요.</div>
-    </div>
+  <section class="vow" aria-label="채크가 하지 않는 것">
+    <ol class="vows">
+      <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><rect x="9.5" y="12" width="6" height="5" rx="1"/><path d="M10.8 12v-1.4a1.7 1.7 0 0 1 3.4 0V12"/></svg></span><p>학생에게 나가는 시험지엔 <em>정답이 실리지 않아요.</em></p></li>
+      <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12.5l5 5M15 12.5l-5 5"/></svg></span><p>시험지를 만들려고 올린 워드·한글 파일은 <em>저장하지 않아요.</em></p></li>
+      <li><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c.8-3.6 3.4-5.6 6.5-5.6s5.7 2 6.5 5.6"/></svg></span><p>다른 아이와 <em>비교하지 않아요.</em></p></li>
+    </ol>
   </section>
 
   <section class="go">
