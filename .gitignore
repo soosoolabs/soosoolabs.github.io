@@ -3,3 +3,5 @@ doc/
 .wrangler/
 dist/
 node_modules/
+# Claude Code 작업 도구(띠 모드 등) — 내부 흐름이라 공개하지 않는다(IL-044 · 2026-10-31)
+.claude/

@@ -51,6 +51,7 @@ python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼
 - 검수는 **dist/(빌드 결과)** 에 대고 돈다. 루트 소스에 대고 돌리지 않는다(윈도우 디스크 함정 · 전역 refs).
 - 🔒 헤더는 `deploy/_headers`(CSP **`script-src 'self'`** — 9/20 밤 결정 A: 우리 도메인 스크립트만 · 인라인·외부 스크립트는 여전히 막힌다). 검수기 D 는 외부 `script src` 를 잡는다(selftest 「외부 script 주입」).
 - 📸 `tools/shots.mjs` 는 **즉시 스크롤로 끝까지 훑은 뒤** 찍는다 — 사이트가 `scroll-behavior:smooth` 라 예전 루프는 1/3 밖에 못 내려가 ①트리거형 층이 **빈 화면으로 찍혔다**(9/20 실측). 층이 비어 보이면 도구부터 의심.
+- 🪧 **입력창 위 한 줄 = 띠 모드 `soosoo-band`**(`.claude/skills/soosoo-band/` · IL-044 · 2026-10-31) — 부를 일 없음, 이 저장소에서 세션을 열면 자동. 칸 = 받은 제안 · 답 기다리는 의뢰(마케팅·인사이트 `ASK.md` 「열림」) · 커밋 안 함·안 올린 커밋 · 창 · 사용량. 읽기만 · 바깥 접속 0(🚀 배포 칸은 soosoo.kr 에 주기 접속이라 뺐다 — 배포 확인은 `deploy:check`). ⚠️ `.claude/` 는 `.gitignore`(공개 저장소라 내부 흐름을 안 올린다 → 백업도 안 된다). 고친 뒤 `claude plugin validate`·`claude plugin test` 그 폴더.
 
 ## 4. 파일
 
