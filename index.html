@@ -143,9 +143,20 @@ a{color:inherit}
 .float.low{top:auto;bottom:6%}
 .float.left{right:auto;left:4%}
 .float .win{box-shadow:0 30px 60px -18px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.18)}
+/* 창은 화면 전체가 아니라 핵심 부분만 잘라 크게(전체 1280 폭을 300~400px 에 넣으면 글자가 안 읽힌다 · 10/31) */
+.p1 .float{width:64%}
+.p2 .float{width:58%;top:6%;bottom:auto}
+.cut{position:relative;overflow:hidden}
+.cut>video,.cut>img{position:absolute;max-width:none}
+/* 녹화 1280×800 중 x280~1260 · y40~680 */
+.cut-up{aspect-ratio:980/640}
+.cut-up>video{width:calc(100% * 1280 / 980);left:calc(-100% * 280 / 980);top:calc(-100% * 40 / 640)}
+/* 캡처 1280×900 중 x300~1220 · y20~480 */
+.cut-scan{aspect-ratio:920/460}
+.cut-scan>img{width:calc(100% * 1280 / 920);left:calc(-100% * 300 / 920);top:calc(-100% * 20 / 460)}
 .pop{animation:pop linear both;animation-timeline:--hs}
 .p1 .pop{animation-range:contain 0% contain 22%}
-.p2 .pop{animation-range:contain 30% contain 62%}
+.p2 .pop{animation-range:contain 26% contain 44%}
 .p3 .pop{animation-range:contain 66% contain 98%}
 @keyframes pop{from{opacity:0;transform:translateY(60px) scale(.88)}to{opacity:1;transform:none}}
 .zoom{animation:zoom linear both;animation-timeline:--hs}
@@ -158,14 +169,11 @@ a{color:inherit}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ── 학생·학부모 = 밝은 세로 무대 · 화면이 서고, 폰 두 대가 차례로 앞에 선다 ── */
-.duo{position:relative;height:300vh;view-timeline:--duo block;background:linear-gradient(180deg,var(--paper),#EFE8DA 50%,var(--paper))}
+.duo{position:relative;height:220vh;view-timeline:--duo block;background:linear-gradient(180deg,var(--paper),#EFE8DA 50%,var(--paper))}
 .duo .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px;align-items:center;padding:0 max(40px,calc((100vw - 1100px)/2))}
 .glow{position:absolute;border-radius:50%;filter:blur(10px);pointer-events:none}
 .g1{width:56vw;height:56vw;left:-18vw;top:-22vw;background:radial-gradient(closest-side,rgba(216,84,43,.16),transparent)}
 .g2{width:60vw;height:60vw;right:-20vw;bottom:-26vw;background:radial-gradient(closest-side,rgba(29,158,117,.20),transparent)}
-.bigword{position:absolute;inset:0;pointer-events:none;display:grid;place-items:center end;padding-right:2vw}
-.bigword span{grid-area:1/1;font-family:var(--display);font-weight:800;font-size:min(30vw,420px);line-height:1;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(27,26,22,.07);white-space:nowrap}
-.bigword .w2{opacity:0}
 .side{position:relative;z-index:3}
 .duo-h{font-size:clamp(24px,2.3vw,32px);line-height:1.2;margin:0 0 22px;color:var(--ink-2)}
 .rail{display:block;width:120px;height:4px;border-radius:4px;background:rgba(27,26,22,.10);overflow:hidden;margin-bottom:34px}
@@ -215,21 +223,17 @@ a{color:inherit}
   @keyframes fill{from{transform:scale(0)}to{transform:scale(1)}}
   .pen{animation:pen linear both;animation-timeline:--duo;animation-range:contain 0% contain 36%}
   @keyframes pen{from{transform:translateY(-20px) rotate(22deg)}to{transform:translateY(270px) rotate(16deg)}}
-  /* 넘어가기(44~62%) — 학부모 폰이 아래에서 올라와 앞에 서고, 학생 폰·답안지는 뒤로 */
-  .ph-p{animation:upP linear both;animation-timeline:--duo;animation-range:contain 44% contain 64%}
+  /* 넘어가기(34~66%) — 학부모 폰이 아래에서 올라와 앞에 서고, 학생 폰·답안지는 뒤로 */
+  .ph-p{animation:upP linear both;animation-timeline:--duo;animation-range:contain 37% contain 66%}
   @keyframes upP{from{transform:translateY(-50%) translateY(120vh) rotate(6deg)}to{transform:translateY(-50%) rotate(-2deg)}}
-  .ph-s{animation:backS linear both;animation-timeline:--duo;animation-range:contain 44% contain 64%}
+  .ph-s{animation:backS linear both;animation-timeline:--duo;animation-range:contain 37% contain 66%}
   @keyframes backS{from{transform:translateY(-50%) rotate(3deg)}to{transform:translateY(-50%) translateX(-30%) scale(.86) rotate(-5deg);filter:saturate(.7) brightness(.97)}}
-  .paper{animation:backPaper linear both;animation-timeline:--duo;animation-range:contain 40% contain 60%}
+  .paper{animation:backPaper linear both;animation-timeline:--duo;animation-range:contain 34% contain 60%}
   @keyframes backPaper{from{transform:rotate(-7deg)}to{transform:translateX(-40%) translateY(10%) rotate(-12deg) scale(.86);opacity:.0}}
-  .c1{animation:out linear both;animation-timeline:--duo;animation-range:contain 42% contain 54%}
-  .c2{animation:in linear both;animation-timeline:--duo;animation-range:contain 52% contain 64%}
-  .w1{animation:fadeOut linear both;animation-timeline:--duo;animation-range:contain 42% contain 56%}
-  .w2{animation:fadeIn linear both;animation-timeline:--duo;animation-range:contain 50% contain 64%}
+  .c1{animation:out linear both;animation-timeline:--duo;animation-range:contain 34% contain 51%}
+  .c2{animation:in linear both;animation-timeline:--duo;animation-range:contain 49% contain 66%}
   @keyframes out{to{opacity:0;transform:translateY(-36px)}}
   @keyframes in{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
-  @keyframes fadeOut{to{opacity:0;transform:translateY(-4vh)}}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(4vh)}to{opacity:1;transform:none}}
   .g1{animation:drift linear both;animation-timeline:--duo;animation-range:contain 0% contain 100%}
   @keyframes drift{to{transform:translate(20vw,30vh);opacity:.4}}
 }
@@ -239,7 +243,7 @@ a{color:inherit}
 @supports not (animation-timeline: view()){
   .duo{height:auto}
   .duo .pin{position:static;height:auto;padding-top:96px;padding-bottom:40px}
-  .bigword,.rail,.pen{display:none}
+  .rail,.pen{display:none}
   .swap{gap:48px}.swap .c{grid-area:auto}.c2{opacity:1}
   .ph-p{transform:translateY(-50%) rotate(-2deg)}
   .ph-s{transform:translateY(-50%) translateX(-30%) rotate(-4deg) scale(.9)}
@@ -248,7 +252,7 @@ a{color:inherit}
 @media (prefers-reduced-motion: reduce){
   .duo{height:auto}
   .duo .pin{position:static;height:auto;padding-top:96px;padding-bottom:40px}
-  .bigword,.rail,.pen{display:none}
+  .rail,.pen{display:none}
   .swap{gap:48px}.swap .c{grid-area:auto}.c2{opacity:1}
   .ph-p{transform:translateY(-50%) rotate(-2deg)}
   .ph-s{transform:translateY(-50%) translateX(-30%) rotate(-4deg) scale(.9)}
@@ -384,7 +388,7 @@ a{color:inherit}
   .duo{height:auto}
   .duo .pin{position:static;height:auto;display:block;padding:72px 18px 24px}
   .duo{overflow:clip}
-  .bigword,.rail,.pen,.paper{display:none}
+  .rail,.pen,.paper{display:none}
   .swap{gap:40px}.swap .c{grid-area:auto}.c2{opacity:1}
   .swap h3{font-size:32px}
   .swap p{font-size:16px;margin-top:12px}
@@ -463,7 +467,7 @@ a{color:inherit}
         </div>
         <div class="m">
           <img class="photo zoom" src="/chaeck/img/ai/B.webp" alt="학원 복합기 — 인쇄된 시험지가 나와 있다" loading="lazy">
-          <div class="float wide left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><video src="/chaeck/rec/teacher-upload.mp4" poster="/chaeck/rec/teacher-upload.webp" autoplay muted loop playsinline preload="none" aria-label="강사 화면 녹화 — 시험지 파일을 올리면 정답이 채워진다"></video></div></div>
+          <div class="float wide left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><div class="cut cut-up"><video src="/chaeck/rec/teacher-upload.mp4" poster="/chaeck/rec/teacher-upload.webp" autoplay muted loop playsinline preload="none" aria-label="강사 화면 녹화 — 시험지 파일을 올리면 정답이 채워진다"></video></div></div></div>
         </div>
       </article>
 
@@ -477,7 +481,7 @@ a{color:inherit}
         </div>
         <div class="m">
           <img class="photo zoom" src="/chaeck/img/ai/C.webp" alt="걷은 시험지 묶음을 복합기 급지대에 넣는 손" loading="lazy">
-          <div class="float left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div>
+          <div class="float left low pop"><div class="win"><div class="bar"><i></i><i></i><i></i><span>chaeck.soosoo.kr</span></div><div class="cut cut-scan"><img src="/chaeck/img/teacher-scan-upload.jpg" alt="강사 화면 — 스캔한 시험지 넣기" loading="lazy"></div></div></div>
         </div>
       </article>
 
@@ -502,7 +506,6 @@ a{color:inherit}
 <section class="duo" id="family" aria-label="학생 · 학부모">
   <div class="pin">
     <div class="glow g1" aria-hidden="true"></div><div class="glow g2" aria-hidden="true"></div>
-    <div class="bigword" aria-hidden="true"><span class="w1">학생</span><span class="w2">학부모</span></div>
     <div class="side">
       <h2 class="disp duo-h">결과는 학생·학부모 앱으로.</h2>
       <i class="rail" aria-hidden="true"><i></i></i>
