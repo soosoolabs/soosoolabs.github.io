@@ -10,8 +10,8 @@
 | 정체 | 아키타입 **D 정적 사이트**. 채크 홍보 홈 + 채크 소개 · 요금 안내(하루한톨 문서 3장은 10/30 사장님 「지워」로 삭제 — 하지 않을 서비스). 서버·DB·로그인 없음 |
 | 정본 주소 | **https://soosoo.kr** ✅ 살아 있음(Cloudflare Workers 정적 에셋 · `www` → 301) |
 | 옛 주소 | `soosoolabs.github.io` = **껍데기**(`gh-pages` 브랜치 · 같은 경로로 soosoo.kr 에 넘긴다). 스토어·약관 문서에 박혀 있어 **죽이면 안 된다** |
-| 디자인 | ✅ **홈 v4 라이브**(2026-10-30 밤 `a5a9619` · 채크 홍보 랜딩 · 문구 ML-016 · 사진 ML-017 A~F(사장님 magnific · 이미지 안 합성 0 · 원본 PNG 는 `doc/사진원본/` 로컬 — ⛔`chaeck/img/ai/` 에 PNG 를 두면 빌드가 공개한다) · 사진 속 화면 자리에 채크 실제 녹화 · 푸터에 AI 사진 표시 한 줄 · `assets/home.js` = 화면 밖 녹화 정지) |
-| ★ **채크 앱 소개 페이지** | ✅ **https://soosoo.kr/chaeck/ = 「손넘김 릴레이」 정본**(9/21 사장님 「릴레이 정본으로 올려」). **화면 전체가 무대 · 스크롤이 카메라**(`chaeck/relay.js` 키프레임 보간 · 라이브러리 0): S0 실사 H1 줌인 → 답안지 통과 → S1 사무실·프린터 실사 → S2 학생 실사(실물 답안지 위 마킹 겹판 스크러빙) → S3 카메라 폰·셔터·초록 펜 O/X·「0」 → S4 저녁 사무실·「결과 공개」 도장 → S5 부엌 학부모 → 시작. 실사 5장(`chaeck/img/ai/src/` 원본 · `S*.webp` 합성본 — 화면은 실제 캡처, 종이는 실물 답안지) · 문안 = 9/21 확정 + 임팩트판(⛔「연필」 금지어). 이전 판 `/chaeck/_old/` · 잉크 판 `/chaeck/ink/` · `/chaeck/relay/` 는 정본으로 넘김. **웹(1280) 우선 · 폰 배치는 후순위**(사장님). 정본 문서 `doc/채크_소개_구성.md` §1-c·§H·§I·§J |
+| 디자인 | ✅ **2026-10-31 두 홈페이지로 나눔**(사장님 「홈페이지가 2개니까 … 채크쪽으로 옮기고 수수홈페이지를 다시 만들자」): `/` = **수수 회사 홈 임시판**(확정된 사실·문장만 · 채크 카드 → `/chaeck/` · 정식판 = 마케팅 연구소 문구 + 클로드 디자인 시안) · `/chaeck/` = **채크 홈페이지** = 홈 v4(10/30 `a5a9619` · 문구 ML-016 · 사진 ML-017 A~F · 원본 PNG 는 `doc/사진원본/` 로컬 — ⛔`chaeck/img/ai/` 에 PNG 를 두면 빌드가 공개한다 · 화면 자리에 채크 실제 녹화 · `assets/home.js` = 화면 밖 녹화 정지) |
+| ★ **채크 홈페이지** | ✅ **https://soosoo.kr/chaeck/ = 홈 v4 를 옮겨 온 채크 홍보 랜딩**(10/31 · 검색용 제목·설명·주소 정보는 채크 페이지 것 유지). 이전 정본 「손넘김 릴레이」(9/21~10/31 · `chaeck/relay.js` · 정본 문서 `doc/채크_소개_구성.md`)는 **`/chaeck/relay/` 에 보관**(noindex) · 그 앞 판 `/chaeck/_old/` · 잉크 판 `/chaeck/ink/` |
 | 사업자 표기 | 상호·영문·대표·등록번호·이메일 ✅ · 전화·주소 = 채크 소개 푸터에만(약관과 같은 값 · 9/20 사장님) · 통신판매업 신고번호 = **자리만** |
 
 ## 1. 🔴 되돌리면 안 되는 것 (다음 세션이 되돌리지 말 것)
@@ -56,8 +56,8 @@ python3 tools/img.py   # 사장님이 AI 로 뽑은 이미지를 포토샵처럼
 ## 4. 파일
 
 ```
-index.html            홈 = 채크 홍보 랜딩 v4(2026-10-30 · 스크립트 assets/home.js 하나 · 가로 무대는 CSS 스크롤 연동 · 시안 원본 doc/시안/홈_v4/page.html)
-chaeck/index.html     ★채크 앱 소개 = 손넘김 릴레이(스크립트 chaeck/relay.js 하나) · chaeck/_old/ 이전 판 · chaeck/ink/ 잉크 시안(motion.js) · chaeck/img/ 실제 캡처 8장 · chaeck/img/ai/ 실사(사장님 생성 → 합성)(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
+index.html            수수 회사 홈 임시판(2026-10-31 · 스크립트 0)
+chaeck/index.html     ★채크 홈페이지 = 홈 v4 를 옮겨 옴(2026-10-31 · 스크립트 assets/home.js 하나 · 가로 무대는 CSS 스크롤 연동 · 시안 원본 doc/시안/홈_v4/page.html) · chaeck/relay/ 손넘김 릴레이 보관(chaeck/relay.js) · chaeck/_old/ 이전 판 · chaeck/ink/ 잉크 시안(motion.js) · chaeck/img/ 실제 캡처 8장 · chaeck/img/ai/ 실사(사장님 생성 → 합성)(채크 dev 데모 데이터 · 다시 찍으려면 채크 `npm run dev` + 홈에서 클릭해 들어가는 방식 — screens-plan 의 시험 ID 는 낡아 빈 화면이 나온다)
 assets/fonts/         Pretendard·Paperlogy 서브셋(OFL) + manifest.json(글자 해시)
 data/site.json        ★ 사람이 고치는 값은 여기뿐 (사업자 정보 · 고정 경로 · 옛 주소 예외(기한) · 검사 URL)
 deploy/_headers       보안 헤더

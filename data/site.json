@@ -67,7 +67,7 @@
           "applicationCategory": "EducationalApplication", "operatingSystem": "Web, Android, iOS",
           "availableOnDevice": "강사: PC 웹(시험지 올리기·채점 확인) · 학생·학부모: 안드로이드·아이폰 앱",
           "url": "https://chaeck.soosoo.kr/",
-          "sameAs": ["https://soosoo.kr/", "https://play.google.com/store/apps/details?id=com.chaeck.app", "https://apps.apple.com/kr/app/id6788668772"],
+          "sameAs": ["https://soosoo.kr/chaeck/", "https://play.google.com/store/apps/details?id=com.chaeck.app", "https://apps.apple.com/kr/app/id6788668772"],
           "publisher": { "@id": "https://soosoo.kr/#org" } }
       ]
     },
@@ -111,7 +111,7 @@
   "page_rules": [
     {
       "path": "/",
-      "_왜": "2026-10-30 홈 v3 = 채크 홍보 랜딩 → 채크 소개와 같은 금지어·필수 문장(doc/디자인_방향.md §6-5 「v3 채택 시 ④」)",
+      "_왜": "2026-10-31 홈(/) = 수수 회사 홈(임시판 · 채크 홍보 랜딩은 /chaeck/ 로 옮김 · 사장님 「홈페이지가 2개니까」). 금지어는 그대로 · 있어야 할 것 = 채크 약관·방침 링크 + 채크 홈 링크(채크 문장 「만 14세」·「비교하지 않아요」는 /chaeck/ 규칙이 본다)",
       "forbid": [
         "등수를",
         "석차를",
@@ -131,12 +131,10 @@
         "연필"
       ],
       "must": [
-        "만 14세 이상",
-        "비교하지 않아요",
         "개인정보처리방침",
         "chaeck.soosoo.kr/privacy",
         "chaeck.soosoo.kr/terms",
-        "chaeck.soosoo.kr/signup"
+        "/chaeck/"
       ]
     },
     {
