@@ -66,7 +66,8 @@ export function run(dist) {
   }
   // C
   const biz = site.business;
-  const must = { 상호: biz.name_ko, 영문: biz.name_en, 대표: biz.representative, 등록번호: biz.registration_no, 이메일: biz.email };
+  // 2026-11-17 Toss PG 보완 «사업자등록증과 일치» — 상호 칸은 등록증 그대로 «수수»(영문 병기가 불일치로 읽힘) → 영문은 더 이상 요구하지 않는다 · 주소·전화도 확인
+  const must = { 상호: biz.name_ko, 대표: biz.representative, 등록번호: biz.registration_no, 주소: biz.address, 전화: biz.phone, 이메일: biz.email };
   for (const p of site.business_info_pages) {
     const f = join(dist, p.replace(/\/$/, "/index.html").replace(/^\//, ""));
     if (!existsSync(f)) continue; // A 에서 이미 잡힌다
